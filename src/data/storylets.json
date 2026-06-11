@@ -1,10 +1,59 @@
 [
   {
-    "id": "crater_wake",
-    "title": "The Static Crater",
-    "content": "The world begins in a haze of acrid smoke and the smell of ozone. You are lying at the bottom of a shallow, glass-edged crater in the Borderlands. The red dust is swirling around you, but within the circle of the crater, everything is eerily still. A figure—{npc:kaelen}—is peering over the edge, their hand drifting toward a rusted iron knife. As they take in your {player.height}, {player.bodyType} frame and {player.eyeType} eyes, they [NPC_REACT]. 'I don't know what void you leaked out of,' the figure calls down, 'but you've sucked the life right out of the air. If you want a ride out of here, you're going to have to prove you aren't just a walking curse.'",
+    "id": "awakening_void",
+    "title": "The Null-Point Awakening",
+    "content": "[INNER_MONOLOGUE] 'Where... am I? My head feels like it was hit by a freight train.' You open your eyes to a sky the color of a fresh bruise. You are lying in a glass-edged crater. The air is still, but you can feel a rhythmic pulsing deep in your bones. A flickering, gaseous light—a spirit fragment—hovers inches from your face. It is wounded, bleeding raw energy that smells like burnt copper and ozone. As your Earth-born logic tries to process the impossible, you feel a strange pull. The spirit isn't just near you; it's reacting to you. You are an anchor in this shifting reality.",
+    "priority": 100,
     "prerequisites": {
       "location": "static_crater"
+    },
+    "choices": [
+      {
+        "id": "awakening_merge_thermal",
+        "text": "Reach out and stabilize the spirit's heat. (Thermal Entropy Affinity)",
+        "effects": {
+          "experienceGain": 50,
+          "setBlessedAbility": "thermal_entropy",
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "thermal" }
+        }
+      },
+      {
+        "id": "awakening_merge_vector",
+        "text": "Anchor the spirit's erratic movement. (Vector Resonance Affinity)",
+        "effects": {
+          "experienceGain": 50,
+          "setBlessedAbility": "vector_resonance",
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "vector" }
+        }
+      },
+      {
+        "id": "awakening_merge_biomorphic",
+        "text": "Offer your own life-force to heal the flicker. (Biomorphic Flux Affinity)",
+        "effects": {
+          "experienceGain": 50,
+          "setBlessedAbility": "biomorphic_flux",
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "biomorphic" }
+        }
+      },
+      {
+        "id": "awakening_merge_cognitive",
+        "text": "Merge your mind with the spirit's sensory echo. (Cognitive Distortion Affinity)",
+        "effects": {
+          "experienceGain": 50,
+          "setBlessedAbility": "cognitive_distortion",
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "cognitive" }
+        }
+      }
+    ]
+  },
+  {
+    "id": "crater_wake",
+    "title": "The Scavenger's Shadow",
+    "content": "The spirit merges into your chest with a silent, blinding flash. For a moment, you are the only thing that makes sense in this desert. [INNER_MONOLOGUE] 'What was that? I feel... grounded. Different.' A figure—{npc:kaelen}—is peering over the edge of the crater now, their hand drifting toward a rusted iron knife. As they take in your {player.height}, {player.bodyType} frame and the strange, steady light now radiating from your chest, they [NPC_REACT]. 'I don't know what void you leaked out of,' the figure calls down, 'but you've sucked the life right out of the air. If you want a ride out of here, you're going to have to prove you aren't just a walking curse.'",
+    "priority": 90,
+    "prerequisites": {
+      "location": "static_crater",
+      "globalFlags": { "blessed_skill_awakened": true }
     },
     "choices": [
       {
@@ -14,7 +63,8 @@
           "alignmentChange": 5,
           "moveToLocation": "borderlands_outpost",
           "setGlobalFlags": { "met_kaelen": true, "path": "resonance" },
-          "revealNames": ["kaelen"]
+          "revealNames": ["kaelen"],
+          "experienceGain": 25
         }
       },
       {
@@ -23,7 +73,8 @@
         "effects": {
           "purityChange": -5,
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": true, "path": "distortion" }
+          "setGlobalFlags": { "met_kaelen": true, "path": "distortion" },
+          "experienceGain": 25
         }
       },
       {
@@ -31,7 +82,8 @@
         "text": "(Ignore them and climb out of the crater yourself).",
         "effects": {
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": false, "path": "void" }
+          "setGlobalFlags": { "met_kaelen": false, "path": "void" },
+          "experienceGain": 10
         }
       }
     ]
@@ -39,7 +91,8 @@
   {
     "id": "outpost_arrival",
     "title": "Borderlands Outpost",
-    "content": "You arrive at a cluster of makeshift shacks built from salvaged plating and reinforced glass. This is the Borderlands Outpost, a haven for those who survive on the edge of the Static. The air is thick with the sound of grinding gears and the occasional crackle of energy.",
+    "content": "You arrive at a cluster of makeshift shacks built from salvaged plating and reinforced glass. This is the Borderlands Outpost. The air is thick with the sound of grinding gears and the occasional crackle of energy. [INNER_MONOLOGUE] 'It looks like a junkyard, but everyone is acting like it's a fortress.'",
+    "priority": 50,
     "prerequisites": {
       "location": "borderlands_outpost"
     },
@@ -48,7 +101,8 @@
         "id": "outpost_explore",
         "text": "Explore the market.",
         "effects": {
-          "moveToLocation": "outpost_market"
+          "moveToLocation": "outpost_market",
+          "experienceGain": 5
         }
       }
     ]

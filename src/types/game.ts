@@ -45,6 +45,10 @@ export interface Player {
   appearance: Appearance;
   pronouns: Pronouns;
   stats: PlayerStats;
+  level: number;
+  experience: number;
+  skillPoints: number;
+  blessedAbility?: string; // Unique Echo-Anchor affinity
   alignment: AlignmentValue; // Good/Evil
   purity: AlignmentValue;    // Pure/Corrupt
   wealth: number;
@@ -85,6 +89,8 @@ export interface StoryletEffects {
   alignmentChange?: number;
   purityChange?: number;
   wealthChange?: number;
+  experienceGain?: number;
+  setBlessedAbility?: string;
   addItem?: string[];
   removeItem?: string[];
   statChange?: Partial<PlayerStats>;

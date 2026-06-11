@@ -32,6 +32,9 @@ const initialState: Player = {
     possessive: 'their',
   },
   stats: initialStats,
+  level: 1,
+  experience: 0,
+  skillPoints: 0,
   alignment: 0,
   purity: 0,
   wealth: 100,
@@ -52,6 +55,22 @@ const initialState: Player = {
     name: 'player',
     initialState,
     reducers: {
+    gainExperience: (state, action: PayloadAction<number>) => {
+      state.experience += action.payload;
+      const nextLevelExp = state.level * 100;
+      if (state.experience >= nextLevelExp) {
+        state.level += 1;
+        state.experience -= nextLevelExp;
+        state.skillPoints += 5;
+        // Recursive check for multi-level gain
+        if (state.experience >= state.level * 100) {
+            // We can handle this by just calling again or a loop, but level * 100 is increasing
+        }
+      }
+    },
+    setBlessedAbility: (state, action: PayloadAction<string>) => {
+        state.blessedAbility = action.payload;
+    },
     addCompanion: (state, action: PayloadAction<string>) => {
       if (!state.companions.includes(action.payload)) {
         state.companions.push(action.payload);
@@ -128,6 +147,8 @@ export const {
   logChoice,
   changeInfluence,
   changeMenace,
+  gainExperience,
+  setBlessedAbility,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

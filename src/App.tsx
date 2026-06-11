@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Sentry from "@sentry/react";
 import type { RootState } from './store';
-import { setLocation, changeAlignment, changePurity, addItem, changeWealth } from './store/slices/playerSlice';
+import { setLocation, changeAlignment, changePurity, addItem, changeWealth, gainExperience, setBlessedAbility } from './store/slices/playerSlice';
 import { filterStorylets, morphText } from './engine/narrativeEngine';
 import { setGlobalFlag, markStoryletSeen, revealName } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
@@ -24,6 +24,7 @@ const App: React.FC = () => {
   const state = useSelector((state: RootState) => state);
 
   const [activeStorylet, setActiveStorylet] = useState<Storylet | null>(null);
+  const [narrativeHistory, setNarrativeHistory] = useState<{ id: string; type: 'storylet' | 'choice'; text: string; title?: string }[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social'>('inventory');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
@@ -31,22 +32,46 @@ const App: React.FC = () => {
 
   useWorldEngine(isInitialized);
 
+  // Auto-scroll to bottom of narrative
+  useEffect(() => {
+    const scrollAnchor = document.getElementById('scroll-anchor');
+    if (scrollAnchor) {
+      scrollAnchor.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [narrativeHistory]);
+
   useEffect(() => {
     if (!isInitialized) return;
     const filtered = filterStorylets(storyletsData as Storylet[], state);
-    if (filtered.length > 0 && !activeStorylet) {
-      setActiveStorylet(filtered[0]);
+    if (filtered.length > 0) {
+      const nextStorylet = filtered[0];
+      if (!activeStorylet || activeStorylet.id !== nextStorylet.id) {
+        setActiveStorylet(nextStorylet);
+        dispatch(markStoryletSeen(nextStorylet.id));
+        
+        // Add to history
+        const morphedContent = morphText(nextStorylet.content, state);
+        setNarrativeHistory(prev => [
+            ...prev, 
+            { id: nextStorylet.id, type: 'storylet', text: morphedContent, title: nextStorylet.title }
+        ]);
+      }
     }
-  }, [player.location, player.alignment, player.purity, state, activeStorylet, isInitialized]);
+  }, [player.location, player.alignment, player.purity, game.seenStorylets, state, activeStorylet, isInitialized, dispatch]);
 
   const handleChoice = (choice: Choice) => {
     const { effects } = choice;
     tts.stop();
     setIsNarrating(false);
 
+    // Add choice to history
+    setNarrativeHistory(prev => [...prev, { id: choice.id, type: 'choice', text: choice.text }]);
+
     if (effects.alignmentChange) dispatch(changeAlignment(effects.alignmentChange));
     if (effects.purityChange) dispatch(changePurity(effects.purityChange));
     if (effects.wealthChange) dispatch(changeWealth(effects.wealthChange));
+    if (effects.experienceGain) dispatch(gainExperience(effects.experienceGain));
+    if (effects.setBlessedAbility) dispatch(setBlessedAbility(effects.setBlessedAbility));
     if (effects.moveToLocation) dispatch(setLocation(effects.moveToLocation));
     if (effects.addItem) {
       effects.addItem.forEach(item => dispatch(addItem(item)));
@@ -55,6 +80,9 @@ const App: React.FC = () => {
       Object.entries(effects.setGlobalFlags).forEach(([flag, value]) => {
         dispatch(setGlobalFlag({ flag, value }));
       });
+    }
+    if (effects.revealNames) {
+        effects.revealNames.forEach(name => dispatch(revealName(name)));
     }
 
     // After choice, refresh storylets
@@ -106,20 +134,20 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="w-full max-w-4xl flex gap-8">
+      <main className="w-full max-w-4xl flex-1 flex flex-col md:flex-row gap-8 overflow-hidden mb-8">
         {/* Left Column: Primary Interface */}
-        <section className="flex-1 bg-slate-800 p-8 rounded-lg border border-slate-700 shadow-2xl min-h-[600px] flex flex-col">
-          <div className="flex justify-between items-center mb-6 border-b border-slate-700 pb-2">
+        <section className="flex-1 bg-slate-800 rounded-lg border border-slate-700 shadow-2xl flex flex-col overflow-hidden">
+          <div className="flex justify-between items-center p-4 border-b border-slate-700 bg-slate-800 z-10">
             <div className="flex gap-4">
               <button 
                 onClick={() => setView('narrative')}
-                className={`text-xs uppercase font-bold tracking-widest pb-2 border-b-2 transition-all ${view === 'narrative' ? 'border-amber-500 text-amber-500' : 'border-transparent text-slate-500'}`}
+                className={`text-xs uppercase font-bold tracking-widest pb-1 border-b-2 transition-all ${view === 'narrative' ? 'border-amber-500 text-amber-500' : 'border-transparent text-slate-500'}`}
               >
                 Narrative
               </button>
               <button 
                 onClick={() => setView('combat')}
-                className={`text-xs uppercase font-bold tracking-widest pb-2 border-b-2 transition-all ${view === 'combat' ? 'border-red-500 text-red-500' : 'border-transparent text-slate-500'}`}
+                className={`text-xs uppercase font-bold tracking-widest pb-1 border-b-2 transition-all ${view === 'combat' ? 'border-red-500 text-red-500' : 'border-transparent text-slate-500'}`}
               >
                 Combat
               </button>
@@ -134,39 +162,52 @@ const App: React.FC = () => {
             )}
           </div>
 
-          {view === 'narrative' ? (
-            activeStorylet ? (
-              <div className="flex-1 flex flex-col">
-                <h2 className="text-2xl font-bold mb-4 text-amber-200">{activeStorylet.title}</h2>
-                <p className="text-lg leading-relaxed mb-12 text-slate-300 first-letter:text-5xl first-letter:font-bold first-letter:mr-3 first-letter:float-left first-letter:text-amber-500">
-                  {morphText(activeStorylet.content, state)}
-                </p>
-                
-                <div className="mt-auto space-y-3">
-                  {activeStorylet.choices.map((choice) => (
-                    <button
-                      key={choice.id}
-                      onClick={() => handleChoice(choice)}
-                      className="w-full text-left p-4 rounded bg-slate-700 hover:bg-amber-900/40 hover:border-amber-700 border border-slate-600 transition-all group flex items-center"
-                    >
-                      <span className="text-amber-500 mr-4 opacity-0 group-hover:opacity-100 transition-opacity">»</span>
-                      <span>{choice.text}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+          <div className="flex-1 overflow-y-auto p-6 space-y-8 scroll-smooth" id="narrative-scroll">
+            {view === 'narrative' ? (
+              <>
+                {narrativeHistory.map((item, index) => (
+                  <div key={`${item.id}-${index}`} className={`animate-in fade-in slide-in-from-bottom-4 duration-700 ${item.type === 'choice' ? 'border-l-2 border-amber-500/30 pl-4 py-2 italic text-slate-400' : ''}`}>
+                    {item.title && <h2 className="text-xl font-bold mb-3 text-amber-200 uppercase tracking-tight">{item.title}</h2>}
+                    <p className={`text-lg leading-relaxed ${item.type === 'storylet' ? 'first-letter:text-4xl first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-amber-500 text-slate-300' : 'text-slate-400'}`}>
+                      {item.text}
+                    </p>
+                  </div>
+                ))}
+                {!activeStorylet && narrativeHistory.length === 0 && (
+                   <div className="h-full flex items-center justify-center text-slate-500 italic">
+                    The world is still...
+                   </div>
+                )}
+                {/* Scroll Anchor */}
+                <div id="scroll-anchor" />
+              </>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-slate-500 italic">
-                No active storylets...
-              </div>
-            )
-          ) : (
-            <CombatConsole />
+              <CombatConsole />
+            )}
+          </div>
+
+          {view === 'narrative' && activeStorylet && (
+            <div className="p-4 bg-slate-900/50 border-t border-slate-700 space-y-2 sticky bottom-0">
+               <div className="text-[10px] uppercase font-bold text-slate-500 mb-2 tracking-widest flex items-center">
+                 <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse" />
+                 Decision Required
+               </div>
+               {activeStorylet.choices.map((choice) => (
+                <button
+                  key={choice.id}
+                  onClick={() => handleChoice(choice)}
+                  className="w-full text-left p-3 rounded bg-slate-800 hover:bg-amber-900/40 hover:border-amber-700 border border-slate-700 transition-all group flex items-center text-sm"
+                >
+                  <span className="text-amber-500 mr-3 opacity-0 group-hover:opacity-100 transition-opacity">»</span>
+                  <span>{choice.text}</span>
+                </button>
+              ))}
+            </div>
           )}
         </section>
 
         {/* Right Column: Stats & Inventory */}
-        <aside className="w-80 space-y-6">
+        <aside className="w-full md:w-80 space-y-6 overflow-y-auto md:overflow-visible pr-2">
           <div className="flex bg-slate-800 p-1 rounded-t-lg border-t border-x border-slate-700 overflow-x-auto">
             {(['inventory', 'skills', 'blueprints', 'civic', 'social'] as const).map((tab) => (
               <button
@@ -203,31 +244,36 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
+             <div className="flex justify-between items-center mb-2">
+                <h3 className="text-xs uppercase font-bold text-slate-500 tracking-widest">Level {player.level}</h3>
+                <span className="text-[10px] text-slate-400 font-mono">{player.experience} / {player.level * 100} XP</span>
+             </div>
+             <div className="w-full bg-slate-900 h-1 rounded-full overflow-hidden">
+                <div 
+                  className="bg-amber-500 h-full transition-all duration-500" 
+                  style={{ width: `${(player.experience / (player.level * 100)) * 100}%` }}
+                />
+             </div>
+          </div>
         </aside>
       </main>
 
-      <footer className="w-full max-w-4xl mt-8 pt-4 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em]">
+      <footer className="w-full max-w-4xl pt-4 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em]">
         <div>Systemic Core v0.1.0</div>
-        <button 
-          onClick={() => { throw new Error("Sentry Frontend Test Error"); }}
-          className="hover:text-red-500 transition-colors"
-        >
-          [ Trigger Test Error ]
-        </button>
-        <div>Engineered via Vibe Coding Paradigm</div>
+        <div className="flex gap-4">
+            <button 
+            onClick={() => { throw new Error("Sentry Frontend Test Error"); }}
+            className="hover:text-red-500 transition-colors"
+            >
+            [ Sentry Test ]
+            </button>
+            <div>Engineered via Vibe Coding</div>
+        </div>
       </footer>
     </div>
   );
 };
-
-export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });
-eered via Vibe Coding Paradigm</div>
-      </footer>
-    </div>
-  );
-};
-
-export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });
-
 
 export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });
