@@ -16,8 +16,11 @@
     - **Stage 1 (Passive/Hidden):** You unknowingly act as a "Stabilizer." Tech in your vicinity runs 20% more efficiently; spirits nearby stop flickering. You don't know why.
     - **Stage 2 (Maturity):** **Echo-Mapping.** You can "Restore" objects to their peak state.
     - **Stage 3 (Mastery):** **The Reality Anchor.** You project a "Null-Zone." Magic must follow Earth's physics.
-- **The Adaptation:** You have a **Modern Perspective**. You apply Earth's logical frameworks (physics, systems engineering, triage) to Eldoria's superior Arcane-Industrial technology. You don't bring blueprints; you bring a way of thinking that allows you to see the "why" behind the magic-tech.
-- **Identity Building (True RPG Choice):** Eldoria is a "Blank Canvas." You arrive with nothing from your home world because nothing from that reality could compare to the power here. You are a "Null" who must rebuild yourself from scratch using the tools of this world.
+- **The Adaptation:** You have a **Modern Perspective**. You apply Earth's logical frameworks (physics, systems engineering, triage) to Eldoria's systems. This logic is **universal**—it applies to understanding the flow of raw magic just as much as it does to repairing a brass reactor.
+- **Identity Building (True RPG Choice):** Eldoria is a "Blank Canvas." You arrive with nothing and no pre-defined role. 
+    - You are not inherently "tech-savvy" or "magic-inclined." 
+    - Your **Echo-Anchor** is a neutral tool: it can stabilize a traditional wand's focus or optimize a mechanical reactor. 
+    - You choose your build (Pure Magic, Pure Tech, or Hybrid) based on your curiosity and the world's parameters.
 
 ## 2. The Adversary: The Shattered Sovereign
 - **The Vessel:** The leader of a major faction (e.g., The Iron Syndicate).
@@ -25,6 +28,8 @@
 - **The Manifestation:** A powerful political figure driven by a blighted ancient power. No AI involvement.
 
 ## 3. Systemic Pillars
+- **Infinite Expandability (DLC Ready):** The QBN (Storylet) engine is designed for seamless scaling. New zones, factions, and mechanics can be "plugged in" without rewriting the core game logic, ensuring Eldoria can grow indefinitely post-release.
+- **Democratic Manipulation:** Tech allows commoners with zero magic training to **manipulate** magic via physical interfaces (levers, dials, sockets). This makes magical power a visible, tactile utility rather than just a mystical secret.
 - **The Spirit Economy (Trade):** 
     - **Currency:** **Resonance Shards**—tiny, stable spirit fragments used for everything.
 - **Transportation (The Veins of Eldoria):**
