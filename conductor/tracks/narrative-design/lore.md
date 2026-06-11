@@ -18,5 +18,26 @@
 - **The Result:** The Spirit's corruption has merged with the leader's political ambition. They use their resources to fuel their own ascension.
 - **The Manifestation:** A visionary leader to the public, secretly a vessel for an ancient, blighted power. No AI involvement.
 
-## The Nexus Social Hierarchy: The Common People
-- **The "Black Canvas" NPCs:** The average citizen is caught in between. They use tech-magic for daily life—lighting, heating, protection. They don't see themselves as abusers; they are just living in the world as it is now.
+## The Borderlands: A Web of Local Interests
+
+The Borderlands is not just an empty desert; it is a graveyard of "Impossible Tech" and a frontline for the Nexus's cold war.
+
+### 1. The Syndicate Outpost: "The Iron Watch"
+- **Leader:** **Overseer Vane.** A career bureaucrat who views the Borderlands as a dirty chore. He is efficient, cold, and strictly follows the "Sovereign's" edicts.
+- **Local Goal:** Secure the wreckage of the "Null" vehicle (the Player's crash site) before the Adepts can analyze its resonance.
+- **The "Blank Canvas" View:** Commoners here fear Vane but rely on his "Scrap-Tax" to keep their own tech running.
+
+### 2. The Adept Pilgrimage: "The Silent Anchor"
+- **Leader:** **Elder Syla.** A member of the Fading Nobility who believes the "Fall" has not yet finished. She is patient, secretive, and views tech as a "crutch for the blind."
+- **Local Goal:** Stabilize the "Static" leaks caused by the crash. They believe the player's presence is a spiritual wound that must be healed or closed.
+- **The "Blank Canvas" View:** Commoners see Syla as a mystic who can heal their "Burned-out" spirits, but her prices are often too high in "Resonance Shards."
+
+### 3. The Border-Rat Scavengers (The True Neutrals)
+- **Local Face:** **Kaelen.** (Already introduced).
+- **Social Dynamic:** They are the "Web of Trust." They move between the Watch and the Anchor, selling scrap to one and secrets to the other. They are your first shield or your first betrayers.
+
+## The "Crash Site" Economy
+The wreckage of your vehicle is the most valuable object in the Borderlands. 
+- **The Syndicate** wants the "Perfect Metal" and the "Static Batteries."
+- **The Adepts** want to know why it has no "Signature."
+- **The Scavengers** just want to strip the wires for Shards.

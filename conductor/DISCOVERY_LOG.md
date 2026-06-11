@@ -9,6 +9,7 @@ This document tracks unresolved questions and design decisions to ensure "Vibe C
 | Tech Aesthetic: Steampunk, Cyberpunk-Fantasy, or Arcane-Industrial? | Visuals | Resolved (Arcane-Industrial) |
 | Traditional Magic vs. Tech: How do they coexist? | Mechanics | Resolved (Equilibrium vs. Balance) |
 | What is the social status of Adepts in the Nexus? | Lore | Resolved (Three-Tiered / Cold War) |
+| Who are the local power players in the Borderlands? | Narrative | Resolved (Vane, Syla, Kaelen) |
 | How does "Modern Knowledge" translate to Adept magic? | Lore | Pending |
 | Does the player have specific blueprints from our world? | Lore | Pending |
 | What was the "Sovereign's" name before possession? | Narrative | Pending |
