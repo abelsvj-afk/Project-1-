@@ -10,7 +10,8 @@
     - **The Risk (Spirit Burnout):** While regular use is safe, "Overclocking" or systemic greed can lead to **Burnout**—where a spirit fragment is drained to the point of becoming "Static."
 
 ## 2. The Player: The Catalyst
-- **The Trigger:** You **crashed**. A vehicle from your "Modern" world hit a "Static Spot" and was pulled into Eldoria.
+- **The Trigger:** You **crashed** into Eldoria. You didn't arrive in a vehicle; you were pulled through a "Static Spot" and hit the ground with the force of a meteor.
+- **The Impact Site:** You created a **Static Crater** in the Borderlands—a zone where magic is temporarily dead and physics follow Earth's rules.
 - **The Null-Point Anomaly (The "Cheat"):** A hybrid maturing skill known as the **Echo-Anchor**.
     - **Stage 1 (Passive/Hidden):** You unknowingly act as a "Stabilizer." Tech in your vicinity runs 20% more efficiently; spirits nearby stop flickering. You don't know why.
     - **Stage 2 (Maturity):** **Echo-Mapping.** You can "Restore" objects to their peak state.
