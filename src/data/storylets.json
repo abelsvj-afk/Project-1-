@@ -1,0 +1,54 @@
+[
+  {
+    "id": "intro_01",
+    "title": "A New Beginning",
+    "content": "You stand at the threshold of Eldoria. The air is thick with the scent of ancient pine and distant magic. The path ahead is yours to forge.",
+    "prerequisites": {
+      "location": "eldoria_threshold"
+    },
+    "choices": [
+      {
+        "id": "intro_01_a",
+        "text": "Walk boldly through the main gates.",
+        "effects": {
+          "alignmentChange": 10,
+          "moveToLocation": "market_district"
+        }
+      },
+      {
+        "id": "intro_01_b",
+        "text": "Slip through a gap in the crumbling walls.",
+        "effects": {
+          "purityChange": -10,
+          "moveToLocation": "the_shades"
+        }
+      }
+    ]
+  },
+  {
+    "id": "dark_deal_01",
+    "title": "A Clandestine Offer",
+    "content": "A hooded figure approaches you in the flickering torchlight of The Shades. 'I have something that might interest someone of your... unique tastes,' he whispers.",
+    "prerequisites": {
+      "location": "the_shades",
+      "maxPurity": -50
+    },
+    "choices": [
+      {
+        "id": "dark_deal_01_a",
+        "text": "Listen to the offer.",
+        "effects": {
+          "purityChange": -20,
+          "addItem": ["mysterious_relic"]
+        }
+      },
+      {
+        "id": "dark_deal_01_b",
+        "text": "Reject him and keep moving.",
+        "effects": {
+          "alignmentChange": 5
+        }
+      }
+    ]
+  }
+]

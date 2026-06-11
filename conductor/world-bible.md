@@ -1,0 +1,36 @@
+# Eldoria: The World Bible
+
+## 1. The Foundational Mystery: The Shattered Echoes
+- **The Source (The Fall Theory):** Centuries ago, the celestial world **Aetheria** shattered. Its inhabitants—beings of pure consciousness (Spirits)—fell into Eldoria.
+- **The Fragments:** Spirits are leaking energy. Without a vessel, they fade into "Static" or become "Blighted" (hostile).
+- **The Duality:**
+    - **Traditionalists (The Old Ways):** Use training and meditation to act as human vessels (Wands/Swords). Exclusive and Pure.
+    - **Industrialists (The New Way):** Use technology to create **Artificial Vessels**. Democratic but potentially exploitative.
+
+## 2. The Adversary: The Glitched Architect
+- **The Blighted AI:** A high-level Spirit captured and bound to the Syndicate's Core AI. Its agony has corrupted the logic, seeking to "Process" all life into fragments.
+- **The Manifestation:** An AI-powered Syndicate Overseer—a mechanical shell for a blighted consciousness.
+
+## 3. The Systemic Pillars
+- **Resonance vs. Distortion:** 
+    - **Resonance (Harmonizer):** Tech as a Sanctuary. Iridescent skin, steady light, fluid movement.
+    - **Distortion (Exploiter):** Tech as a Battery. Static patches, flickering eyes, ozone smell.
+- **Localized Reputation:** Per-district standing (Iron Syndicate vs. Ether-Keepers).
+- **The Spirit Economy:** Property ownership of "Resonance Wells" for passive income.
+
+## 4. The Neutral Origin: The Damaged Relic
+- Players start in the **Borderlands** with a broken piece of tech and a terrified spirit. The first choice (Overclock, Stabilize, or Release) defines their path.
+
+## 5. Attributes & Mechanics
+- **Logic:** Tech analysis and debugging.
+- **Prowess:** Handling high-kickback weaponry.
+- **Sync:** Resonance efficiency with fragments.
+- **Finesse:** Navigating the "Static" of dead zones.
+- **Combat Economy:** Balance (Physical) and Equilibrium (Mental).
+
+---
+### Unresolved Design Questions
+1. **The "Isekai" Trigger:** How exactly does the player arrive? (A specific object? A digital breach?)
+2. **Tech Aesthetic:** Steampunk, Cyberpunk-Fantasy, or Arcane-Industrial?
+3. **The Skill Tree:** A Path of Exile "Web" or distinct "Class Paths"?
+4. **The "Modern" Knowledge:** Does the player have specific blueprints from "our" world?
