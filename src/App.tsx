@@ -15,6 +15,7 @@ import CombatConsole from './components/CombatConsole';
 import { useWorldEngine } from './hooks/useWorldEngine';
 import CivicDashboard from './components/CivicDashboard';
 import KinshipRoster from './components/KinshipRoster';
+import { tts } from './engine/ttsEngine';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const App: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
   const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social'>('inventory');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
+  const [isNarrating, setIsNarrating] = useState(false);
 
   useWorldEngine(isInitialized);
 
@@ -39,6 +41,8 @@ const App: React.FC = () => {
 
   const handleChoice = (choice: Choice) => {
     const { effects } = choice;
+    tts.stop();
+    setIsNarrating(false);
 
     if (effects.alignmentChange) dispatch(changeAlignment(effects.alignmentChange));
     if (effects.purityChange) dispatch(changePurity(effects.purityChange));
@@ -55,6 +59,16 @@ const App: React.FC = () => {
 
     // After choice, refresh storylets
     setActiveStorylet(null);
+  };
+
+  const toggleNarration = (text: string) => {
+    if (isNarrating) {
+      tts.stop();
+      setIsNarrating(false);
+    } else {
+      tts.speak(text);
+      setIsNarrating(true);
+    }
   };
 
   if (!isInitialized) {
@@ -95,19 +109,29 @@ const App: React.FC = () => {
       <main className="w-full max-w-4xl flex gap-8">
         {/* Left Column: Primary Interface */}
         <section className="flex-1 bg-slate-800 p-8 rounded-lg border border-slate-700 shadow-2xl min-h-[600px] flex flex-col">
-          <div className="flex gap-4 mb-6 border-b border-slate-700 pb-2">
-            <button 
-              onClick={() => setView('narrative')}
-              className={`text-xs uppercase font-bold tracking-widest pb-2 border-b-2 transition-all ${view === 'narrative' ? 'border-amber-500 text-amber-500' : 'border-transparent text-slate-500'}`}
-            >
-              Narrative
-            </button>
-            <button 
-              onClick={() => setView('combat')}
-              className={`text-xs uppercase font-bold tracking-widest pb-2 border-b-2 transition-all ${view === 'combat' ? 'border-red-500 text-red-500' : 'border-transparent text-slate-500'}`}
-            >
-              Combat
-            </button>
+          <div className="flex justify-between items-center mb-6 border-b border-slate-700 pb-2">
+            <div className="flex gap-4">
+              <button 
+                onClick={() => setView('narrative')}
+                className={`text-xs uppercase font-bold tracking-widest pb-2 border-b-2 transition-all ${view === 'narrative' ? 'border-amber-500 text-amber-500' : 'border-transparent text-slate-500'}`}
+              >
+                Narrative
+              </button>
+              <button 
+                onClick={() => setView('combat')}
+                className={`text-xs uppercase font-bold tracking-widest pb-2 border-b-2 transition-all ${view === 'combat' ? 'border-red-500 text-red-500' : 'border-transparent text-slate-500'}`}
+              >
+                Combat
+              </button>
+            </div>
+            {view === 'narrative' && activeStorylet && (
+              <button 
+                onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
+                className={`text-[10px] uppercase font-black px-3 py-1 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500/50'}`}
+              >
+                {isNarrating ? '[ STOP NARRATION ]' : '[ NARRATE ]'}
+              </button>
+            )}
           </div>
 
           {view === 'narrative' ? (
