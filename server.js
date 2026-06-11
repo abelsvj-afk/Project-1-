@@ -46,7 +46,8 @@ try {
 }
 
 const server = createServer(async (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host}`);
+  const host = req.headers.host || "localhost";
+  const url = new URL(req.url, `http://${host}`);
   let pathname = url.pathname;
   
   console.log(`[REQ]: ${req.method} ${pathname}`);
