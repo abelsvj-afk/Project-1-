@@ -23,15 +23,17 @@
 - **The Manifestation:** A powerful political figure whose goals are driven by a blighted ancient power. No AI involvement.
 
 ## 3. Systemic Pillars
-- **Resonance vs. Distortion:** 
-    - **Resonance (Harmonizer):** Tech as a Sanctuary. Iridescent skin, steady light, fluid movement.
-    - **Distortion (Exploiter):** Tech as a Battery. Static patches, flickering eyes, ozone smell.
-- **The Cascading Witness (Reputation):** Word travels. If you fail to take out a criminal or leave witnesses to your own acts, they may **Report** you to factions.
-    - **Reports to the Syndicate:** May lead to bounties or asset seizures.
-    - **Reports to the Adepts:** May lead to a "Heretic Hunt."
-    - **Cascading Events:** A single ignored crime can lead to global consequences (e.g., blockades, price hikes) days later.
-- **The Adept Cold War:** A three-tiered social structure (High-Council, Fading Nobility, Hidden Underground).
-- **The Spirit Economy:** Property ownership of "Resonance Wells" for passive income.
+- **The Spirit Economy (Trade):** 
+    - **Currency:** **Resonance Shards**—tiny, stable spirit fragments used for everything from lighting lamps to purchasing real estate.
+    - **The Market:** The Syndicate controls the "Stable" shards; the Underground trades in "Raw" or "Blighted" fragments.
+- **Transportation (The Veins of Eldoria):**
+    - **The Iron Rails:** Syndicate-controlled trains running on high-output reactors. Fast and public, but every passenger is "Sync-Scanned" upon entry.
+    - **The Ways:** Ancient, invisible spiritual paths used by Adepts. They require high **Equilibrium** to navigate safely.
+    - **Scavenger Crawlers:** Clunky, Arcane-Industrial vehicles used by commoners in the Borderlands.
+- **Path Flexibility (The Three Ways):**
+    - **The Pure Adept:** Focuses on internal mastery. Uses the Echo-Anchor to stabilize their own focus, allowing for spells that never "Glitched."
+    - **The Pure Technomancer:** Focuses on gear. Uses the Echo-Anchor to "Restore" ancient tech to its peak state, bypassing the need for natural magic.
+    - **The Hybrid:** The most common path. Uses tech to augment natural talent (e.g., an Imperial Guard using a Resonance-hilted blade).
 
 ## 4. The Neutral Origin: The Damaged Relic
 - Players start in the **Borderlands** with a broken piece of tech and a terrified spirit. The first choice (Overclock, Stabilize, or Release) defines their path.
