@@ -1,0 +1,40 @@
+{
+  "traitBuckets": {
+    "greed": {
+      "greetings": [
+        "What's your business, stranger? Hope it involves shards.",
+        "Forget the pleasantries. How much for that gear?",
+        "Eldoria's a hungry city. You got anything worth eating?"
+      ],
+      "reactions": {
+        "help": "Gratitude doesn't fill my pockets, but a stable resonance... that's a start.",
+        "threat": "Snarling won't lower my prices, but it might get you a Syndicate bounty.",
+        "silence": "Keep your mouth shut. Just don't expect me to keep mine shut when the scouts ask."
+      }
+    },
+    "fear": {
+      "greetings": [
+        "B-by the Fall... stay back! You're leaking Static!",
+        "Don't touch me. The resonance is all wrong around you.",
+        "What are you? You look like a ghost with a pulse."
+      ],
+      "reactions": {
+        "help": "It's... it's quiet. The screaming in the air stopped. Who are you?",
+        "threat": "Please! I just want to survive another tick. Don't let the Blighted take me.",
+        "silence": "You're a cold one. Like a Dead-Zone walking."
+      }
+    },
+    "bravery": {
+      "greetings": [
+        "Stand tall, meteor-born. The Borderlands aren't for the weak.",
+        "Looking for a fight or a friend? I'm ready for either.",
+        "You've got the look of a catalyst. I've seen your kind in the old stories."
+      ],
+      "reactions": {
+        "help": "Impressive focus. We need more hands like yours if we're going to survive.",
+        "threat": "Flash your sparks all you want. I've faced the Shattered Sovereign's best.",
+        "silence": "Action speaks louder than words. At least you can climb."
+      }
+    }
+  }
+}

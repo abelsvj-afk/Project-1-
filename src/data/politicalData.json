@@ -1,0 +1,46 @@
+{
+  "properties": [
+    {
+      "id": "borderlands_shack",
+      "name": "Scavenger's Shack",
+      "location": "borderlands_warrens",
+      "type": "home",
+      "purchasePrice": 500,
+      "baseIncome": 0,
+      "upkeep": 10
+    },
+    {
+      "id": "rust_bucket_tavern",
+      "name": "The Rust Bucket Tavern",
+      "location": "borderlands_warrens",
+      "type": "tavern",
+      "purchasePrice": 2500,
+      "baseIncome": 150,
+      "upkeep": 40
+    },
+    {
+      "id": "iron_watch_storefront",
+      "name": "Watch-Side Surplus",
+      "location": "iron_watch",
+      "type": "storefront",
+      "purchasePrice": 5000,
+      "baseIncome": 400,
+      "upkeep": 100,
+      "ownerFaction": "iron_syndicate"
+    }
+  ],
+  "laws": [
+    {
+      "id": "scavenger_tax",
+      "name": "Scavenger's Levy",
+      "description": "Increases taxes on Scavenger goods by 10%.",
+      "effect": { "taxModifier": 1.1, "menaceModifier": { "scavengers": 10 } }
+    },
+    {
+      "id": "spirit_ban",
+      "name": "Arcane Prohibition",
+      "description": "Bans the use of natural spirit channeling in town limits.",
+      "effect": { "menaceModifier": { "adepts": 50, "iron_syndicate": -20 } }
+    }
+  ]
+}

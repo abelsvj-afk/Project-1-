@@ -47,13 +47,29 @@ export const filterStorylets = (
 };
 
 /**
+ * Replaces tags like {player.name} with actual values from the state.
+ */
+export const interpolate = (text: string, state: RootState): string => {
+  const { player } = state;
+  
+  return text
+    .replace(/{player.name}/g, player.name)
+    .replace(/{player.subject}/g, player.pronouns.subject)
+    .replace(/{player.object}/g, player.pronouns.object)
+    .replace(/{player.possessive}/g, player.pronouns.possessive)
+    .replace(/{player.hairColor}/g, player.appearance.hairColor)
+    .replace(/{player.eyeColor}/g, player.appearance.eyeColor)
+    .replace(/{player.bodyType}/g, player.appearance.bodyType);
+};
+
+/**
  * Procedural text generation based on player state (Extreme Morphing).
  * Replaces placeholders and applies conditional modifiers.
  */
 export const morphText = (text: string, state: RootState): string => {
   const { player } = state;
 
-  let morphed = text;
+  let morphed = interpolate(text, state);
 
   // Example of alignment-based morphing
   if (player.alignment < -500) {

@@ -1,0 +1,49 @@
+{
+  "npcs": [
+    {
+      "id": "kaelen",
+      "name": "Kaelen",
+      "factionId": "scavengers",
+      "personality": {
+        "tone": "cautious but curious",
+        "vocabulary": ["scrap", "static", "shards", "ticks"],
+        "visualTells": ["wiping dust from their coat", "checking their resonance torch"]
+      },
+      "schedule": [
+        { "timeStart": 600, "timeEnd": 1800, "location": "borderlands_desert", "activity": "scavenging" },
+        { "timeStart": 1801, "timeEnd": 2359, "location": "borderlands_warrens", "activity": "trading at the tavern" },
+        { "timeStart": 0, "timeEnd": 599, "location": "borderlands_shack", "activity": "sleeping" }
+      ]
+    },
+    {
+      "id": "overseer_vane",
+      "name": "Overseer Vane",
+      "factionId": "iron_syndicate",
+      "personality": {
+        "tone": "clinical and dismissive",
+        "vocabulary": ["efficiency", "protocol", "statistical", "anomaly"],
+        "visualTells": ["adjusting his brass monocle", "checking his pocket-watch"]
+      },
+      "schedule": [
+        { "timeStart": 800, "timeEnd": 1700, "location": "iron_watch_hq", "activity": "administrative duties" },
+        { "timeStart": 1701, "timeEnd": 2100, "location": "iron_watch_mess_hall", "activity": "dining" },
+        { "timeStart": 2101, "timeEnd": 759, "location": "iron_watch_officer_quarters", "activity": "sleeping" }
+      ]
+    },
+    {
+      "id": "elder_syla",
+      "name": "Elder Syla",
+      "factionId": "adepts",
+      "personality": {
+        "tone": "patient and sorrowful",
+        "vocabulary": ["resonance", "echoes", "the Fall", "distortion"],
+        "visualTells": ["closing her eyes to listen", "hands glowing with soft light"]
+      },
+      "schedule": [
+        { "timeStart": 500, "timeEnd": 1200, "location": "silent_anchor_shrine", "activity": "meditation" },
+        { "timeStart": 1201, "timeEnd": 2000, "location": "borderlands_crater", "activity": "healing the land" },
+        { "timeStart": 2001, "timeEnd": 459, "location": "silent_anchor_tent", "activity": "rest" }
+      ]
+    }
+  ]
+}

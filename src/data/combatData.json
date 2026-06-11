@@ -4,7 +4,8 @@
       "id": "paralysis",
       "name": "Paralysis",
       "description": "Your muscles seize, preventing physical movement.",
-      "type": "physical"
+      "type": "physical",
+      "effectOnTick": { "balanceDrain": 10 }
     },
     {
       "id": "blindness",
@@ -16,7 +17,29 @@
       "id": "stupidity",
       "name": "Stupidity",
       "description": "Your mind is clouded, preventing complex thoughts.",
-      "type": "mental"
+      "type": "mental",
+      "effectOnTick": { "equilibriumDrain": 10 }
+    },
+    {
+      "id": "broken_limbs",
+      "name": "Broken Limbs",
+      "description": "A shattered bone makes every movement agony.",
+      "type": "physical",
+      "effectOnTick": { "vitalityChange": -5 }
+    },
+    {
+      "id": "shivering",
+      "name": "Shivering",
+      "description": "Uncontrollable shaking prevents mental focus.",
+      "type": "mental",
+      "effectOnTick": { "equilibriumDrain": 5 }
+    },
+    {
+      "id": "epilepsy",
+      "name": "Epilepsy",
+      "description": "Sudden seizures disrupt your actions.",
+      "type": "mental",
+      "effectOnTick": { "balanceDrain": 5, "equilibriumDrain": 5 }
     }
   ],
   "cures": [
@@ -24,19 +47,71 @@
       "id": "bloodroot",
       "name": "Bloodroot",
       "cures": ["paralysis"],
-      "type": "ingestion"
+      "delivery": "ingestion"
     },
     {
       "id": "epidermal_salve",
       "name": "Epidermal Salve",
       "cures": ["blindness"],
-      "type": "topical"
+      "delivery": "topical"
     },
     {
       "id": "skullcap",
       "name": "Skullcap",
       "cures": ["stupidity"],
-      "type": "inhalation"
+      "delivery": "smoke"
+    },
+    {
+      "id": "mending_salve",
+      "name": "Mending Salve",
+      "cures": ["broken_limbs"],
+      "delivery": "topical"
+    },
+    {
+      "id": "goldenseal",
+      "name": "Goldenseal",
+      "cures": ["epilepsy"],
+      "delivery": "ingestion"
+    },
+    {
+      "id": "caloric_salve",
+      "name": "Caloric Salve",
+      "cures": ["shivering"],
+      "delivery": "topical"
+    }
+  ],
+  "spells": [
+    {
+      "id": "thermal_flare",
+      "name": "Thermal Flare",
+      "description": "A rapid excitation of air particles, manifesting as a burst of flame.",
+      "current": "thermal",
+      "cost": { "mentality": 10, "equilibrium": 1000 },
+      "effects": { "damage": 25, "applyAfflictions": ["blindness"] }
+    },
+    {
+      "id": "vector_crush",
+      "name": "Vector Crush",
+      "description": "A localized spike in gravimetric weight designed to shatter armor and bone.",
+      "current": "vector",
+      "cost": { "mentality": 15, "equilibrium": 1500 },
+      "effects": { "damage": 20, "applyAfflictions": ["broken_limbs"] }
+    },
+    {
+      "id": "biomorphic_blight",
+      "name": "Biomorphic Blight",
+      "description": "A targeted neural breakdown inducing temporary paralysis.",
+      "current": "biomorphic",
+      "cost": { "mentality": 20, "equilibrium": 2000 },
+      "effects": { "damage": 5, "applyAfflictions": ["paralysis"] }
+    },
+    {
+      "id": "cognitive_static",
+      "name": "Cognitive Static",
+      "description": "A sensory phonic disruptor that leaves the target confused and uncoordinated.",
+      "current": "cognitive",
+      "cost": { "mentality": 15, "equilibrium": 1200 },
+      "effects": { "damage": 0, "applyAfflictions": ["stupidity", "dizziness"] }
     }
   ]
 }

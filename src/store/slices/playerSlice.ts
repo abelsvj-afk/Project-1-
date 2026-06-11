@@ -3,14 +3,28 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Player, PlayerStats } from '../../types/game';
 
 const initialStats: PlayerStats = {
-  strength: 10,
-  intelligence: 10,
-  dexterity: 10,
+  prowess: 10,
+  logic: 10,
+  finesse: 10,
+  sync: 10,
   vitality: 100,
   mentality: 100,
 };
 
 const initialState: Player = {
+  name: 'Stranger',
+  appearance: {
+    bodyType: 'average',
+    hairStyle: 'unkempt',
+    hairColor: 'dusty',
+    eyeColor: 'clear',
+    facialFeatures: [],
+  },
+  pronouns: {
+    subject: 'they',
+    object: 'them',
+    possessive: 'their',
+  },
   stats: initialStats,
   alignment: 0,
   purity: 0,
@@ -61,6 +75,25 @@ const playerSlice = createSlice({
     setEquilibrium: (state, action: PayloadAction<number>) => {
       state.equilibrium = action.payload;
     },
+    tickCombat: (state) => {
+      // Recover balance and equilibrium over time
+      state.balance = Math.max(0, state.balance - 100);
+      state.equilibrium = Math.max(0, state.equilibrium - 100);
+    },
+    takeDamage: (state, action: PayloadAction<number>) => {
+      state.stats.vitality = Math.max(0, state.stats.vitality - action.payload);
+    },
+    consumeMentality: (state, action: PayloadAction<number>) => {
+      state.stats.mentality = Math.max(0, state.stats.mentality - action.payload);
+    },
+    applyCure: (state, action: PayloadAction<string[]>) => {
+      state.afflictions = state.afflictions.filter(a => !action.payload.includes(a));
+    },
+    setIdentity: (state, action: PayloadAction<{ name: string; appearance: any; pronouns: any }>) => {
+      state.name = action.payload.name;
+      state.appearance = action.payload.appearance;
+      state.pronouns = action.payload.pronouns;
+    },
   },
 });
 
@@ -76,6 +109,11 @@ export const {
   removeAffliction,
   setBalance,
   setEquilibrium,
+  tickCombat,
+  takeDamage,
+  consumeMentality,
+  applyCure,
+  setIdentity,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

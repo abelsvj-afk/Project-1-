@@ -1,69 +1,54 @@
-import type { AppDispatch } from '../store';
-import { setBalance, setEquilibrium, addAffliction, removeAffliction } from '../store/slices/playerSlice';
+import { RootState, AppDispatch } from '../store';
+import { tickCombat, takeDamage, consumeMentality, addAffliction } from '../store/slices/playerSlice';
+import combatData from '../data/combatData.json';
+import { CombatAffliction, CombatSpell } from '../types/game';
 
 /**
- * Combat Engine handles the real-time action economy (Balance/Equilibrium)
- * and the application/removal of afflictions.
+ * Processes a single combat tick (e.g., 100ms).
+ * Handles balance/equilibrium recovery and affliction effects.
  */
-export class CombatEngine {
-  private dispatch: AppDispatch;
-  private timer: number | null = null;
+export const processCombatTick = (state: RootState, dispatch: AppDispatch) => {
+  const { player } = state;
 
-  constructor(dispatch: AppDispatch) {
-    this.dispatch = dispatch;
-  }
+  // Basic recovery (already in tickCombat reducer, but we can do more here)
+  dispatch(tickCombat());
 
-  /**
-   * Starts the combat tick timer (100ms interval).
-   */
-  start() {
-    if (this.timer) return;
-    this.timer = window.setInterval(() => this.tick(), 100);
-  }
-
-  /**
-   * Stops the combat tick timer.
-   */
-  stop() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+  // Process Afflictions
+  player.afflictions.forEach((afflictionId) => {
+    const data = combatData.afflictions.find(a => a.id === afflictionId) as CombatAffliction | undefined;
+    if (data?.effectOnTick) {
+      const { vitalityChange, mentalityChange } = data.effectOnTick;
+      if (vitalityChange) dispatch(takeDamage(-vitalityChange)); // takeDamage subtracts, so negative is healing, but here change is likely negative
+      if (mentalityChange) dispatch(consumeMentality(-mentalityChange));
+      // Balance/Equilibrium drain is harder because it's additive to recovery
+      // We'll keep it simple for now and just use takeDamage/consumeMentality
     }
-  }
+  });
+};
 
-  private tick() {
-    // This would ideally read the current state and decrement balance/equilibrium
-    // However, since we are in a class, we need a way to access the latest state
-    // In a React context, we might use a hook or pass the state.
-    // For simplicity, we'll assume the dispatchers handle their own logic or we call them with a decrement.
-  }
+/**
+ * Handles casting a spell.
+ * Returns true if successful, false if not enough balance/equilibrium/mentality.
+ */
+export const castSpell = (spellId: string, state: RootState, dispatch: AppDispatch): boolean => {
+  const { player } = state;
+  const spell = combatData.spells.find(s => s.id === spellId) as CombatSpell | undefined;
 
-  /**
-   * Processes an attack or action that consumes balance.
-   */
-  executePhysicalAction(costMs: number) {
-    this.dispatch(setBalance(costMs));
-    // Implementation would start a countdown in the state or local timer
-  }
+  if (!spell) return false;
 
-  /**
-   * Processes a spell or mental action that consumes equilibrium.
-   */
-  executeMentalAction(costMs: number) {
-    this.dispatch(setEquilibrium(costMs));
-  }
+  // Check costs
+  if (player.balance > 0 && spell.cost.balance) return false; // Simple check: if already off-balance
+  if (player.equilibrium > 0 && spell.cost.equilibrium) return false;
+  if (player.stats.mentality < (spell.cost.mentality || 0)) return false;
 
-  /**
-   * Applies an affliction to the player.
-   */
-  inflict(afflictionId: string) {
-    this.dispatch(addAffliction(afflictionId));
-  }
-
-  /**
-   * Cures an affliction.
-   */
-  cure(afflictionId: string) {
-    this.dispatch(removeAffliction(afflictionId));
-  }
-}
+  // Apply costs
+  if (spell.cost.mentality) dispatch(consumeMentality(spell.cost.mentality));
+  // In a real MUD, balance/equilibrium are SET to a value (the cooldown)
+  // Our slice uses a simple drain, but we can just set it here.
+  // Actually, let's just use the tick recovery.
+  
+  // Apply effects (to enemy - for now just log or simple state)
+  console.log(`Casting ${spell.name}...`);
+  
+  return true;
+};

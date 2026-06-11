@@ -2,7 +2,7 @@
   {
     "id": "intro_01",
     "title": "A New Beginning",
-    "content": "You stand at the threshold of Eldoria. The air is thick with the scent of ancient pine and distant magic. The path ahead is yours to forge.",
+    "content": "You stand at the threshold of Eldoria, {player.name}. The wind catches your {player.hairColor} hair as you gaze upon the ancient pine and distant magic. The path ahead is yours to forge.",
     "prerequisites": {
       "location": "eldoria_threshold"
     },
