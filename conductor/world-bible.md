@@ -3,10 +3,11 @@
 ## 1. The Foundational Mystery: The Shattered Echoes
 - **The Source (The Fall Theory):** Centuries ago, the celestial world **Aetheria** shattered. Its inhabitants—beings of pure consciousness (Spirits)—fell into Eldoria.
 - **The Fragments:** Spirits are fragmented energetic signatures. While they can be "hurt" or "drained" by extreme abuse, regular interaction or tech-harnessing is not inherently painful.
-- **The Union:** In some cases, the power of a spirit can become a permanent part of an individual, truly becoming "theirs" over time.
-- **The Duality of Mastery:**
-    - **Traditionalists (The Old Ways):** Those born with or trained in the ability to partner with spirits. This is a disciplined, internal art.
-    - **Industrialists (The New Way):** Tech allows those without traditional training (due to social status or lack of natural affinity) to harness magic. It is a tool for the common person.
+- **The Union:** Integration is a natural progression of partnership. While extreme misuse can lead to "Distortion," magic itself does not cost a player their humanity. It is a refinement of the soul.
+- **The Tech Revolution (Democratic Flexibility):** 
+    - Tech has unlocked **Direct Manipulation**. Previously, a warrior might need a spell cast *on* their blade; now, via tech-harnessing, they can directly channel their ingrained magical energy into the steel.
+    - It allows those with low natural energy to manifest power that was previously locked away.
+    - **The Risk (Spirit Burnout):** While regular use is safe, "Overclocking" or systemic greed can lead to **Burnout**—where a spirit fragment is drained to the point of becoming "Static," losing its sentience and leaving the tech (and potentially the user) scarred.
 
 ## 2. The Player: The Crash Arrival
 - **The Trigger:** You didn't just appear; you **crashed**. A vehicle from your "Modern" world hit a reality-thinning "Static Spot" and was violently pulled into Eldoria.
@@ -28,17 +29,18 @@
 ## 4. The Neutral Origin: The Damaged Relic
 - Players start in the **Borderlands** with a broken piece of tech and a terrified spirit. The first choice (Overclock, Stabilize, or Release) defines their path.
 
-## 5. Systemic Combat: The Resonance Pulse
-- **The Action Economy:** 
-    - **Balance:** Physical readiness. Depleted by physical actions (dodging, parrying).
-    - **Equilibrium:** Mental composure. Depleted by spellcasting or spirit-syncing.
-- **The Affliction/Cure Tactical Matrix:** Combat is a "give-and-take" of debilitating states.
-- **Visual Feedback:** High-stakes typography. Bold red for damage, soothing green for heals, shifting fonts for "glitching" blighted states.
+## 5. Systemic Growth: The Hybrid Path
+- **The Core (The Player):** Upgrading internal attributes (Sync, Logic, Prowess) to increase "Channelling Capacity."
+- **The Arsenal (The Gear):** Tech items feature "Resonance Sockets." Better gear allows for more complex spirit integration and higher stability.
+- **Integration vs. Overclocking:**
+    - **Integration (Slow Path):** Growing with a spirit over time. The power truly becomes yours; the spirit fragments become stable, and the bond is unbreakable.
+    - **Overclocking (Fast Path):** Draining a spirit for immediate, "Overpowered" bursts of energy.
+        - **Consequence: Burnout.** The spirit becomes "Static."
+        - **Consequence: Social/Spiritual Stigma.** Future "Peaceful" spirits will refuse to bond with a "Burner." The player becomes a magnet for **Vengeful Spirits** (High Distortion/Aggressive power).
 
-## 6. Psychological Retention Architecture
-- **Core Loop (Seconds):** Pacing-based combat, instant textual feedback, dopamine hits from "curing" states.
-- **Mid-Term Loop (Hours):** Resource scarcity, loss aversion, localized reputation shifts.
-- **Long-Term Loop (Months):** Identity investment through Resonance Morphing and economic accumulation.
+## 6. The Nature of Manifestation
+- **Visuals:** Spirits do not have permanent physical forms to the average person. They are **Flickering Manifestations** of energy, visible only to those with high **Sync** or through specialized "Aether-Lens" tech.
+- **Narrative Role:** Spirits are not primary characters; they are the "Voice of the World's Health." Their resonance tells the story of the player's choices through color, vibration, and stability.
 
 ---
 ### Unresolved Design Questions
