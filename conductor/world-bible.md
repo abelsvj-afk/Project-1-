@@ -23,6 +23,7 @@
     - **Resonance (Harmonizer):** Tech as a Sanctuary. Iridescent skin, steady light, fluid movement.
     - **Distortion (Exploiter):** Tech as a Battery. Static patches, flickering eyes, ozone smell.
 - **Localized Reputation:** Per-district standing (Iron Syndicate vs. Ether-Keepers).
+- **The Adept Cold War:** A three-tiered social structure (High-Council, Fading Nobility, Hidden Underground) engaged in a fragile power struggle with the Iron Syndicate.
 - **The Spirit Economy:** Property ownership of "Resonance Wells" for passive income.
 
 ## 4. The Neutral Origin: The Damaged Relic

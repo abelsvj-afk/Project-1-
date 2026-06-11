@@ -31,11 +31,14 @@
     - **Path of Resonance:** Use your "Null" ability to stabilize the relic's sanctuary. (Gains the spirit's trust, loses immediate power).
     - **Path of the Void:** Strip the tech and release the spirit. (Gains traditionalist favor, loses the tech).
 
-## World Geography: The Nexus Model
+## The Nexus Social Hierarchy: The Adept Cold War
 
-### The Hub: The Nexus
-- **Description:** A sprawling metropolis built directly over the "Breach" where the Fall occurred. It is a vertical city where the top layers are neon-lit Syndicate skyscrapers and the bottom layers are ancient, overgrown ruins.
-- **The Spokes:**
-    - **The Foundries:** Industrial zones dedicated to Spirit-Binding.
-    - **The Wild-Echoes:** Untouched forests where spirits still wander freely, hostile to any tech.
-    - **The Dead-Zones:** Areas where the AI has "processed" everything, leaving only a digital/spiritual vacuum.
+### The Social Tiers of the Old Ways
+The Traditionalists (Adepts) are not a monolith; they are divided into three distinct layers, each responding to the Tech Revolution differently.
+
+1. **The High-Council (The Public Face):** Living at the absolute zenith of the Nexus, the Council acts as the "Moral Police." They negotiate with the Iron Syndicate, regulating how much magic can be "extracted" without causing a total resonance collapse. They are the only Adepts legally allowed to practice openly, though they are heavily monitored.
+2. **The Fading Nobility (The Cultural Heart):** Located in the "Old Nexus" ruins near the city's base. These are ancient families who fund the Council but privately despise the "Siphon-Tech." They are the keepers of history and the secret blueprints of the Old World.
+3. **The Hidden Underground (The Resistance):** A militant wing of Adepts who operate in the shadows. To the Syndicate, they are "terrorists"; to the Nobility, they are "true sons and daughters." They practice forbidden, high-resonance arts and sabotage Syndicate extraction foundries.
+
+### The "Cold War"
+The Nexus exists in a state of fragile equilibrium. The **Iron Syndicate** needs the **High-Council's** expertise to stabilize their reactors, while the Council needs the Syndicate's tech to keep the city's crumbling infrastructure from failing. Behind the scenes, both sides are stockpiling resources—the Syndicate is building "Sovereign-Class" vessels, while the Underground is seeking the "Original Echoes" of Aetheria.
