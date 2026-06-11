@@ -184,6 +184,12 @@ const App: React.FC = () => {
 
       <footer className="w-full max-w-4xl mt-8 pt-4 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em]">
         <div>Systemic Core v0.1.0</div>
+        <button 
+          onClick={() => { throw new Error("Sentry Frontend Test Error"); }}
+          className="hover:text-red-500 transition-colors"
+        >
+          [ Trigger Test Error ]
+        </button>
         <div>Engineered via Vibe Coding Paradigm</div>
       </footer>
     </div>
