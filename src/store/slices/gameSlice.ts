@@ -20,9 +20,11 @@ interface GameStateSlice {
   companions: string[];
   relationships: { [npcId: string]: RelationshipStatus };
   affinity: { [npcId: string]: number };
+  knownNames: string[];
 
   gameTime: number;
   currentStorylets: string[];
+  seenStorylets: string[];
 }
 
 const initialState: GameStateSlice = {
@@ -37,8 +39,10 @@ const initialState: GameStateSlice = {
   companions: [],
   relationships: {},
   affinity: {},
+  knownNames: [],
   gameTime: 800, // Start at 8:00 AM
   currentStorylets: [],
+  seenStorylets: [],
 };
 
 const gameSlice = createSlice({
@@ -88,10 +92,15 @@ const gameSlice = createSlice({
       state.currentStorylets = action.payload;
     },
     markStoryletSeen: (state, action: PayloadAction<string>) => {
-        if (!state.seenStorylets.includes(action.payload)) {
-          state.seenStorylets.push(action.payload);
-        }
-      },
+      if (!state.seenStorylets.includes(action.payload)) {
+        state.seenStorylets.push(action.payload);
+      }
+    },
+    revealName: (state, action: PayloadAction<string>) => {
+      if (!state.knownNames.includes(action.payload)) {
+        state.knownNames.push(action.payload);
+      }
+    },
   },
 });
 

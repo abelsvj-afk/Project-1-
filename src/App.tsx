@@ -30,6 +30,7 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social'>('inventory');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
   const [isNarrating, setIsNarrating] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
   useWorldEngine(isInitialized);
 
@@ -41,30 +42,11 @@ const App: React.FC = () => {
     }
   }, [narrativeHistory]);
 
-  useEffect(() => {
-    if (!isInitialized) return;
-    const filtered = filterStorylets(storyletsData as Storylet[], state);
-    if (filtered.length > 0) {
-      const nextStorylet = filtered[0];
-      if (!activeStorylet || activeStorylet.id !== nextStorylet.id) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setActiveStorylet(nextStorylet);
-        dispatch(markStoryletSeen(nextStorylet.id));
-        
-        // Add to history
-        const morphedContent = morphText(nextStorylet.content, state);
-        setNarrativeHistory(prev => [
-            ...prev, 
-            { id: nextStorylet.id, type: 'storylet', text: morphedContent, title: nextStorylet.title }
-        ]);
-      }
-    }
-  }, [player.location, player.alignment, player.purity, game.seenStorylets, state, activeStorylet, isInitialized, dispatch]);
-
-  const handleChoice = (choice: Choice) => {
+  const handleChoice = React.useCallback((choice: Choice) => {
     const { effects } = choice;
     tts.stop();
     setIsNarrating(false);
+    setTimeLeft(null); // Clear timer on choice
 
     // Add choice to history
     setNarrativeHistory(prev => [...prev, { id: choice.id, type: 'choice', text: choice.text }]);
@@ -89,7 +71,45 @@ const App: React.FC = () => {
 
     // After choice, refresh storylets
     setActiveStorylet(null);
-  };
+  }, [dispatch, state]);
+
+  // Timer Logic for Time-Sensitive Storylets
+  useEffect(() => {
+    if (activeStorylet?.timeLimit && timeLeft === null) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setTimeLeft(activeStorylet.timeLimit);
+    }
+
+    if (timeLeft !== null && timeLeft > 0) {
+      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (timeLeft === 0) {
+      const defaultChoice = activeStorylet?.choices.find(c => c.id === activeStorylet.defaultChoiceId) || activeStorylet?.choices[0];
+      if (defaultChoice) handleChoice(defaultChoice);
+      setTimeLeft(null);
+    }
+  }, [timeLeft, activeStorylet, handleChoice]);
+
+  useEffect(() => {
+    if (!isInitialized) return;
+    const filtered = filterStorylets(storyletsData as Storylet[], state);
+    if (filtered.length > 0) {
+      const nextStorylet = filtered[0];
+      if (!activeStorylet || activeStorylet.id !== nextStorylet.id) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setActiveStorylet(nextStorylet);
+        dispatch(markStoryletSeen(nextStorylet.id));
+        setTimeLeft(null); // Reset timer for new storylet
+        
+        // Add to history
+        const morphedContent = morphText(nextStorylet.content, state);
+        setNarrativeHistory(prev => [
+            ...prev, 
+            { id: nextStorylet.id, type: 'storylet', text: morphedContent, title: nextStorylet.title }
+        ]);
+      }
+    }
+  }, [player.location, player.alignment, player.purity, game.seenStorylets, state, activeStorylet, isInitialized, dispatch]);
 
   const toggleNarration = (text: string) => {
     if (isNarrating) {
@@ -189,10 +209,23 @@ const App: React.FC = () => {
           </div>
 
           {view === 'narrative' && activeStorylet && (
-            <div className="p-4 bg-slate-900/50 border-t border-slate-700 space-y-2 sticky bottom-0">
-               <div className="text-[10px] uppercase font-bold text-slate-500 mb-2 tracking-widest flex items-center">
-                 <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse" />
-                 Decision Required
+            <div className="p-4 bg-slate-900/80 border-t border-slate-700 space-y-2 sticky bottom-0 z-20 backdrop-blur-md">
+               <div className="flex justify-between items-center mb-2">
+                 <div className="text-[10px] uppercase font-bold text-slate-500 tracking-widest flex items-center">
+                   <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse" />
+                   Decision Required
+                 </div>
+                 {timeLeft !== null && activeStorylet.timeLimit && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-red-500 uppercase tracking-tighter">Time Left: {timeLeft}s</span>
+                      <div className="w-24 bg-slate-800 h-1 rounded-full overflow-hidden border border-slate-700">
+                        <div 
+                          className="bg-red-500 h-full transition-all duration-1000 linear" 
+                          style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                 )}
                </div>
                {activeStorylet.choices.map((choice) => (
                 <button

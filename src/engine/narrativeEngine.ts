@@ -10,8 +10,11 @@ export const filterStorylets = (
 ): Storylet[] => {
   const { player, game } = state;
 
-  return storylets.filter((storylet) => {
+  const filtered = storylets.filter((storylet) => {
     const { prerequisites: pre } = storylet;
+
+    // Check if already seen and not repeatable
+    if (game.seenStorylets.includes(storylet.id) && !storylet.repeatable) return false;
 
     // Check Location
     if (pre.location && pre.location !== player.location) return false;
@@ -66,7 +69,7 @@ export const interpolate = (text: string, state: RootState): string => {
 
   // Dynamic NPC Name Reveal Logic
   const npcNameRegex = /{npc:(.*?)}/g;
-  interpolated = interpolated.replace(npcNameRegex, (match, npcId) => {
+  interpolated = interpolated.replace(npcNameRegex, (_match, npcId) => {
     if (game.knownNames.includes(npcId)) {
         // Capitalize name
         return npcId.charAt(0).toUpperCase() + npcId.slice(1);

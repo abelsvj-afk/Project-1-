@@ -107,6 +107,8 @@ export interface Storylet {
   choices: Choice[];
   priority?: number; // Higher numbers = higher priority
   repeatable?: boolean;
+  timeLimit?: number; // in seconds
+  defaultChoiceId?: string; // ID of choice to auto-select on timeout
 }
 
 export interface Choice {

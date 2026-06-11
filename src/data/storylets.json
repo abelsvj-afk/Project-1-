@@ -51,6 +51,8 @@
     "title": "The Scavenger's Shadow",
     "content": "The spirit merges into your chest with a silent, blinding flash. For a moment, you are the only thing that makes sense in this desert. [INNER_MONOLOGUE] 'What was that? I feel... grounded. Different.' A figure—{npc:kaelen}—is peering over the edge of the crater now, their hand drifting toward a rusted iron knife. As they take in your {player.height}, {player.bodyType} frame and the strange, steady light now radiating from your chest, they [NPC_REACT]. 'I don't know what void you leaked out of,' the figure calls down, 'but you've sucked the life right out of the air. If you want a ride out of here, you're going to have to prove you aren't just a walking curse.'",
     "priority": 90,
+    "timeLimit": 15,
+    "defaultChoiceId": "crater_wake_void",
     "prerequisites": {
       "location": "static_crater",
       "globalFlags": { "blessed_skill_awakened": true }
@@ -62,7 +64,7 @@
         "effects": {
           "alignmentChange": 5,
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": true, "path": "resonance" },
+          "setGlobalFlags": { "met_kaelen": true, "kaelen_path": "resonance" },
           "revealNames": ["kaelen"],
           "experienceGain": 25
         }
@@ -73,7 +75,7 @@
         "effects": {
           "purityChange": -5,
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": true, "path": "distortion" },
+          "setGlobalFlags": { "met_kaelen": true, "kaelen_path": "distortion" },
           "experienceGain": 25
         }
       },
@@ -82,27 +84,121 @@
         "text": "(Ignore them and climb out of the crater yourself).",
         "effects": {
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": false, "path": "void" },
+          "setGlobalFlags": { "met_kaelen": false, "kaelen_path": "void" },
           "experienceGain": 10
         }
       }
     ]
   },
   {
-    "id": "outpost_arrival",
-    "title": "Borderlands Outpost",
-    "content": "You arrive at a cluster of makeshift shacks built from salvaged plating and reinforced glass. This is the Borderlands Outpost. The air is thick with the sound of grinding gears and the occasional crackle of energy. [INNER_MONOLOGUE] 'It looks like a junkyard, but everyone is acting like it's a fortress.'",
+    "id": "outpost_arrival_kaelen",
+    "title": "Arriving with the Scavenger",
+    "content": "The scavenger leads you through a gap in the outpost's reinforced perimeter. The guards nod as you pass, their eyes lingering on the scavenger's knife rather than your strange arrival. {npc:kaelen} spits into the red dust. 'The Market is ahead. Find a merchant named Vane if you want to trade that light in your chest for something useful. Just don't get caught by the Syndicate patrols.'",
     "priority": 50,
     "prerequisites": {
-      "location": "borderlands_outpost"
+      "location": "borderlands_outpost",
+      "globalFlags": { "kaelen_path": "resonance" }
     },
     "choices": [
       {
-        "id": "outpost_explore",
-        "text": "Explore the market.",
+        "id": "outpost_hub_enter",
+        "text": "Enter the Market Hub.",
         "effects": {
           "moveToLocation": "outpost_market",
-          "experienceGain": 5
+          "experienceGain": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "outpost_arrival_alone",
+    "title": "The Lonely Outpost",
+    "content": "You arrive at the Borderlands Outpost alone, your feet heavy with red dust. Without a local to vouch for you, the iron gates feel more like a cage than a sanctuary. A Syndicate guard blocks your path, their rifle humming with thermal energy. 'No strangers without a permit. Unless you've got Shards or something to trade.'",
+    "priority": 50,
+    "prerequisites": {
+      "location": "borderlands_outpost",
+      "globalFlags": { "kaelen_path": "void" }
+    },
+    "choices": [
+      {
+        "id": "outpost_bribe_guard",
+        "text": "Bribe the guard (50 Shards).",
+        "effects": {
+          "wealthChange": -50,
+          "moveToLocation": "outpost_market",
+          "experienceGain": 10
+        }
+      },
+      {
+        "id": "outpost_sneak_market",
+        "text": "[Finesse 12] Sneak past through the ventilation ducts.",
+        "effects": {
+          "moveToLocation": "outpost_market",
+          "experienceGain": 20
+        }
+      }
+    ]
+  },
+  {
+    "id": "market_hub_main",
+    "title": "The Market Hub",
+    "content": "The Outpost Market is a frantic web of commerce and desperation. Steam vents hiss, and the smell of ozone is constant. [INNER_MONOLOGUE] 'This is where the world actually happens.' Merchants hawk fragments of technology, and scavengers recount tales of the deeper wastes. You are free to act here, but every action takes time.",
+    "priority": 10,
+    "repeatable": true,
+    "prerequisites": {
+      "location": "outpost_market"
+    },
+    "choices": [
+      {
+        "id": "hub_action_scavenge",
+        "text": "[SCAVENGE] Look for usable scrap in the outskirts.",
+        "effects": {
+          "setGlobalFlags": { "hub_action": "scavenge" }
+        }
+      },
+      {
+        "id": "hub_action_socialize",
+        "text": "[SOCIALIZE] Listen to the rumors in the tavern.",
+        "effects": {
+          "setGlobalFlags": { "hub_action": "socialize" }
+        }
+      },
+      {
+        "id": "hub_action_work",
+        "text": "[WORK] Check the Syndicate's bounty board.",
+        "effects": {
+          "setGlobalFlags": { "hub_action": "work" }
+        }
+      }
+    ]
+  },
+  {
+    "id": "event_scavenge_find",
+    "title": "Wasteland Scavenging",
+    "content": "You spend hours combing through the jagged debris of a fallen Aetherian tower. Your {player.blessedAbility} hums as you near a cluster of buried conduits. [INNER_MONOLOGUE] 'There's still energy here. I can feel it.'",
+    "priority": 20,
+    "repeatable": true,
+    "prerequisites": {
+      "location": "outpost_market",
+      "globalFlags": { "hub_action": "scavenge" }
+    },
+    "choices": [
+      {
+        "id": "scavenge_loot_iron",
+        "text": "Extract the Iron Syndicate plating.",
+        "effects": {
+          "addItem": ["iron_scrap"],
+          "experienceGain": 15,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      },
+      {
+        "id": "scavenge_loot_resonance",
+        "text": "[Sync 12] Siphon the residual resonance dust.",
+        "effects": {
+          "addItem": ["resonance_dust"],
+          "experienceGain": 25,
+          "setGlobalFlags": { "hub_action": "none" }
         }
       }
     ]

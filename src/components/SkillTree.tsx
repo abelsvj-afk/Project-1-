@@ -32,7 +32,7 @@ const SkillTree: React.FC = () => {
             <p className="text-[10px] text-slate-500 uppercase mb-4 tracking-widest">{s.desc}</p>
             
             <button 
-              onClick={() => handleLevelUp(s.key)}
+              onClick={() => handleLevelUp(s.key as keyof typeof player.stats)}
               className="w-full py-2 bg-slate-800 hover:bg-amber-600 hover:text-slate-900 text-slate-400 text-[10px] uppercase font-bold border border-slate-700 rounded transition-all"
             >
               Enhance Component

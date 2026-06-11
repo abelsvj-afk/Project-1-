@@ -48,14 +48,32 @@ const initialState: Player = {
     majorChoices: [],
     factionInfluence: { scavengers: 0, syndicate: 0, adepts: 0 },
     factionMenace: { scavengers: 0, syndicate: 0, adepts: 0 },
-    },
-    companions: []
-    };
+  },
+  companions: []
+};
 
-    const playerSlice = createSlice({
-    name: 'player',
-    initialState,
-    reducers: {
+const playerSlice = createSlice({
+  name: 'player',
+  initialState,
+  reducers: {
+    updateStats: (state, action: PayloadAction<Partial<PlayerStats>>) => {
+      state.stats = { ...state.stats, ...action.payload };
+    },
+    changeAlignment: (state, action: PayloadAction<number>) => {
+      state.alignment = Math.max(-1000, Math.min(1000, state.alignment + action.payload));
+    },
+    changePurity: (state, action: PayloadAction<number>) => {
+      state.purity = Math.max(-1000, Math.min(1000, state.purity + action.payload));
+    },
+    changeWealth: (state, action: PayloadAction<number>) => {
+      state.wealth += action.payload;
+    },
+    addItem: (state, action: PayloadAction<string>) => {
+      state.inventory.push(action.payload);
+    },
+    removeItem: (state, action: PayloadAction<string>) => {
+      state.inventory = state.inventory.filter(item => item !== action.payload);
+    },
     gainExperience: (state, action: PayloadAction<number>) => {
       state.experience += action.payload;
       const nextLevelExp = state.level * 100;
@@ -63,14 +81,10 @@ const initialState: Player = {
         state.level += 1;
         state.experience -= nextLevelExp;
         state.skillPoints += 5;
-        // Recursive check for multi-level gain
-        if (state.experience >= state.level * 100) {
-            // We can handle this by just calling again or a loop, but level * 100 is increasing
-        }
       }
     },
     setBlessedAbility: (state, action: PayloadAction<string>) => {
-        state.blessedAbility = action.payload;
+      state.blessedAbility = action.payload;
     },
     addCompanion: (state, action: PayloadAction<string>) => {
       if (!state.companions.includes(action.payload)) {
@@ -116,7 +130,6 @@ const initialState: Player = {
       state.equilibrium = action.payload;
     },
     tickCombat: (state) => {
-      // Recover balance and equilibrium over time
       state.balance = Math.max(0, state.balance - 100);
       state.equilibrium = Math.max(0, state.equilibrium - 100);
     },
