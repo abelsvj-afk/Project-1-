@@ -15,9 +15,15 @@ const initialState: Player = {
   name: 'Stranger',
   appearance: {
     bodyType: 'average',
+    musculature: 'lean',
+    height: 'average',
     hairStyle: 'unkempt',
     hairColor: 'dusty',
     eyeColor: 'clear',
+    eyeType: 'organic',
+    skinTone: 'pale',
+    scars: [],
+    tattoos: [],
     facialFeatures: [],
   },
   pronouns: {
@@ -89,10 +95,12 @@ const playerSlice = createSlice({
     applyCure: (state, action: PayloadAction<string[]>) => {
       state.afflictions = state.afflictions.filter(a => !action.payload.includes(a));
     },
-    setIdentity: (state, action: PayloadAction<{ name: string; appearance: any; pronouns: any }>) => {
+    setIdentity: (state, action: PayloadAction<{ name: string; appearance: any; pronouns: any; presence: any; presenceDescription: string }>) => {
       state.name = action.payload.name;
       state.appearance = action.payload.appearance;
       state.pronouns = action.payload.pronouns;
+      state.presence = action.payload.presence;
+      state.presenceDescription = action.payload.presenceDescription;
     },
   },
 });

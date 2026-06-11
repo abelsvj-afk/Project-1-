@@ -13,11 +13,24 @@ export interface PlayerStats {
   mentality: number;
 }
 
+export interface BodyMarking {
+  id: string;
+  type: string; // e.g., 'burn', 'geometric', 'rune'
+  location: 'face' | 'chest' | 'back' | 'left_arm' | 'right_arm' | 'left_leg' | 'right_leg';
+  description: string;
+}
+
 export interface Appearance {
   bodyType: string;
+  musculature: string;
+  height: string;
   hairStyle: string;
   hairColor: string;
   eyeColor: string;
+  eyeType: string; // e.g., 'organic', 'cybernetic', 'blind'
+  skinTone: string;
+  scars: BodyMarking[];
+  tattoos: BodyMarking[];
   facialFeatures: string[];
 }
 
@@ -40,6 +53,14 @@ export interface Player {
   equilibrium: number;       // Mental composure (ms)
   inventory: string[];
   location: string;
+  presence?: {
+    uncanny: number;
+    intimidating: number;
+    exotic: number;
+    normalized: number;
+    factionTags: string[];
+  };
+  presenceDescription?: string;
 }
 
 export interface StoryletPrerequisites {
