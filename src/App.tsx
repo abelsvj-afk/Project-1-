@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import * as Sentry from "@sentry/react";
 import type { RootState } from './store';
 import { setLocation, changeAlignment, changePurity, addItem, changeWealth } from './store/slices/playerSlice';
 import { filterStorylets, morphText } from './engine/narrativeEngine';
@@ -189,4 +190,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });
