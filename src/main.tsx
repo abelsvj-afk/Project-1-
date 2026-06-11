@@ -7,7 +7,7 @@ import App from './App';
 import './index.css';
 
 Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DSN,
+  dsn: "https://206e07aac98475bf5f0f7936ce6f3371@o4511547934507008.ingest.us.sentry.io/4511547934834688",
   integrations: [
     Sentry.browserTracingIntegration(),
   ],
