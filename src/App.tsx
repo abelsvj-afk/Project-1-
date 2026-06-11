@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/react";
 import type { RootState } from './store';
 import { setLocation, changeAlignment, changePurity, addItem, changeWealth } from './store/slices/playerSlice';
 import { filterStorylets, morphText } from './engine/narrativeEngine';
-import { setGlobalFlag } from './store/slices/gameSlice';
+import { setGlobalFlag, markStoryletSeen, revealName } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
 import type { Storylet, Choice } from './types/game';
 import CharacterCreator from './components/CharacterCreator';
@@ -219,5 +219,15 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });
+eered via Vibe Coding Paradigm</div>
+      </footer>
+    </div>
+  );
+};
+
+export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });
+
 
 export default Sentry.withErrorBoundary(App, { fallback: <div>Something went wrong.</div> });

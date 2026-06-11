@@ -13,10 +13,12 @@ This document tracks the implementation of core systems and features as defined 
 ## 2. Narrative System (QBN)
 - [x] Storylet Structure (Prerequisites, Content, Effects)
 - [x] Shattered Arrival Storylets (Static Crater)
+- [x] **Storylet Continuity & Exhaustion** (Seen tracking)
+- [x] **Storylet Priority System** (Weighting)
 - [ ] Complex Prerequisites (Chronological, Stat Thresholds)
 - [ ] Global Progress Bottlenecks (Clue/Flag tracking)
 - [ ] Narrative Archetypes (The Gauntlet, Sorting Hat, etc.)
-- [ ] **Dynamic Identity Injection**
+- [x] **Dynamic Identity Injection**
     - [x] Name/Pronoun parsing in text
     - [x] Appearance/Wardrobe parsing in text
 
@@ -26,7 +28,7 @@ This document tracks the implementation of core systems and features as defined 
 - [ ] **Extreme Morphing (Visual/Textual)**
     - [x] Basic text description shifts
     - [ ] UI Color/Typography shifts based on Alignment
-    - [ ] Detailed "Ghoul" / "Adept" / "Debaser" morphing tiers
+    - [ ] **Morphing Tiers** (Ghoul, Adept, Debaser, etc.)
 - [x] **Localized Reputation Matrix**
     - [x] State slice for reputation
     - [ ] Subjective worldview modifiers per town/faction
@@ -39,17 +41,12 @@ This document tracks the implementation of core systems and features as defined 
 ## 4. Systemic Combat (MUD-inspired)
 - [x] Action Economy: Balance (Physical)
 - [x] Action Economy: Equilibrium (Mental)
-- [x] **Magic Typology (The Four Currents)**
-    - [x] Thermal Entropy (Fire/Ice/Lightning)
-    - [x] Vector Resonance (Earth/Wind/Gravity)
-    - [x] Biomorphic Flux (Nature/Poison/Holy)
-    - [x] Cognitive Distortion (Light/Shadow/Psychic)
-    - [ ] Tech Harnesses & Catalysts
-- [x] **Affliction & Cure Matrix**
+- [x] **Affliction & Cure Matrix** (Achaea-inspired)
     - [x] Basic Affliction state tracking
     - [x] Physiological Afflictions (Paralysis, Broken Limbs, Blindness)
     - [x] Psychological Afflictions (Stupidity, Epilepsy, Shivering)
-    - [x] Curative Item Logic (Salves, Herbs, Elixirs)
+    - [ ] **Advanced Cure Matrix** (Salves, Herbs, Smoke, Ingestion)
+- [x] **Curative Item Logic** (Initial Salves/Herbs)
 
 ## 5. Economy, Crafting & Property
 - [x] Basic Wealth Tracking
@@ -71,6 +68,8 @@ This document tracks the implementation of core systems and features as defined 
     - [x] Companion System (Employees, Friends, Animals)
     - [x] Romance & Family (Multiple relationships, Marriage, Childbirth)
     - [x] Autonomous NPCs (Real personal lives and schedules)
+- [x] **Immersive TTS**
+    - [x] Speaker-specific voice profiles (Context parsing)
 - [ ] **Character Creator**
     - [x] Visual Identity UI
     - [x] Skill Tree (Sync, Logic, Prowess, Finesse)

@@ -66,6 +66,7 @@ export interface Player {
     factionInfluence: { [factionId: string]: number }; // -100 to 100
     factionMenace: { [factionId: string]: number }; // 0 to 100
   };
+  companions: string[]; // NPC IDs
 }
 
 export interface StoryletPrerequisites {
@@ -89,6 +90,7 @@ export interface StoryletEffects {
   statChange?: Partial<PlayerStats>;
   setGlobalFlags?: { [flag: string]: boolean | number | string };
   moveToLocation?: string;
+  revealNames?: string[]; // NPC IDs to reveal
 }
 
 export interface Storylet {
@@ -97,6 +99,8 @@ export interface Storylet {
   content: string; // Supports dynamic variables
   prerequisites: StoryletPrerequisites;
   choices: Choice[];
+  priority?: number; // Higher numbers = higher priority
+  repeatable?: boolean;
 }
 
 export interface Choice {
@@ -224,4 +228,6 @@ export interface GameState {
   
   gameTime: number; // Chronological marker (0-2400 per day)
   currentStorylets: string[]; // Active storylet IDs
+}
+/ Active storylet IDs
 }

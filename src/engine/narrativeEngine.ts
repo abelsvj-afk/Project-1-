@@ -44,15 +44,18 @@ export const filterStorylets = (
 
     return true;
   });
+
+  // Sort by priority (higher first)
+  return filtered.sort((a, b) => (b.priority || 0) - (a.priority || 0));
 };
 
 /**
- * Replaces tags like {player.name} with actual values from the state.
+ * Replaces tags like {player.name} or {npc:kaelen} with actual values from the state.
  */
 export const interpolate = (text: string, state: RootState): string => {
-  const { player } = state;
+  const { player, game } = state;
   
-  return text
+  let interpolated = text
     .replace(/{player.name}/g, player.name)
     .replace(/{player.subject}/g, player.pronouns.subject)
     .replace(/{player.object}/g, player.pronouns.object)
@@ -60,6 +63,21 @@ export const interpolate = (text: string, state: RootState): string => {
     .replace(/{player.hairColor}/g, player.appearance.hairColor)
     .replace(/{player.eyeColor}/g, player.appearance.eyeColor)
     .replace(/{player.bodyType}/g, player.appearance.bodyType);
+
+  // Dynamic NPC Name Reveal Logic
+  const npcNameRegex = /{npc:(.*?)}/g;
+  interpolated = interpolated.replace(npcNameRegex, (match, npcId) => {
+    if (game.knownNames.includes(npcId)) {
+        // Capitalize name
+        return npcId.charAt(0).toUpperCase() + npcId.slice(1);
+    }
+    
+    // Fallback descriptors based on initial encounter logic
+    if (npcId === 'kaelen') return 'the scavenger';
+    return 'the stranger';
+  });
+
+  return interpolated;
 };
 
 /**
@@ -112,6 +130,12 @@ export const morphText = (text: string, state: RootState): string => {
       morphed = morphed.replace(
           /\./g,
           ', the air around you shimmering with a faint, sickly green miasma.'
+      );
+  }
+
+  return morphed;
+};
+
       );
   }
 

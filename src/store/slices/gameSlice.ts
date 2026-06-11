@@ -87,6 +87,11 @@ const gameSlice = createSlice({
     setCurrentStorylets: (state, action: PayloadAction<string[]>) => {
       state.currentStorylets = action.payload;
     },
+    markStoryletSeen: (state, action: PayloadAction<string>) => {
+        if (!state.seenStorylets.includes(action.payload)) {
+          state.seenStorylets.push(action.payload);
+        }
+      },
   },
 });
 
@@ -101,6 +106,9 @@ export const {
   addBounty,
   incrementTime,
   setCurrentStorylets,
+  markStoryletSeen,
+  revealName,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
+ gameSlice.reducer;

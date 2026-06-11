@@ -44,51 +44,32 @@ const initialState: Player = {
     majorChoices: [],
     factionInfluence: { scavengers: 0, syndicate: 0, adepts: 0 },
     factionMenace: { scavengers: 0, syndicate: 0, adepts: 0 },
-  }
-};
+    },
+    companions: []
+    };
 
-const playerSlice = createSlice({
-  name: 'player',
-  initialState,
-  reducers: {
-    logChoice: (state, action: PayloadAction<string>) => {
+    const playerSlice = createSlice({
+    name: 'player',
+    initialState,
+    reducers: {
+    addCompanion: (state, action: PayloadAction<string>) => {
+      if (!state.companions.includes(action.payload)) {
+        state.companions.push(action.payload);
+      }
+    },
+    removeCompanion: (state, action: PayloadAction<string>) => {
+      state.companions = state.companions.filter(id => id !== action.payload);
+    },
+    setLocation: (state, action: PayloadAction<string>) => {
+      state.location = action.payload;
       if (!state.history.majorChoices.includes(action.payload)) {
         state.history.majorChoices.push(action.payload);
       }
     },
+    logChoice: (state, action: PayloadAction<string>) => {
+      state.history.majorChoices.push(action.payload);
+    },
     changeInfluence: (state, action: PayloadAction<{ faction: string; amount: number }>) => {
-      const { faction, amount } = action.payload;
-      if (state.history.factionInfluence[faction] !== undefined) {
-        state.history.factionInfluence[faction] = Math.max(-100, Math.min(100, state.history.factionInfluence[faction] + amount));
-      }
-    },
-    changeMenace: (state, action: PayloadAction<{ faction: string; amount: number }>) => {
-      const { faction, amount } = action.payload;
-      if (state.history.factionMenace[faction] !== undefined) {
-        state.history.factionMenace[faction] = Math.max(0, Math.min(100, state.history.factionMenace[faction] + amount));
-      }
-    },
-    updateStats: (state, action: PayloadAction<Partial<PlayerStats>>) => {
-      state.stats = { ...state.stats, ...action.payload };
-    },
-    changeAlignment: (state, action: PayloadAction<number>) => {
-      state.alignment = Math.max(-1000, Math.min(1000, state.alignment + action.payload));
-    },
-    changePurity: (state, action: PayloadAction<number>) => {
-      state.purity = Math.max(-1000, Math.min(1000, state.purity + action.payload));
-    },
-    changeWealth: (state, action: PayloadAction<number>) => {
-      state.wealth += action.payload;
-    },
-    addItem: (state, action: PayloadAction<string>) => {
-      state.inventory.push(action.payload);
-    },
-    removeItem: (state, action: PayloadAction<string>) => {
-      state.inventory = state.inventory.filter(item => item !== action.payload);
-    },
-    setLocation: (state, action: PayloadAction<string>) => {
-      state.location = action.payload;
-    },
     addAffliction: (state, action: PayloadAction<string>) => {
       if (!state.afflictions.includes(action.payload)) {
         state.afflictions.push(action.payload);
