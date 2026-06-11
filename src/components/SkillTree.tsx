@@ -14,8 +14,8 @@ const SkillTree: React.FC = () => {
     { key: 'finesse', label: 'Finesse', desc: 'Agility & Precision' },
   ];
 
-  const handleLevelUp = (stat: string) => {
-    dispatch(updateStats({ [stat]: (player.stats as any)[stat] + 1 }));
+  const handleLevelUp = (stat: keyof typeof player.stats) => {
+    dispatch(updateStats({ [stat]: player.stats[stat] + 1 }));
   };
 
   return (
@@ -27,7 +27,7 @@ const SkillTree: React.FC = () => {
           <div key={s.key} className="p-4 bg-slate-900/50 rounded border border-slate-700 group hover:border-amber-900/50 transition-colors">
             <div className="flex justify-between items-center mb-1">
               <span className="text-amber-500 font-bold uppercase tracking-tighter text-lg">{s.label}</span>
-              <span className="text-2xl font-black text-slate-100">{(player.stats as any)[s.key]}</span>
+              <span className="text-2xl font-black text-slate-100">{player.stats[s.key as keyof typeof player.stats]}</span>
             </div>
             <p className="text-[10px] text-slate-500 uppercase mb-4 tracking-widest">{s.desc}</p>
             

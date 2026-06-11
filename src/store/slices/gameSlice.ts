@@ -111,4 +111,3 @@ export const {
 } = gameSlice.actions;
 
 export default gameSlice.reducer;
- gameSlice.reducer;

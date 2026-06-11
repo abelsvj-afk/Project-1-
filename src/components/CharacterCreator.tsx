@@ -52,10 +52,13 @@ const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
   const [displayedText, setDisplayedText] = useState('');
   
   useEffect(() => {
-    setDisplayedText('');
     let i = 0;
+    let currentText = '';
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDisplayedText('');
     const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + text.charAt(i));
+      currentText += text.charAt(i);
+      setDisplayedText(currentText);
       i++;
       if (i >= text.length) clearInterval(interval);
     }, 8);
@@ -271,7 +274,7 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
                     <optgroup label="Scars">{SCAR_TYPES.map(s => <option key={s} value={s}>{s}</option>)}</optgroup>
                     <optgroup label="Tattoos">{TATTOO_TYPES.map(t => <option key={t} value={t}>{t}</option>)}</optgroup>
                   </select>
-                  <select value={pendingLoc} onChange={(e) => setPendingLoc(e.target.value as any)} className="bg-slate-800 border border-slate-700 p-3 rounded text-xs uppercase text-slate-300">
+                  <select value={pendingLoc} onChange={(e) => setPendingLoc(e.target.value as BodyMarking['location'])} className="bg-slate-800 border border-slate-700 p-3 rounded text-xs uppercase text-slate-300">
                     {MARKING_LOCATIONS.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
                   </select>
                 </div>

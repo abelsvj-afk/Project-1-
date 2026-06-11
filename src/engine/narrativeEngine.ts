@@ -135,9 +135,3 @@ export const morphText = (text: string, state: RootState): string => {
 
   return morphed;
 };
-
-      );
-  }
-
-  return morphed;
-};

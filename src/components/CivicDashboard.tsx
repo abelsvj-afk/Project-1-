@@ -77,7 +77,7 @@ const CivicDashboard: React.FC = () => {
                       <div className="text-amber-500 font-bold">{p.purchasePrice} Shards</div>
                       <button 
                         disabled={!canAfford}
-                        onClick={() => handleBuy(p as any)}
+                        onClick={() => handleBuy(p as Property)}
                         className={`text-[10px] uppercase font-bold mt-1 px-3 py-1 rounded border transition-all ${canAfford ? 'border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-slate-900' : 'border-slate-800 text-slate-700'}`}
                       >
                         Purchase

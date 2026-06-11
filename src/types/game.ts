@@ -235,5 +235,3 @@ export interface GameState {
   gameTime: number; // Chronological marker (0-2400 per day)
   currentStorylets: string[]; // Active storylet IDs
 }
-/ Active storylet IDs
-}

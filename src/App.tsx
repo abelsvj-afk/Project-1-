@@ -17,6 +17,7 @@ import CivicDashboard from './components/CivicDashboard';
 import KinshipRoster from './components/KinshipRoster';
 import { tts } from './engine/ttsEngine';
 
+// eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const player = useSelector((state: RootState) => state.player);
@@ -46,6 +47,7 @@ const App: React.FC = () => {
     if (filtered.length > 0) {
       const nextStorylet = filtered[0];
       if (!activeStorylet || activeStorylet.id !== nextStorylet.id) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveStorylet(nextStorylet);
         dispatch(markStoryletSeen(nextStorylet.id));
         

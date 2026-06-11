@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Player, PlayerStats } from '../../types/game';
+import type { Player, PlayerStats, Appearance, Pronouns } from '../../types/game';
+import type { PresenceMatrix } from '../../engine/presenceEngine';
 
 const initialStats: PlayerStats = {
   prowess: 10,
@@ -89,6 +90,17 @@ const initialState: Player = {
       state.history.majorChoices.push(action.payload);
     },
     changeInfluence: (state, action: PayloadAction<{ faction: string; amount: number }>) => {
+      const { faction, amount } = action.payload;
+      if (state.history.factionInfluence[faction] !== undefined) {
+        state.history.factionInfluence[faction] = Math.max(-100, Math.min(100, state.history.factionInfluence[faction] + amount));
+      }
+    },
+    changeMenace: (state, action: PayloadAction<{ faction: string; amount: number }>) => {
+      const { faction, amount } = action.payload;
+      if (state.history.factionMenace[faction] !== undefined) {
+        state.history.factionMenace[faction] = Math.max(0, Math.min(100, state.history.factionMenace[faction] + amount));
+      }
+    },
     addAffliction: (state, action: PayloadAction<string>) => {
       if (!state.afflictions.includes(action.payload)) {
         state.afflictions.push(action.payload);
@@ -117,7 +129,7 @@ const initialState: Player = {
     applyCure: (state, action: PayloadAction<string[]>) => {
       state.afflictions = state.afflictions.filter(a => !action.payload.includes(a));
     },
-    setIdentity: (state, action: PayloadAction<{ name: string; appearance: any; pronouns: any; presence: any; presenceDescription: string }>) => {
+    setIdentity: (state, action: PayloadAction<{ name: string; appearance: Appearance; pronouns: Pronouns; presence: PresenceMatrix; presenceDescription: string }>) => {
       state.name = action.payload.name;
       state.appearance = action.payload.appearance;
       state.pronouns = action.payload.pronouns;
