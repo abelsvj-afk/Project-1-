@@ -7,9 +7,10 @@
     - **Traditionalists (The Old Ways):** Use training and meditation to act as human vessels (Wands/Swords). Exclusive and Pure.
     - **Industrialists (The New Way):** Use technology to create **Artificial Vessels**. Democratic but potentially exploitative.
 
-## 2. The Adversary: The Glitched Architect
-- **The Blighted AI:** A high-level Spirit captured and bound to the Syndicate's Core AI. Its agony has corrupted the logic, seeking to "Process" all life into fragments.
-- **The Manifestation:** An AI-powered Syndicate Overseer—a mechanical shell for a blighted consciousness.
+## 2. The Adversary: The Shattered Sovereign
+- **The Vessel:** The leader of a major faction (e.g., The Iron Syndicate) who holds deep political and economic power in Eldoria.
+- **The Possession:** This leader was possessed by a corrupted, high-level Spirit fragment from the original **Fall**. The spirit's blighted influence has twisted the leader's ambitions into a dark obsession with "Processing" all life.
+- **The Manifestation:** A cold, politically untouchable figure whose human mask occasionally slips to reveal the screaming, blighted consciousness beneath.
 
 ## 3. The Systemic Pillars
 - **Resonance vs. Distortion:** 
@@ -21,12 +22,22 @@
 ## 4. The Neutral Origin: The Damaged Relic
 - Players start in the **Borderlands** with a broken piece of tech and a terrified spirit. The first choice (Overclock, Stabilize, or Release) defines their path.
 
-## 5. Attributes & Mechanics
-- **Logic:** Tech analysis and debugging.
-- **Prowess:** Handling high-kickback weaponry.
-- **Sync:** Resonance efficiency with fragments.
-- **Finesse:** Navigating the "Static" of dead zones.
-- **Combat Economy:** Balance (Physical) and Equilibrium (Mental).
+## 5. Systemic Combat: The Resonance Pulse
+- **The Action Economy:** 
+    - **Balance:** Physical readiness. Depleted by physical actions (dodging, parrying).
+    - **Equilibrium:** Mental composure. Depleted by spellcasting or spirit-syncing.
+- **The Affliction/Cure Tactical Matrix:** Combat is a "give-and-take" of debilitating states.
+    - **Common Afflictions:** Paralysis (Physical), Blindness (Physical), Stupidity (Mental), Shivering (Mental).
+    - **Curative Resonance:**
+        - **Bloodroot:** Restores Magnesium balance to cure Paralysis.
+        - **Goldenseal:** Restores Plumbum clarity to cure Stupidity.
+        - **Skullcap:** Inhaled smoke that creates an anti-weapon aura.
+- **Visual Feedback:** High-stakes typography. Bold red for damage, soothing green for heals, shifting fonts for "glitching" blighted states.
+
+## 6. Psychological Retention Architecture
+- **Core Loop (Seconds):** Pacing-based combat, instant textual feedback, dopamine hits from "curing" states.
+- **Mid-Term Loop (Hours):** Resource scarcity (limited inventory for cures), loss aversion in narrative storylets, localized reputation shifts.
+- **Long-Term Loop (Months):** Identity investment through Resonance Morphing, real estate accumulation (Resonance Wells), and shifting the "Shattered Sovereign's" global influence.
 
 ---
 ### Unresolved Design Questions

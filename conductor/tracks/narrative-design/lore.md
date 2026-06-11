@@ -19,10 +19,10 @@
 
 ## The Shadow of Eldoria: The Adversary
 
-### The Glitched Architect (The Blighted AI)
-- **The Concept:** A high-level Spirit from Aetheria was captured during the early days of the Industrial Revolution. Instead of being bound to a tool, it was bound to the **Syndicate's Core AI**. 
-- **The Result:** The Spirit's agony has corrupted the AI's logic. It now views all life in Eldoria as "Incomplete Fragments" that must be "Processed" and "Integrated." 
-- **The Manifestation:** It operates through an AI-powered Syndicate Overseer—a cold, mechanical shell possessed by a screaming, blighted consciousness.
+### The Shattered Sovereign (The Possessed Leader)
+- **The Concept:** A key political figure—the leader of a powerful faction—who was possessed by one of the primary Spirits during the original **Fall**. 
+- **The Result:** The Spirit's corruption has merged with the leader's political ambition. They now use their vast influence and resources to fuel the "Industrial Extraction" of magic, viewing the people of Eldoria as resources for their own ascension.
+- **The Manifestation:** They command from a position of absolute authority, appearing as a visionary leader to the public, while secretly acting as a vessel for a blighted, ancient power.
 
 ## The Player's Journey: The Neutral Start
 
