@@ -71,6 +71,30 @@ export const morphText = (text: string, state: RootState): string => {
 
   let morphed = interpolate(text, state);
 
+  // 2. Presence-Based Context Injection
+  if (player.presence && morphed.includes('[NPC_REACT]')) {
+    let reaction = "gives you a wary but indifferent nod";
+    if (player.presence.intimidating > 60) {
+      reaction = "steps back, clearly intimidated by your formidable presence";
+    } else if (player.presence.uncanny > 60) {
+      reaction = "stares at you with visible discomfort, unsettled by your unnatural form";
+    } else if (player.presence.exotic > 60) {
+      reaction = "cannot hide their fascination, eyes lingering on your strange features";
+    } else if (player.presence.normalized > 70) {
+      reaction = "barely seems to register you, treating you like just another commoner";
+    }
+    morphed = morphed.replace(/\[NPC_REACT\]/g, reaction);
+  }
+
+  // 3. Faction Influence Injections
+  if (morphed.includes('[SCAVENGER_REACT]')) {
+    const inf = player.history?.factionInfluence?.['scavengers'] || 0;
+    let scavReact = "eyes you suspiciously";
+    if (inf > 20) scavReact = "gives you a quick, respectful salute";
+    if (inf < -20) scavReact = "spits at your feet, clearly despising you";
+    morphed = morphed.replace(/\[SCAVENGER_REACT\]/g, scavReact);
+  }
+
   // Example of alignment-based morphing
   if (player.alignment < -500) {
     morphed = morphed.replace(

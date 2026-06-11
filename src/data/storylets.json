@@ -2,7 +2,7 @@
   {
     "id": "crater_wake",
     "title": "The Static Crater",
-    "content": "The world begins in a haze of acrid smoke and the smell of ozone. You are lying at the bottom of a shallow, glass-edged crater in the Borderlands. The red dust is swirling around you, but within the circle of the crater, everything is eerily still. A figure—Kaelen, a scavenger—is peering over the edge, their hand drifting toward a rusted iron knife. 'I don't know what void you leaked out of,' they call down, 'but you've sucked the life right out of the air. If you want a ride out of here, you're going to have to prove you aren't just a walking curse.'",
+    "content": "The world begins in a haze of acrid smoke and the smell of ozone. You are lying at the bottom of a shallow, glass-edged crater in the Borderlands. The red dust is swirling around you, but within the circle of the crater, everything is eerily still. A figure—Kaelen, a scavenger—is peering over the edge, their hand drifting toward a rusted iron knife. As Kaelen takes in your {player.height}, {player.bodyType} frame and {player.eyeType} eyes, they [NPC_REACT]. 'I don't know what void you leaked out of,' they call down, 'but you've sucked the life right out of the air. If you want a ride out of here, you're going to have to prove you aren't just a walking curse.'",
     "prerequisites": {
       "location": "static_crater"
     },

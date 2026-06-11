@@ -40,12 +40,34 @@ const initialState: Player = {
   equilibrium: 0,
   inventory: [],
   location: 'static_crater',
+  history: {
+    majorChoices: [],
+    factionInfluence: { scavengers: 0, syndicate: 0, adepts: 0 },
+    factionMenace: { scavengers: 0, syndicate: 0, adepts: 0 },
+  }
 };
 
 const playerSlice = createSlice({
   name: 'player',
   initialState,
   reducers: {
+    logChoice: (state, action: PayloadAction<string>) => {
+      if (!state.history.majorChoices.includes(action.payload)) {
+        state.history.majorChoices.push(action.payload);
+      }
+    },
+    changeInfluence: (state, action: PayloadAction<{ faction: string; amount: number }>) => {
+      const { faction, amount } = action.payload;
+      if (state.history.factionInfluence[faction] !== undefined) {
+        state.history.factionInfluence[faction] = Math.max(-100, Math.min(100, state.history.factionInfluence[faction] + amount));
+      }
+    },
+    changeMenace: (state, action: PayloadAction<{ faction: string; amount: number }>) => {
+      const { faction, amount } = action.payload;
+      if (state.history.factionMenace[faction] !== undefined) {
+        state.history.factionMenace[faction] = Math.max(0, Math.min(100, state.history.factionMenace[faction] + amount));
+      }
+    },
     updateStats: (state, action: PayloadAction<Partial<PlayerStats>>) => {
       state.stats = { ...state.stats, ...action.payload };
     },
@@ -122,6 +144,9 @@ export const {
   consumeMentality,
   applyCure,
   setIdentity,
+  logChoice,
+  changeInfluence,
+  changeMenace,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

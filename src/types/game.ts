@@ -61,6 +61,11 @@ export interface Player {
     factionTags: string[];
   };
   presenceDescription?: string;
+  history: {
+    majorChoices: string[]; // e.g., 'saved_kaelen', 'betrayed_syndicate'
+    factionInfluence: { [factionId: string]: number }; // -100 to 100
+    factionMenace: { [factionId: string]: number }; // 0 to 100
+  };
 }
 
 export interface StoryletPrerequisites {
