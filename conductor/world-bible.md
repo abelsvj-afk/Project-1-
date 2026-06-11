@@ -7,15 +7,14 @@
 - **The Tech Revolution (Democratic Flexibility):** 
     - Tech has unlocked **Direct Manipulation**. Previously, a warrior might need a spell cast *on* their blade; now, via tech-harnessing, they can directly channel their ingrained magical energy into the steel.
     - It allows those with low natural energy to manifest power that was previously locked away.
-    - **The Risk (Spirit Burnout):** While regular use is safe, "Overclocking" or systemic greed can lead to **Burnout**—where a spirit fragment is drained to the point of becoming "Static," losing its sentience and leaving the tech (and potentially the user) scarred.
+    - **The Risk (Spirit Burnout):** While regular use is safe, "Overclocking" or systemic greed can lead to **Burnout**—where a spirit fragment is drained to the point of becoming "Static."
 
 ## 2. The Player: The Catalyst
 - **The Trigger:** You **crashed**. A vehicle from your "Modern" world hit a "Static Spot" and was pulled into Eldoria.
-- **The Null-Point Anomaly (The "Cheat"):** Because your body/soul originated in a world without magic, you are a "Systemic Anomaly." You possess a unique, maturing skill that Eldorians cannot replicate.
-    - **Potential Manifestations:**
-        - **Resonance Architecture:** The ability to "Re-Format" the frequency of any spirit or tech you touch. You don't just use magic; you rewrite its rules.
-        - **Echo-Mapping:** The ability to see the "Peak State" of any object or spirit, allowing you to "Restore" fragments to their pre-Fall glory temporarily.
-        - **The Reality Anchor:** You can project a field where magic *must* follow the laws of physics from your world, effectively "Disabling" traditional magic and "Stabilizing" tech in your vicinity.
+- **The Null-Point Anomaly (The "Cheat"):** A hybrid maturing skill known as the **Echo-Anchor**.
+    - **Stage 1 (Passive/Hidden):** You unknowingly act as a "Stabilizer." Tech in your vicinity runs 20% more efficiently; spirits nearby stop flickering. You don't know why.
+    - **Stage 2 (Maturity):** **Echo-Mapping.** You can "Restore" objects to their peak state. In combat, this means "resetting" a broken shield or "overclocking" a sword's resonance by recalling its forged perfection.
+    - **Stage 3 (Mastery):** **The Reality Anchor.** You project a "Null-Zone." Magic must follow Earth's physics. Spells fail, and spirits are forced into pure, physical manifestations that you can interact with.
 - **The Adaptation:** You have a "Modern Perspective" that allows you to see the logic where others see chaos.
 
 ## 2. The Adversary: The Shattered Sovereign
@@ -23,12 +22,15 @@
 - **The Possession:** This leader was possessed by a corrupted, high-level Spirit fragment from the original **Fall**. The spirit's blighted influence has merged with the leader's ambition.
 - **The Manifestation:** A powerful political figure whose goals are driven by a blighted ancient power. No AI involvement.
 
-## 3. The Systemic Pillars
+## 3. Systemic Pillars
 - **Resonance vs. Distortion:** 
     - **Resonance (Harmonizer):** Tech as a Sanctuary. Iridescent skin, steady light, fluid movement.
     - **Distortion (Exploiter):** Tech as a Battery. Static patches, flickering eyes, ozone smell.
-- **Localized Reputation:** Per-district standing (Iron Syndicate vs. Ether-Keepers).
-- **The Adept Cold War:** A three-tiered social structure (High-Council, Fading Nobility, Hidden Underground) engaged in a fragile power struggle with the Iron Syndicate.
+- **The Cascading Witness (Reputation):** Word travels. If you fail to take out a criminal or leave witnesses to your own acts, they may **Report** you to factions.
+    - **Reports to the Syndicate:** May lead to bounties or asset seizures.
+    - **Reports to the Adepts:** May lead to a "Heretic Hunt."
+    - **Cascading Events:** A single ignored crime can lead to global consequences (e.g., blockades, price hikes) days later.
+- **The Adept Cold War:** A three-tiered social structure (High-Council, Fading Nobility, Hidden Underground).
 - **The Spirit Economy:** Property ownership of "Resonance Wells" for passive income.
 
 ## 4. The Neutral Origin: The Damaged Relic
