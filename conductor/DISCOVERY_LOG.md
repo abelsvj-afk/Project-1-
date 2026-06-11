@@ -11,10 +11,9 @@ This document tracks unresolved questions and design decisions to ensure "Vibe C
 | What is the social status of Adepts in the Nexus? | Lore | Resolved (Three-Tiered / Cold War) |
 | Who are the local power players in the Borderlands? | Narrative | Resolved (Vane, Syla, Kaelen) |
 | How does "Modern Knowledge" translate to Adept magic? | Lore | Pending |
-| Does the player have specific blueprints from our world? | Lore | Pending |
-| What was the "Sovereign's" name before possession? | Narrative | Pending |
-| The "Aetheria Shattering": What caused the Fall? | Lore | Pending |
-| What specific "Modern" item did the player bring? | Inventory | Pending |
+| Does the player have specific blueprints from our world? | Lore | Resolved (Inferior Tech - Logic Only) |
+| What specific "Modern" item did the player bring? | Inventory | Resolved (None - Arrives Empty) |
+| How does the player apply Modern Logic to Arcane-Industrial tech? | Lore | Pending |
 
 ## Systemic Implementation Checklist
 - [x] Initial React/Redux Setup
