@@ -1,10 +1,11 @@
 import "./instrument.js";
 import { createServer } from "node:http";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { join, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const DIST_DIR = join(__dirname, "dist");
 
 const MIME_TYPES = {
   ".html": "text/html",
@@ -24,29 +25,67 @@ const MIME_TYPES = {
   ".wasm": "application/wasm",
 };
 
-const server = createServer(async (req, res) => {
-  console.log(`${req.method} ${req.url}`);
+async function listFiles(dir, prefix = "") {
+  const entries = await readdir(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      await listFiles(fullPath, join(prefix, entry.name));
+    } else {
+      console.log(`[FILE]: ${join(prefix, entry.name)}`);
+    }
+  }
+}
 
-  let filePath = join(__dirname, "dist", req.url === "/" ? "index.html" : req.url);
+console.log("Starting server...");
+try {
+  console.log("Listing dist directory contents:");
+  await listFiles(DIST_DIR);
+} catch (err) {
+  console.error("Error listing dist directory:", err.message);
+}
+
+const server = createServer(async (req, res) => {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  let pathname = url.pathname;
+  
+  console.log(`[REQ]: ${req.method} ${pathname}`);
+
+  if (pathname === "/") pathname = "/index.html";
+  
+  const filePath = join(DIST_DIR, pathname);
   const ext = extname(filePath).toLowerCase();
-  let contentType = MIME_TYPES[ext] || "application/octet-stream";
+  const contentType = MIME_TYPES[ext] || "application/octet-stream";
 
   try {
     const content = await readFile(filePath);
-    res.writeHead(200, { "Content-Type": contentType });
+    res.writeHead(200, { 
+      "Content-Type": contentType,
+      "Cache-Control": "public, max-age=31536000, immutable"
+    });
     res.end(content, "utf-8");
   } catch (error) {
     if (error.code === 'ENOENT') {
-      // SPA fallback: serve index.html for unknown paths
+      // If it's a request for an asset that's missing, return 404, don't fallback to index.html
+      if (pathname.startsWith("/assets/")) {
+        console.warn(`[404]: Asset not found: ${pathname}`);
+        res.writeHead(404);
+        res.end("Asset Not Found");
+        return;
+      }
+
+      // SPA fallback: serve index.html for non-asset paths
       try {
-        const content = await readFile(join(__dirname, "dist", "index.html"));
+        const content = await readFile(join(DIST_DIR, "index.html"));
         res.writeHead(200, { "Content-Type": "text/html" });
         res.end(content, "utf-8");
       } catch (err) {
+        console.error(`[500]: Critical error serving index.html: ${err.message}`);
         res.writeHead(500);
-        res.end(`Server Error: ${err.code}`);
+        res.end("Internal Server Error");
       }
     } else {
+      console.error(`[500]: Error reading ${filePath}: ${error.message}`);
       res.writeHead(500);
       res.end(`Server Error: ${error.code}`);
     }
