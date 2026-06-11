@@ -19,9 +19,10 @@ This document tracks unresolved questions and design decisions to ensure "Vibe C
 - [x] Initial React/Redux Setup
 - [x] QBN Filtering Engine (Basic)
 - [x] Procedural Morphing Engine (Basic)
+- [x] Shattered Arrival Narrative (Borderlands)
 - [ ] Balance/Equilibrium Action Economy (Combat Engine)
 - [ ] Affliction/Cure Matrix (Data & Logic)
-- [ ] Localized Reputation Matrix (State)
+- [x] Localized Reputation Matrix (State)
 - [ ] Resonance Wells (Economy/Real Estate)
 
 ## Resolved Decisions
