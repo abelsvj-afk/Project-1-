@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store';
+import type { RootState } from '../store';
 import { updateAffinity } from '../store/slices/gameSlice';
 import socialData from '../data/socialData.json';
-import { NPC } from '../types/game';
 
 const KinshipRoster: React.FC = () => {
   const dispatch = useDispatch();

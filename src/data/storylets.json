@@ -1,52 +1,53 @@
 [
   {
-    "id": "intro_01",
-    "title": "A New Beginning",
-    "content": "You stand at the threshold of Eldoria, {player.name}. The wind catches your {player.hairColor} hair as you gaze upon the ancient pine and distant magic. The path ahead is yours to forge.",
+    "id": "crater_wake",
+    "title": "The Static Crater",
+    "content": "The world begins in a haze of acrid smoke and the smell of ozone. You are lying at the bottom of a shallow, glass-edged crater in the Borderlands. The red dust is swirling around you, but within the circle of the crater, everything is eerily still. A figure—Kaelen, a scavenger—is peering over the edge, their hand drifting toward a rusted iron knife. 'I don't know what void you leaked out of,' they call down, 'but you've sucked the life right out of the air. If you want a ride out of here, you're going to have to prove you aren't just a walking curse.'",
     "prerequisites": {
-      "location": "eldoria_threshold"
+      "location": "static_crater"
     },
     "choices": [
       {
-        "id": "intro_01_a",
-        "text": "Walk boldly through the main gates.",
+        "id": "crater_wake_resonance",
+        "text": "[RESONANCE] 'Your torch isn't dead. It's just... confused. Let me help.'",
         "effects": {
-          "alignmentChange": 10,
-          "moveToLocation": "market_district"
+          "alignmentChange": 5,
+          "moveToLocation": "borderlands_outpost",
+          "setGlobalFlags": { "met_kaelen": true, "path": "resonance" }
         }
       },
       {
-        "id": "intro_01_b",
-        "text": "Slip through a gap in the crumbling walls.",
+        "id": "crater_wake_distortion",
+        "text": "[DISTORTION] 'I'm not a curse. I'm the only thing in this desert that makes sense.'",
         "effects": {
-          "purityChange": -10,
-          "moveToLocation": "the_shades"
+          "purityChange": -5,
+          "moveToLocation": "borderlands_outpost",
+          "setGlobalFlags": { "met_kaelen": true, "path": "distortion" }
+        }
+      },
+      {
+        "id": "crater_wake_void",
+        "text": "[THE VOID] (Silently stand up and climb out of the crater).",
+        "effects": {
+          "moveToLocation": "borderlands_outpost",
+          "setGlobalFlags": { "met_kaelen": false, "path": "void" }
         }
       }
     ]
   },
   {
-    "id": "dark_deal_01",
-    "title": "A Clandestine Offer",
-    "content": "A hooded figure approaches you in the flickering torchlight of The Shades. 'I have something that might interest someone of your... unique tastes,' he whispers.",
+    "id": "outpost_arrival",
+    "title": "Borderlands Outpost",
+    "content": "You arrive at a cluster of makeshift shacks built from salvaged plating and reinforced glass. This is the Borderlands Outpost, a haven for those who survive on the edge of the Static. The air is thick with the sound of grinding gears and the occasional crackle of energy.",
     "prerequisites": {
-      "location": "the_shades",
-      "maxPurity": -50
+      "location": "borderlands_outpost"
     },
     "choices": [
       {
-        "id": "dark_deal_01_a",
-        "text": "Listen to the offer.",
+        "id": "outpost_explore",
+        "text": "Explore the market.",
         "effects": {
-          "purityChange": -20,
-          "addItem": ["mysterious_relic"]
-        }
-      },
-      {
-        "id": "dark_deal_01_b",
-        "text": "Reject him and keep moving.",
-        "effects": {
-          "alignmentChange": 5
+          "moveToLocation": "outpost_market"
         }
       }
     ]

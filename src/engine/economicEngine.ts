@@ -1,15 +1,15 @@
-import { RootState, AppDispatch } from '../store';
+import type { RootState, AppDispatch } from '../store';
 import { changeWealth } from '../store/slices/playerSlice';
 import { incrementTime } from '../store/slices/gameSlice';
 import politicalData from '../data/politicalData.json';
-import { Property } from '../types/game';
+import type { Property } from '../types/game';
 
 /**
  * Processes a single economic/world tick (e.g., every 5 seconds).
  * Handles passive income, property upkeep, and game time advancement.
  */
 export const processEconomicTick = (state: RootState, dispatch: AppDispatch) => {
-  const { game, player } = state;
+  const { game } = state;
 
   // 1. Advance Game Time
   dispatch(incrementTime(10)); // Advance by 10 "ticks" (minutes) per cycle

@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store';
+import type { RootState } from '../store';
 import { useCombat } from '../hooks/useCombat';
 import { applyCure, setBalance, setEquilibrium } from '../store/slices/playerSlice';
 import combatData from '../data/combatData.json';
-import { CombatSpell } from '../types/game';
+import type { CombatSpell } from '../types/game';
 
 const CombatConsole: React.FC = () => {
   const dispatch = useDispatch();
   const player = useSelector((state: RootState) => state.player);
-  const game = useSelector((state: RootState) => state.game);
   
   const [log, setLog] = useState<{ msg: string; type: 'info' | 'warn' | 'error' | 'success' }[]>([]);
   const [inCombat, setInCombat] = useState(false);

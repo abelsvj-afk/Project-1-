@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from './store';
-import { setLocation, changeAlignment, changePurity, addItem } from './store/slices/playerSlice';
+import { setLocation, changeAlignment, changePurity, addItem, changeWealth } from './store/slices/playerSlice';
 import { filterStorylets, morphText } from './engine/narrativeEngine';
+import { setGlobalFlag } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
 import type { Storylet, Choice } from './types/game';
 import CharacterCreator from './components/CharacterCreator';
@@ -17,6 +18,7 @@ import KinshipRoster from './components/KinshipRoster';
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const player = useSelector((state: RootState) => state.player);
+  const game = useSelector((state: RootState) => state.game);
   const state = useSelector((state: RootState) => state);
 
   const [activeStorylet, setActiveStorylet] = useState<Storylet | null>(null);
@@ -39,9 +41,15 @@ const App: React.FC = () => {
 
     if (effects.alignmentChange) dispatch(changeAlignment(effects.alignmentChange));
     if (effects.purityChange) dispatch(changePurity(effects.purityChange));
+    if (effects.wealthChange) dispatch(changeWealth(effects.wealthChange));
     if (effects.moveToLocation) dispatch(setLocation(effects.moveToLocation));
     if (effects.addItem) {
       effects.addItem.forEach(item => dispatch(addItem(item)));
+    }
+    if (effects.setGlobalFlags) {
+      Object.entries(effects.setGlobalFlags).forEach(([flag, value]) => {
+        dispatch(setGlobalFlag({ flag, value }));
+      });
     }
 
     // After choice, refresh storylets

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store';
-import { buyProperty, updateReputation } from '../store/slices/gameSlice';
+import type { RootState } from '../store';
+import { buyProperty } from '../store/slices/gameSlice';
 import { changeWealth } from '../store/slices/playerSlice';
 import politicalData from '../data/politicalData.json';
-import { Property, Law } from '../types/game';
+import type { Property } from '../types/game';
 
 const CivicDashboard: React.FC = () => {
   const dispatch = useDispatch();

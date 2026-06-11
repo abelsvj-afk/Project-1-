@@ -16,8 +16,8 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
   
   const [bodyType, setBodyType] = useState('average');
   const [hairStyle, setHairStyle] = useState('unkempt');
-  const [hairColor, setHairColor] = useState('dusty');
-  const [eyeColor, setEyeColor] = useState('clear');
+  const [hairColor] = useState('dusty');
+  const [eyeColor] = useState('clear');
 
   const handleFinish = () => {
     dispatch(setIdentity({

@@ -8,10 +8,11 @@ This document tracks the implementation of core systems and features as defined 
 - [x] Centralized State Management (Alignment, Purity, Stats)
 - [x] Quality-Based Narrative (QBN) Filtering Engine
 - [x] Basic Procedural Text Morphing (Regex-based)
-- [x] Vite Build & Deployment Pipeline
+- [x] Vite Build & Deployment Pipeline (Verified)
 
 ## 2. Narrative System (QBN)
 - [x] Storylet Structure (Prerequisites, Content, Effects)
+- [x] Shattered Arrival Storylets (Static Crater)
 - [ ] Complex Prerequisites (Chronological, Stat Thresholds)
 - [ ] Global Progress Bottlenecks (Clue/Flag tracking)
 - [ ] Narrative Archetypes (The Gauntlet, Sorting Hat, etc.)

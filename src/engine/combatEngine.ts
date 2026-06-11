@@ -1,7 +1,7 @@
-import { RootState, AppDispatch } from '../store';
-import { tickCombat, takeDamage, consumeMentality, addAffliction } from '../store/slices/playerSlice';
+import type { RootState, AppDispatch } from '../store';
+import { tickCombat, takeDamage, consumeMentality } from '../store/slices/playerSlice';
 import combatData from '../data/combatData.json';
-import { CombatAffliction, CombatSpell } from '../types/game';
+import type { CombatAffliction, CombatSpell } from '../types/game';
 
 /**
  * Processes a single combat tick (e.g., 100ms).

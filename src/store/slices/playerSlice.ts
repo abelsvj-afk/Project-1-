@@ -33,7 +33,7 @@ const initialState: Player = {
   balance: 0,
   equilibrium: 0,
   inventory: [],
-  location: 'eldoria_threshold',
+  location: 'static_crater',
 };
 
 const playerSlice = createSlice({

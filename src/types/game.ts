@@ -117,7 +117,7 @@ export interface CombatCure {
   cures: string[]; // IDs of CombatAffliction
   delivery: 'ingestion' | 'topical' | 'inhalation' | 'smoke';
 }
-...
+
 export interface Property {
   id: string;
   name: string;
