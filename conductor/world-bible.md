@@ -13,43 +13,41 @@
 - **The Trigger:** You **crashed**. A vehicle from your "Modern" world hit a "Static Spot" and was pulled into Eldoria.
 - **The Null-Point Anomaly (The "Cheat"):** A hybrid maturing skill known as the **Echo-Anchor**.
     - **Stage 1 (Passive/Hidden):** You unknowingly act as a "Stabilizer." Tech in your vicinity runs 20% more efficiently; spirits nearby stop flickering. You don't know why.
-    - **Stage 2 (Maturity):** **Echo-Mapping.** You can "Restore" objects to their peak state. In combat, this means "resetting" a broken shield or "overclocking" a sword's resonance by recalling its forged perfection.
-    - **Stage 3 (Mastery):** **The Reality Anchor.** You project a "Null-Zone." Magic must follow Earth's physics. Spells fail, and spirits are forced into pure, physical manifestations that you can interact with.
-- **The Adaptation:** You have a "Modern Perspective" that allows you to see the logic where others see chaos.
+    - **Stage 2 (Maturity):** **Echo-Mapping.** You can "Restore" objects to their peak state.
+    - **Stage 3 (Mastery):** **The Reality Anchor.** You project a "Null-Zone." Magic must follow Earth's physics.
+- **The Adaptation:** You have a "Modern Perspective."
+- **Identity Building (True RPG Choice):** Eldoria is a "Blank Canvas." You are not pre-defined. You aren't forced to be a Technomancer or an Adept. You choose your path, and your identity (e.g., "Tech Anarchist," "Spirit Harmonizer," "Neutral Scavenger") is **earned** through your interactions.
 
 ## 2. The Adversary: The Shattered Sovereign
 - **The Vessel:** The leader of a major faction (e.g., The Iron Syndicate).
-- **The Possession:** This leader was possessed by a corrupted, high-level Spirit fragment from the original **Fall**. The spirit's blighted influence has merged with the leader's ambition.
-- **The Manifestation:** A powerful political figure whose goals are driven by a blighted ancient power. No AI involvement.
+- **The Possession:** This leader was possessed by a corrupted, high-level Spirit fragment from the original **Fall**.
+- **The Manifestation:** A powerful political figure driven by a blighted ancient power. No AI involvement.
 
 ## 3. Systemic Pillars
 - **The Spirit Economy (Trade):** 
-    - **Currency:** **Resonance Shards**—tiny, stable spirit fragments used for everything from lighting lamps to purchasing real estate.
-    - **The Market:** The Syndicate controls the "Stable" shards; the Underground trades in "Raw" or "Blighted" fragments.
+    - **Currency:** **Resonance Shards**—tiny, stable spirit fragments used for everything.
 - **Transportation (The Veins of Eldoria):**
-    - **The Iron Rails:** Syndicate-controlled trains running on high-output reactors. Fast and public, but every passenger is "Sync-Scanned" upon entry.
-    - **The Ways:** Ancient, invisible spiritual paths used by Adepts. They require high **Equilibrium** to navigate safely.
-    - **Scavenger Crawlers:** Clunky, Arcane-Industrial vehicles used by commoners in the Borderlands.
-- **Path Flexibility (The Three Ways):**
-    - **The Pure Adept:** Focuses on internal mastery. Uses the Echo-Anchor to stabilize their own focus, allowing for spells that never "Glitched."
-    - **The Pure Technomancer:** Focuses on gear. Uses the Echo-Anchor to "Restore" ancient tech to its peak state, bypassing the need for natural magic.
-    - **The Hybrid:** The most common path. Uses tech to augment natural talent (e.g., an Imperial Guard using a Resonance-hilted blade).
+    - **The Iron Rails:** Syndicate-controlled high-speed trains.
+    - **The Ways:** Ancient spiritual paths used by Adepts.
+    - **Scavenger Crawlers:** Clunky, Arcane-Industrial vehicles used by commoners.
+- **The Web of Trust (Reputation):** NPCs are individuals.
+    - **Trust Levels:** Helping locals builds a "Pact of Silence." You can decide to be cool with the locals, and they will protect your secrets.
+    - **Exposure Risk:** Reports to factions (Syndicate/Adepts) only happen if you break trust or create a massive resonance collapse.
+    - **Cascading Events:** The world reacts to what it sees. If you are cool with the locals, they become your shield.
 
 ## 4. The Neutral Origin: The Damaged Relic
-- Players start in the **Borderlands** with a broken piece of tech and a terrified spirit. The first choice (Overclock, Stabilize, or Release) defines their path.
+- Players start in the **Borderlands** with a broken piece of tech and a terrified spirit. The first choice (Overclock, Stabilize, or Release) is the first step in building your identity.
 
 ## 5. Systemic Growth: The Hybrid Path
-- **The Core (The Player):** Upgrading internal attributes (Sync, Logic, Prowess) to increase "Channelling Capacity."
-- **The Arsenal (The Gear):** Tech items feature "Resonance Sockets." Better gear allows for more complex spirit integration and higher stability.
+- **The Core (The Player):** Upgrading internal attributes (Sync, Logic, Prowess).
+- **The Arsenal (The Gear):** Tech items feature "Resonance Sockets."
 - **Integration vs. Overclocking:**
-    - **Integration (Slow Path):** Growing with a spirit over time. The power truly becomes yours; the spirit fragments become stable, and the bond is unbreakable.
-    - **Overclocking (Fast Path):** Draining a spirit for immediate, "Overpowered" bursts of energy.
-        - **Consequence: Burnout.** The spirit becomes "Static."
-        - **Consequence: Social/Spiritual Stigma.** Future "Peaceful" spirits will refuse to bond with a "Burner." The player becomes a magnet for **Vengeful Spirits** (High Distortion/Aggressive power).
+    - **Integration (Slow Path):** Growing with a spirit over time. 
+    - **Overclocking (Fast Path):** Draining a spirit for immediate, "Overpowered" bursts. Lead to **Burnout** and a magnet for **Vengeful Spirits**.
 
 ## 6. The Nature of Manifestation
-- **Visuals:** Spirits do not have permanent physical forms to the average person. They are **Flickering Manifestations** of energy, visible only to those with high **Sync** or through specialized "Aether-Lens" tech.
-- **Narrative Role:** Spirits are not primary characters; they are the "Voice of the World's Health." Their resonance tells the story of the player's choices through color, vibration, and stability.
+- **Visuals:** Spirits are **Flickering Manifestations** of energy, visible only to those with high **Sync**.
+- **Narrative Role:** They are the "Voice of the World's Health," reflecting your choices through color and stability.
 
 ---
 ### Unresolved Design Questions
