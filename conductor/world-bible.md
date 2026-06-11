@@ -9,9 +9,14 @@
     - It allows those with low natural energy to manifest power that was previously locked away.
     - **The Risk (Spirit Burnout):** While regular use is safe, "Overclocking" or systemic greed can lead to **Burnout**—where a spirit fragment is drained to the point of becoming "Static," losing its sentience and leaving the tech (and potentially the user) scarred.
 
-## 2. The Player: The Crash Arrival
-- **The Trigger:** You didn't just appear; you **crashed**. A vehicle from your "Modern" world hit a reality-thinning "Static Spot" and was violently pulled into Eldoria.
-- **The Anomaly:** As a "Null" from a world without magic, you are the only one who can interact with both Traditional Magic and Exploitative Tech without your soul being "re-written" by the resonance.
+## 2. The Player: The Catalyst
+- **The Trigger:** You **crashed**. A vehicle from your "Modern" world hit a "Static Spot" and was pulled into Eldoria.
+- **The Null-Point Anomaly (The "Cheat"):** Because your body/soul originated in a world without magic, you are a "Systemic Anomaly." You possess a unique, maturing skill that Eldorians cannot replicate.
+    - **Potential Manifestations:**
+        - **Resonance Architecture:** The ability to "Re-Format" the frequency of any spirit or tech you touch. You don't just use magic; you rewrite its rules.
+        - **Echo-Mapping:** The ability to see the "Peak State" of any object or spirit, allowing you to "Restore" fragments to their pre-Fall glory temporarily.
+        - **The Reality Anchor:** You can project a field where magic *must* follow the laws of physics from your world, effectively "Disabling" traditional magic and "Stabilizing" tech in your vicinity.
+- **The Adaptation:** You have a "Modern Perspective" that allows you to see the logic where others see chaos.
 
 ## 2. The Adversary: The Shattered Sovereign
 - **The Vessel:** The leader of a major faction (e.g., The Iron Syndicate).
