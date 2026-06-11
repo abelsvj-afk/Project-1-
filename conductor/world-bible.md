@@ -28,10 +28,10 @@
 - **The Manifestation:** A powerful political figure driven by a blighted ancient power. No AI involvement.
 
 ## 3. Systemic Pillars
-- **Hybrid Intelligence (Infinite Dialogue):** To ensure every player experience is unique without recurring token costs, Eldoria utilizes a dual-layered dialogue system:
-    - **Layer 1: The Systemic Prose Engine (Instant):** Handles core gameplay, state updates, and immediate feedback using template-based logic. This ensures the game is fast and responsive.
-    - **Layer 2: Local Web-LLM (Infinite Flavor):** A small, high-performance model (e.g., Gemma-2B) running in the user's browser via WebGPU. It generates unique character flavor text, deep lore explanations, and non-linear conversational responses in the background.
-    - **Seeded Personalities:** Every NPC is rolled with a unique "Voice Seed" at the start of a new game, influencing both the systemic templates and the LLM's prompts.
+- **Hybrid Intelligence (Adaptive Dialogue):** To ensure a unique experience for every player regardless of hardware, Eldoria utilizes an adaptive dual-layered system:
+    - **Layer 1: Systemic Prose Engine (Universal):** Template-based dialogue driven by the current game state and the NPC's **Seeded Personality**. This provides immediate, reliable feedback for all users.
+    - **Layer 2: Local Web-LLM (High-End Fallback):** For systems with WebGPU support, a local model generates infinite, non-linear flavor text.
+    - **Graceful Degradation:** If a local LLM cannot be initialized, the engine defaults to **Seeded Procedural Variety**—utilizing a massive bank of personality-specific templates to maintain a high degree of uniqueness without the computational cost.
 - **Infinite Expandability (DLC Ready):** The QBN (Storylet) engine is designed for seamless scaling. New zones, factions, and mechanics can be "plugged in" without rewriting the core game logic, ensuring Eldoria can grow indefinitely post-release.
 - **Democratic Manipulation:** Tech allows commoners with zero magic training to **manipulate** magic via physical interfaces (levers, dials, sockets). This makes magical power a visible, tactile utility rather than just a mystical secret.
 - **The Spirit Economy (Trade):** 
