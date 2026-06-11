@@ -3,19 +3,17 @@
 ## The Foundational Mystery: The Shattered Echoes
 
 ### The Source of Magic (The Fall Theory)
-- **The Concept:** Centuries ago, a celestial world known as **Aetheria** shattered. Its inhabitants—beings of pure consciousness and energy—fell into Eldoria. 
-- **The Fragments:** These spirits are fragmented and "leaking" energy. Without a vessel, they eventually fade into "Static" or become "Blighted" (mutated/hostile).
+- **The Concept:** Aetheria shattered. Its inhabitants fell. 
+- **The Fragments:** Spirits are **Energetic Signatures**. They are not "ghosts" with voices; they are potent, fragmented entities that emit specific resonance frequencies.
+- **Traditional Magic (The Adepts):** A class of people who have existed in Eldoria for generations. They use discipline and specific physical "Focuses" to partner with spirits. To an Adept, a wand is a tuning fork; a sword is a lightning rod.
 
-### The Two Paths of Interaction
-- **Traditional Methods (The Old Ways):** Mages and warriors spend decades training their own bodies and minds to act as temporary vessels. It is a slow, spiritual partnership that is physically taxing on the human.
-- **The Tech Revolution (The New Way):** Technology provides **Artificial Vessels**. Instead of "Binding" or "Enslaving," tech can be used to provide a **Sanctuary** for these fragments. 
-- **The Ethical Duality:** 
-    - **The Exploiters (Iron Syndicate):** Use tech to "overclock" the spirits, burning them out like batteries for maximum power.
-    - **The Harmonizers (The Player's Potential Path):** Use tech to create **Resonance Chambers**. The machine stabilizes the spirit, and in return, the spirit powers the machine. It is a symbiosis that allows even those not "born" with magic to wield it safely and ethically.
+### The Tech Revolution (The New Way)
+- **The Concept:** Machines provide **External Conductors**. 
+- **The Democratic Shift:** Traditional magic takes a lifetime to master. A "Siphon-Rifle" takes five minutes. This creates a deep class divide between the "Elite" Adepts and the "Modern" commoners.
 
-## The Player: The Catalyst
-- **The Origin (Unique Isekai):** You were not just "summoned." You are a "Structural Anomaly" from a world where magic doesn't exist. Because you are "Null," you have a unique ability to act as a bridge between the physical tech and the spiritual echoes without being corrupted by them.
-- **The Adaptation:** You aren't a "goof" or a novice; you possess a "Modern Perspective" that allows you to see the logic in the magic-tech where others see only chaos or religion.
+## The Player: The Crash Catalyst
+- **The Arrival:** You crashed into Eldoria in a modern vehicle (car/plane/etc). The wreckage is a landmark in the Borderlands—a piece of "Impossible Tech" that the factions are already fighting over.
+- **The "Null" Effect:** Your modern physiology makes you a "Stable Ground." You can handle high-resonance items that would normally burn out an Eldorian.
 
 ## The Shadow of Eldoria: The Adversary
 
@@ -41,6 +39,3 @@
     - **The Foundries:** Industrial zones dedicated to Spirit-Binding.
     - **The Wild-Echoes:** Untouched forests where spirits still wander freely, hostile to any tech.
     - **The Dead-Zones:** Areas where the AI has "processed" everything, leaving only a digital/spiritual vacuum.
-
----
-*Next Step: Define the nature of the Ether to unlock the tech aesthetic.*

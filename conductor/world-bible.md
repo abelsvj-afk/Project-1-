@@ -2,10 +2,16 @@
 
 ## 1. The Foundational Mystery: The Shattered Echoes
 - **The Source (The Fall Theory):** Centuries ago, the celestial world **Aetheria** shattered. Its inhabitants—beings of pure consciousness (Spirits)—fell into Eldoria.
-- **The Fragments:** Spirits are leaking energy. Without a vessel, they fade into "Static" or become "Blighted" (hostile).
-- **The Duality:**
-    - **Traditionalists (The Old Ways):** Use training and meditation to act as human vessels (Wands/Swords). Exclusive and Pure.
-    - **Industrialists (The New Way):** Use technology to create **Artificial Vessels**. Democratic but potentially exploitative.
+- **The Fragments:** Spirits are fragmented "energetic signatures" or "frequencies." They do not speak or sing; they are raw, sentient potential that leaks energy into the world.
+- **The Duality of Mastery:**
+    - **Traditionalists (The Old Ways):** Adept humans who have spent years training their bodies to act as conductors. They use "Focuses" (Wands, Swords, Staves) to direct the natural flow of the spirits. 
+        - **Mechanic:** Relies on **Equilibrium** (Mental Composure). Requires rhythmic focus and concentration. High mastery allows for precise, clean resonance.
+    - **Industrialists (The New Way):** Those who use technology to force the spirits into stable vessels. It allows commoners to bypass years of training.
+        - **Mechanic:** Relies on **Balance** (Physical Readiness). Focuses on handling recoil, heat, and "Distortion" feedback. High power but high physical risk.
+
+## 2. The Player: The Crash Arrival
+- **The Trigger:** You didn't just appear; you **crashed**. A vehicle from your "Modern" world hit a reality-thinning "Static Spot" and was violently pulled into Eldoria.
+- **The Anomaly:** As a "Null" from a world without magic, you are the only one who can interact with both Traditional Magic and Exploitative Tech without your soul being "re-written" by the resonance.
 
 ## 2. The Adversary: The Shattered Sovereign
 - **The Vessel:** The leader of a major faction (e.g., The Iron Syndicate) who holds deep political and economic power in Eldoria.
