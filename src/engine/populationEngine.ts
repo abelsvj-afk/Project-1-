@@ -40,10 +40,10 @@ const _generateGenericNPC = (locationId: string): NPC => {
         backstory: BACKSTORIES[Math.floor(Math.random() * BACKSTORIES.length)],
         isGenerated: true,
         stats: {
-            prowess: 10,
+            vessel: 10,
             logic: 10,
             finesse: 10,
-            sync: 10,
+            resonance: 10,
             vitality: 100,
             mentality: 100
         },

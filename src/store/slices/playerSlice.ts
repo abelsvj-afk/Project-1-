@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Player, PlayerStats, Appearance, Pronouns } from '../../types/game';
-import type { PresenceMatrix } from '../../engine/presenceEngine';
+import type { Player, PlayerStats, Appearance, Pronouns, Equipment } from '../../types/game';
 
 const initialStats: PlayerStats = {
-  prowess: 10,
+  vessel: 10,
   logic: 10,
   finesse: 10,
-  sync: 10,
+  resonance: 10,
   vitality: 100,
   mentality: 100,
 };
@@ -44,6 +43,7 @@ const initialState: Player = {
   balance: 0,
   equilibrium: 0,
   inventory: [],
+  equipment: {},
   location: 'static_crater',
   history: {
     majorChoices: [],
@@ -60,6 +60,12 @@ const playerSlice = createSlice({
     updateStats: (state, action: PayloadAction<Partial<PlayerStats>>) => {
       state.stats = { ...state.stats, ...action.payload };
     },
+    spendSkillPoint: (state, action: PayloadAction<keyof PlayerStats>) => {
+      if (state.skillPoints > 0) {
+        state.stats[action.payload] += 1;
+        state.skillPoints -= 1;
+      }
+    },
     changeAlignment: (state, action: PayloadAction<number>) => {
       state.alignment = Math.max(-1000, Math.min(1000, state.alignment + action.payload));
     },
@@ -69,11 +75,34 @@ const playerSlice = createSlice({
     changeWealth: (state, action: PayloadAction<number>) => {
       state.wealth = Math.max(0, state.wealth + action.payload);
     },
-    addItem: (state, action: PayloadAction<string>) => {
+    addItem: (state, action: PayloadAction<string | Equipment>) => {
       state.inventory.push(action.payload);
     },
+    equipItem: (state, action: PayloadAction<Equipment>) => {
+      const item = action.payload;
+      const slot = item.slot as keyof Player['equipment'];
+      state.equipment[slot] = item;
+    },
+    upgradeEquipment: (state, action: PayloadAction<{ slot: keyof Player['equipment']; cost: number }>) => {
+      const { slot, cost } = action.payload;
+      const item = state.equipment[slot];
+      if (item && item.level < item.maxLevel && state.wealth >= cost) {
+        item.level += 1;
+        state.wealth -= cost;
+        // Boost attributes on upgrade based on quality
+        const boost = item.quality === 'artifact' ? 2 : 1;
+        Object.keys(item.attributes).forEach((key) => {
+          const k = key as keyof PlayerStats;
+          if (item.attributes[k] !== undefined) {
+            (item.attributes[k] as number) += boost;
+          }
+        });
+      }
+    },
     removeItem: (state, action: PayloadAction<string>) => {
-      state.inventory = state.inventory.filter(item => item !== action.payload);
+      state.inventory = state.inventory.filter(item => 
+        typeof item === 'string' ? item !== action.payload : item.id !== action.payload
+      );
     },
     gainExperience: (state, action: PayloadAction<number>) => {
       state.experience += action.payload;
@@ -81,7 +110,7 @@ const playerSlice = createSlice({
       if (state.experience >= nextLevelExp) {
         state.level += 1;
         state.experience -= nextLevelExp;
-        state.skillPoints += 5;
+        state.skillPoints += 2; // As per the master plan
       }
     },
     setBlessedAbility: (state, action: PayloadAction<string>) => {
@@ -146,7 +175,7 @@ const playerSlice = createSlice({
     applyCure: (state, action: PayloadAction<string[]>) => {
       state.afflictions = state.afflictions.filter(a => !action.payload.includes(a));
     },
-    setIdentity: (state, action: PayloadAction<{ name: string; appearance: Appearance; pronouns: Pronouns; presence: PresenceMatrix; presenceDescription: string }>) => {
+    setIdentity: (state, action: PayloadAction<{ name: string; appearance: Appearance; pronouns: Pronouns; presence: any; presenceDescription: string }>) => {
       state.name = action.payload.name;
       state.appearance = action.payload.appearance;
       state.pronouns = action.payload.pronouns;
@@ -158,10 +187,13 @@ const playerSlice = createSlice({
 
 export const {
   updateStats,
+  spendSkillPoint,
   changeAlignment,
   changePurity,
   changeWealth,
   addItem,
+  equipItem,
+  upgradeEquipment,
   removeItem,
   setLocation,
   addAffliction,

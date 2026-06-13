@@ -31,11 +31,20 @@ const Inventory: React.FC = () => {
       <h3 className="text-xs uppercase font-bold text-slate-500 mb-4 tracking-[0.2em]">Bag</h3>
       <div className="grid grid-cols-1 gap-2">
         {player.inventory.length > 0 ? (
-          player.inventory.map((item, i) => (
-            <div key={i} className="text-sm bg-slate-700 px-3 py-2 rounded border border-slate-600 text-slate-300">
-              {item.replace(/_/g, ' ')}
-            </div>
-          ))
+          player.inventory.map((item, i) => {
+            const isString = typeof item === 'string';
+            const name = isString ? item.replace(/_/g, ' ') : item.name;
+            const id = isString ? item : item.id;
+            
+            return (
+              <div key={`${id}-${i}`} className="text-sm bg-slate-700 px-3 py-2 rounded border border-slate-600 text-slate-300 flex justify-between items-center group">
+                <span>{name}</span>
+                {!isString && (
+                  <span className="text-[10px] text-amber-500 font-bold uppercase">{item.quality}</span>
+                )}
+              </div>
+            );
+          })
         ) : (
           <div className="text-sm text-slate-600 italic p-2 border border-dashed border-slate-700 rounded text-center">
             No loose items

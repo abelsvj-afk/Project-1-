@@ -5,12 +5,27 @@ export interface ReputationMatrix {
 }
 
 export interface PlayerStats {
-  prowess: number;
-  logic: number;
-  finesse: number;
-  sync: number;
+  vessel: number;     // Physical capacity for magic (Thermal)
+  logic: number;      // Mental calculation of resonance (Vector)
+  finesse: number;    // Precision in channeling (Cognitive)
+  resonance: number;  // Connection to spirits (Biomorphic)
   vitality: number;
   mentality: number;
+}
+
+export interface Equipment {
+  id: string;
+  name: string;
+  slot: 'head' | 'chest' | 'hands' | 'weapon' | 'relic';
+  quality: 'junk' | 'standard' | 'refined' | 'masterwork' | 'artifact';
+  attributes: Partial<PlayerStats>;
+  affinityBonus?: {
+    type: 'thermal' | 'vector' | 'biomorphic' | 'cognitive';
+    value: number;
+  };
+  level: number;
+  maxLevel: number; // Higher for better quality gear
+  description: string;
 }
 
 export interface BodyMarking {
@@ -56,7 +71,14 @@ export interface Player {
   afflictions: string[];
   balance: number;           // Physical readiness (ms)
   equilibrium: number;       // Mental composure (ms)
-  inventory: string[];
+  inventory: (string | Equipment)[];
+  equipment: {
+    head?: Equipment;
+    chest?: Equipment;
+    hands?: Equipment;
+    weapon?: Equipment;
+    relic?: Equipment;
+  };
   location: string;
   presence?: {
     uncanny: number;

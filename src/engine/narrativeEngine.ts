@@ -112,10 +112,10 @@ const _filterStorylets = (
 
     // Check Required Stats
     if (pre.requiredStats) {
-      if (pre.requiredStats.prowess && player.stats.prowess < pre.requiredStats.prowess) return false;
+      if ((pre.requiredStats as any).vessel && player.stats.vessel < (pre.requiredStats as any).vessel) return false;
       if (pre.requiredStats.logic && player.stats.logic < pre.requiredStats.logic) return false;
       if (pre.requiredStats.finesse && player.stats.finesse < pre.requiredStats.finesse) return false;
-      if (pre.requiredStats.sync && player.stats.sync < pre.requiredStats.sync) return false;
+      if ((pre.requiredStats as any).resonance && player.stats.resonance < (pre.requiredStats as any).resonance) return false;
     }
 
     // Check Required Items

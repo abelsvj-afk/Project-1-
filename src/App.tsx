@@ -22,6 +22,8 @@ import { triggerLootDrop } from './engine/lootEngine';
 import { simulateWorldTurn } from './engine/worldSimulationEngine';
 import { populateLocation } from './engine/populationEngine';
 
+import CharacterDossier from './components/CharacterDossier';
+
 // eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const App: React.FC = () => {
   const [activeStorylet, setActiveStorylet] = useState<Storylet | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social'>('inventory');
+  const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social' | 'dossier'>('dossier');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
   const [isNarrating, setIsNarrating] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -119,7 +121,7 @@ const App: React.FC = () => {
 
   // Storylet Filtering & Auto-TTS
   useEffect(() => {
-    if (!isInitialized) return;
+    if (!isInitialized || isNarrating || !isTTSFinished) return;
 
     const nextStorylet = dealFromDeck(storyletsData as Storylet[], state);
     
@@ -294,11 +296,11 @@ const App: React.FC = () => {
 
         {/* Right Column: Stats & Inventory */}
         <aside className="w-full md:w-80 shrink-0 flex flex-col gap-4 overflow-y-auto pr-2 pb-4">
-          <div className="shrink-0 flex bg-slate-800 p-1 rounded-lg border border-slate-700 overflow-x-auto">
-            {(['inventory', 'skills', 'blueprints', 'civic', 'social'] as const).map((tab) => (
+          <div className="flex bg-slate-900 rounded-lg p-1 border border-slate-700 gap-1 overflow-x-auto no-scrollbar">
+            {['dossier', 'inventory', 'skills', 'blueprints', 'civic', 'social'].map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => setActiveTab(tab as any)}
                 className={`flex-1 min-w-[50px] py-2 text-[8px] md:text-[9px] uppercase font-bold tracking-widest rounded transition-all ${
                   activeTab === tab ? 'bg-slate-700 text-amber-500' : 'text-slate-500 hover:text-slate-300'
                 }`}
@@ -308,7 +310,8 @@ const App: React.FC = () => {
             ))}
           </div>
           
-          <div className="flex-1 overflow-y-auto bg-slate-800 rounded-lg border border-slate-700 p-4">
+          <div className="flex-1 overflow-y-auto bg-slate-800 rounded-lg border border-slate-700 p-4 custom-scrollbar">
+            {activeTab === 'dossier' && <CharacterDossier />}
             {activeTab === 'inventory' && <Inventory />}
             {activeTab === 'skills' && <SkillTree />}
             {activeTab === 'blueprints' && <BlueprintLibrary />}
