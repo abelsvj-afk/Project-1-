@@ -39,18 +39,3 @@ This document tracks critical RPG systems identified as "missing" or "under-deve
 **The Pitfall:** Too many systems can overwhelm the player.
 **Requirements:**
 - Use the player's "Inner Monologue" (Modern Logic) as the tutorial system. The character "thinks" in Earth terms to explain the alien systems of Eldoria.
-
-## 9. NEW: TTS Monologuing
-**The Pitfall:** Long storylets with multiple speakers will use the first detected voice profile for the entire block, breaking immersion during dialogues.
-**Requirements:**
-- Split storylet content by speaker tags and queue multiple TTS utterances with different profiles for a single storylet.
-
-## 10. NEW: State Bloat (Seen Storylets)
-**The Pitfall:** In an "endless" RPG, the `seenStorylets` array will grow until it impacts performance or save-file size.
-**Requirements:**
-- Implement a "Pruning" logic or move "Seen" status into a more efficient bitmask/hash if the storylet IDs are sequential.
-
-## 11. NEW: Priority Deadlocks
-**The Pitfall:** Multiple storylets with the same high priority will still feel predictable (always the same one first).
-**Requirements:**
-- Introduce a "Tie-Breaker" (randomization or weight-based shuffle) for storylets with identical priority levels.

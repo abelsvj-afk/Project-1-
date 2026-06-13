@@ -1,14 +1,20 @@
+
 # Eldoria: Tech Stack
 
-## Frontend
-- **React 19 (TypeScript):** UI components and rendering logic.
-- **Tailwind CSS 4:** Styling and dynamic typography.
-- **Redux Toolkit:** Centralized state management for player, combat, and world state.
+## 1. Frontend Architecture
+- **Language**: TypeScript
+- **Framework**: React 19
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS / PostCSS
+- **State Management**: Redux Toolkit (with custom middleware for guardrails and logging)
 
-## Engine
-- **Vite:** Build tool and dev server.
-- **TypeScript:** Type safety for complex game data structures.
+## 2. Backend & Deployment
+- **Runtime**: Node.js (v22.x)
+- **Deployment Platform**: Fly.io
+- **Server**: Custom basic HTTP server (`server.js`) serving static assets.
 
-## Narrative & Data
-- **JSON-based Storylets:** Narrative chunks with prerequisites and effects.
-- **Procedural Text Engine:** String interpolation and state-driven morphing.
+## 3. Tooling & Infrastructure
+- **Observability & Diagnostics**: Sentry (`@sentry/react`, `@sentry/node`) for frontend and backend error tracking.
+- **Linting**: ESLint (with `@typescript-eslint`)
+- **Package Management**: npm
+- **Simulation**: `tsx` for running headless test and simulation scripts (`simulate_*.ts`).

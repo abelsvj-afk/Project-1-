@@ -1,9 +1,14 @@
-# Eldoria: Project Index
+# Project Context
 
+## Definition
 - [Product Definition](./product.md)
+- [Product Guidelines](./product-guidelines.md)
 - [Tech Stack](./tech-stack.md)
+
+## Workflow
+- [Workflow](./workflow.md)
+- [Code Style Guides](./code_styleguides/)
+
+## Management
 - [Tracks Registry](./tracks.md)
-- [World Bible](./world-bible.md)
-- [Magic & Politics Design](./magic-and-politics.md)
-- [Adversary Dossier](./villain-dossier.md)
-- [Systemic Pitfall Analysis](./pitfall-analysis.md)
+- [Tracks Directory](./tracks/)
