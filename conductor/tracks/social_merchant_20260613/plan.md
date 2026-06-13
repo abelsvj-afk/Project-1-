@@ -1,9 +1,9 @@
 # Implementation Plan: Core Social & Merchant Interactions
 
-## Phase 1: Logic & Data
+## Phase 1: Logic & Data [checkpoint: a689fa5]
 - [x] Task: Update `socialData.json` with initial inventory and pricing for Seraphina and Thorne. [checkpoint: 7650b6d]
 - [x] Task: Implement `socialMatrixMiddleware` to automate secondary relationship effects (e.g., high fear lowers trust). [checkpoint: 8b45818]
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Logic & Data' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Logic & Data' (Protocol in workflow.md)
 
 ## Phase 2: UI & Integration
 - [ ] Task: Create `TradeMenu` component to handle merchant interactions.
