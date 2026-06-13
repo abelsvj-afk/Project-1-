@@ -164,39 +164,6 @@
     ]
   },
   {
-    "id": "market_hub_main",
-    "title": "The Market Hub",
-    "content": "The Outpost Market is a frantic web of commerce and desperation. Steam vents hiss, and the smell of ozone is constant. [INNER_MONOLOGUE] 'This is where the world actually happens.' Merchants hawk fragments of technology, and scavengers recount tales of the deeper wastes. You are free to act here, but every action takes time.",
-    "priority": 10,
-    "repeatable": true,
-    "prerequisites": {
-      "location": "outpost_market"
-    },
-    "choices": [
-      {
-        "id": "hub_action_scavenge",
-        "text": "[SCAVENGE] Look for usable scrap in the outskirts.",
-        "effects": {
-          "setGlobalFlags": { "hub_action": "scavenge" }
-        }
-      },
-      {
-        "id": "hub_action_socialize",
-        "text": "[SOCIALIZE] Listen to the rumors in the tavern.",
-        "effects": {
-          "setGlobalFlags": { "hub_action": "socialize" }
-        }
-      },
-      {
-        "id": "hub_action_work",
-        "text": "[WORK] Check the Syndicate's bounty board.",
-        "effects": {
-          "setGlobalFlags": { "hub_action": "work" }
-        }
-      }
-    ]
-  },
-  {
     "id": "event_enforcer_harassment",
     "title": "Syndicate Compliance Check",
     "content": "A {npc:syndicate_enforcer_grunt} blocks your path, their iron baton sparking with static energy. They look at the light pulsing in your chest with visible disgust. 'Newcomer, isn't it? You're leaking unregistered resonance. That's a Tier 1 infraction. Pay the 50 Shard Static-Levy now, or come with us to the Watch-Side Surplus for processing.'",
@@ -531,29 +498,86 @@
       ]
       },
       {
-      "id": "merchant_thorne",
-      "title": "Thorne's Wares",
-      "content": "Old Man Thorne squats by a rusted piece of plating in the Outpost Market, rubbing his hands together. He spots you and beckons you over. 'Got some shiny things today. Cursed, mostly. But cheap! Don't ask where I got them.'",
-      "priority": 45,
-      "repeatable": true,
-      "prerequisites": {
-        "location": "outpost_market",
-        "requiredNpc": "thorne_merchant",
-        "globalFlags": { "hub_action": "none" }
-      },
-      "choices": [
-        {
-          "id": "thorne_buy",
-          "text": "[TRADE] See what he dug up.",
-          "effects": {
-            "triggerLoot": "merchant_thorne"
-          }
+        "id": "merchant_thorne",
+        "title": "Thorne's Wares",
+        "content": "Old Man Thorne squats by a rusted piece of plating in the Outpost Market, rubbing his hands together. He spots you and beckons you over. 'Got some shiny things today. Cursed, mostly. But cheap! Don't ask where I got them.'",
+        "priority": 45,
+        "repeatable": true,
+        "prerequisites": {
+          "location": "outpost_market",
+          "requiredNpc": "thorne_merchant",
+          "globalFlags": { "hub_action": "none" }
         },
-        {
-          "id": "thorne_leave",
-          "text": "Walk away.",
-          "effects": {}
-        }
-      ]
+        "choices": [
+          {
+            "id": "thorne_buy",
+            "text": "[TRADE] See what he dug up.",
+            "effects": {
+              "triggerLoot": "merchant_thorne"
+            }
+          },
+          {
+            "id": "thorne_leave",
+            "text": "Walk away.",
+            "effects": {}
+          }
+        ]
+      },
+      {
+        "id": "social_npc_chat_v1",
+        "title": "A Momentary Connection",
+        "content": "{npc:active} looks up as you approach. 'Not many folks come through here with that kind of light in their eyes,' they mutter, [NPC_REACT]. [INNER_MONOLOGUE] 'They seem open enough to talk. I might learn something about the local currents.'",
+        "priority": 25,
+        "repeatable": true,
+        "prerequisites": {
+          "globalFlags": { "hub_action": "socialize" },
+          "requiredAnyNpc": true
+        },
+        "choices": [
+          {
+            "id": "social_chat_listen",
+            "text": "Listen to their stories.",
+            "effects": {
+              "experienceGain": 15,
+              "setGlobalFlags": { "hub_action": "none" }
+            }
+          },
+          {
+            "id": "social_chat_share",
+            "text": "Share a bit of your own history.",
+            "effects": {
+              "alignmentChange": 5,
+              "experienceGain": 10,
+              "setGlobalFlags": { "hub_action": "none" }
+            }
+          }
+        ]
+      },
+      {
+        "id": "social_npc_observation_v1",
+        "title": "The Weight of Presence",
+        "content": "You watch {npc:active} from a distance for a moment. They are [NPC_REACT], seemingly absorbed in their own world. [INNER_MONOLOGUE] 'Every soul in this market has a story written in the red dust on their boots. I wonder what theirs is.'",
+        "priority": 20,
+        "repeatable": true,
+        "prerequisites": {
+          "globalFlags": { "hub_action": "socialize" },
+          "requiredAnyNpc": true
+        },
+        "choices": [
+          {
+            "id": "social_obs_approach",
+            "text": "Approach them directly.",
+            "effects": {
+              "experienceGain": 5
+            }
+          },
+          {
+            "id": "social_obs_leave",
+            "text": "Keep your distance.",
+            "effects": {
+              "setGlobalFlags": { "hub_action": "none" }
+            }
+          }
+        ]
       }
 ]

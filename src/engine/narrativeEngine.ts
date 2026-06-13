@@ -88,6 +88,12 @@ const _filterStorylets = (
         return false;
     }
 
+    // --- NEW: ANY NPC PRESENCE REQUIREMENT ---
+    if ((pre as any).requiredAnyNpc) {
+        const anyNpcPresent = Object.values(game.npcs).some(npc => npc.simulatedState.lastLocation === player.location);
+        if (!anyNpcPresent) return false;
+    }
+
     // --- NEW: WORLD MILESTONE GATING ---
     if ((pre as any).requiredMilestone && !game.knowledgeFlags.includes((pre as any).requiredMilestone)) {
         return false;
@@ -181,7 +187,19 @@ const _dealFromDeck = (storylets: Storylet[], state: RootState): Storylet | null
   const candidates = available.filter(s => (s as any).dynamicScore >= topScore - threshold);
 
   // Pick one randomly from the candidates
-  return candidates[Math.floor(Math.random() * candidates.length)];
+  const selected = candidates[Math.floor(Math.random() * candidates.length)];
+
+  // --- NEW: INJECT PRESENT NPC ID ---
+  // If the selected storylet uses 'requiredAnyNpc', we identify who is actually there
+  // and inject their ID into the state context (as a virtual flag) for interpolation.
+  if ((selected.prerequisites as any).requiredAnyNpc) {
+      const presentNpcs = Object.values(state.game.npcs).filter(npc => npc.simulatedState.lastLocation === state.player.location);
+      if (presentNpcs.length > 0) {
+          (selected as any).activeNpcId = presentNpcs[Math.floor(Math.random() * presentNpcs.length)].id;
+      }
+  }
+
+  return selected;
 };
 
 export const dealFromDeck = withDiagnostics(_dealFromDeck, 'dealFromDeck');
@@ -189,7 +207,7 @@ export const dealFromDeck = withDiagnostics(_dealFromDeck, 'dealFromDeck');
 /**
  * Replaces tags like {player.name} or {npc:kaelen} with actual values from the state.
  */
-const _interpolate = (text: string, state: RootState): string => {
+const _interpolate = (text: string, state: RootState, context?: Storylet): string => {
   const { player, game } = state;
   
   let interpolated = text
@@ -217,13 +235,19 @@ const _interpolate = (text: string, state: RootState): string => {
   // Dynamic NPC Name Reveal Logic
   const npcNameRegex = /{npc:(.*?)}/g;
   interpolated = interpolated.replace(npcNameRegex, (_match, npcId) => {
-    if (game.knownNames.includes(npcId)) {
+    let finalId = npcId;
+    if (npcId === 'active' && context) {
+        finalId = (context as any).activeNpcId || 'stranger';
+    }
+
+    if (game.knownNames.includes(finalId)) {
         // Capitalize name
-        return npcId.charAt(0).toUpperCase() + npcId.slice(1);
+        return finalId.charAt(0).toUpperCase() + finalId.slice(1);
     }
     
     // Fallback descriptors based on initial encounter logic
-    if (npcId === 'kaelen') return 'the scavenger';
+    if (finalId === 'kaelen') return 'the scavenger';
+    if (finalId === 'syndicate_enforcer_grunt') return 'the enforcer';
     return 'the stranger';
   });
 
@@ -236,10 +260,10 @@ export const interpolate = withDiagnostics(_interpolate, 'interpolate');
  * Procedural text generation based on player state (Extreme Morphing).
  * Replaces placeholders and applies conditional modifiers.
  */
-const _morphText = (text: string, state: RootState): string => {
+const _morphText = (text: string, state: RootState, context?: Storylet): string => {
   const { player } = state;
 
-  let morphed = interpolate(text, state);
+  let morphed = interpolate(text, state, context);
 
   // 2. Presence-Based Context Injection
   if (player.presence && morphed.includes('[NPC_REACT]')) {

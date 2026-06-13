@@ -10,8 +10,8 @@
 
 ## Phase 3: Content Migration
 - [x] **Scavenge Deck**: Create a set of fragment-based storylets in `storylets.json` tagged as `type: repeatable_scavenge`. [53b76aa]
-- [ ] **NPC Social Deck**: Create generic social templates that fill in `{npc:id}` based on who is present.
-- [ ] **Deprecation**: Safely delete the static `market_hub_main` and `crater_wake_repeat` storylets.
+- [x] **NPC Social Deck**: Create generic social templates that fill in `{npc:id}` based on who is present. [f8c12de]
+- [x] **Deprecation**: Safely delete the static `market_hub_main` and `crater_wake_repeat` storylets. [f8c12de]
 
 ## Phase 4: Validation
-- [ ] **New Simulation**: Create `tests/simulate_hub_loop.ts` to verify that the player can Scavenge/Socialize 50 times without encountering a "Story Stall" or identical repetition.
+- [x] **New Simulation**: Create `tests/simulate_hub_loop.ts` to verify that the player can Scavenge/Socialize 50 times without encountering a "Story Stall" or identical repetition. [a9b23f1]

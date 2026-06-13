@@ -136,7 +136,7 @@ const App: React.FC = () => {
         setIsTTSFinished(false); // TTS starts now
         
         // Add to history in store (Assembled Prose)
-        const baseContent = morphText(nextStorylet.content, state);
+        const baseContent = morphText(nextStorylet.content, state, nextStorylet);
         const assembledContent = assembleProse(state, baseContent);
         
         dispatch(addNarrativeHistory({ 
