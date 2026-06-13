@@ -9,7 +9,7 @@
 - [x] **History Consolidation**: Ensure `historyEngine.ts` is called regularly to prevent the Redux state from bloating with procedural fragments. [f9d49cc]
 
 ## Phase 3: Content Migration
-- [ ] **Scavenge Deck**: Create a set of fragment-based storylets in `storylets.json` tagged as `type: repeatable_scavenge`.
+- [x] **Scavenge Deck**: Create a set of fragment-based storylets in `storylets.json` tagged as `type: repeatable_scavenge`. [53b76aa]
 - [ ] **NPC Social Deck**: Create generic social templates that fill in `{npc:id}` based on who is present.
 - [ ] **Deprecation**: Safely delete the static `market_hub_main` and `crater_wake_repeat` storylets.
 
