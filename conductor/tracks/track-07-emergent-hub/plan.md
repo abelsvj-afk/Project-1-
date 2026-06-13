@@ -2,7 +2,7 @@
 
 ## Phase 1: Engine Foundation
 - [x] **Deck dealing logic**: Update `narrativeEngine.ts` to include a `dealFromDeck` function that handles weights and repetition protection. [cfd726b]
-- [ ] **Simulation Hookup**: Modify `App.tsx` to check `game.npcs` locations before assembling the Scene.
+- [x] **Simulation Hookup**: Modify `App.tsx` to check `game.npcs` locations before assembling the Scene. [61306ae]
 
 ## Phase 2: Hub Transformation
 - [ ] **Systemic UI Layout**: Refactor the Narrative view to show the "Base Scene" (Assembled Prose) at the top, followed by "Systemic Actions" (Fixed buttons for Scavenge/Socialize/etc).
