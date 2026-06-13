@@ -5,8 +5,8 @@
 - [x] **Simulation Hookup**: Modify `App.tsx` to check `game.npcs` locations before assembling the Scene. [61306ae]
 
 ## Phase 2: Hub Transformation
-- [ ] **Systemic UI Layout**: Refactor the Narrative view to show the "Base Scene" (Assembled Prose) at the top, followed by "Systemic Actions" (Fixed buttons for Scavenge/Socialize/etc).
-- [ ] **History Consolidation**: Ensure `historyEngine.ts` is called regularly to prevent the Redux state from bloating with procedural fragments.
+- [x] **Systemic UI Layout**: Refactor the Narrative view to show the "Base Scene" (Assembled Prose) at the top, followed by "Systemic Actions" (Fixed buttons for Scavenge/Socialize/etc). [f9d49cc]
+- [x] **History Consolidation**: Ensure `historyEngine.ts` is called regularly to prevent the Redux state from bloating with procedural fragments. [f9d49cc]
 
 ## Phase 3: Content Migration
 - [ ] **Scavenge Deck**: Create a set of fragment-based storylets in `storylets.json` tagged as `type: repeatable_scavenge`.
