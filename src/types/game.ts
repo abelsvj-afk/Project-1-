@@ -227,6 +227,7 @@ export interface NPC {
     isDead?: boolean;
     isHired?: boolean;
   };
+  disposition?: 'friendly' | 'hostile' | 'wary' | 'neutral';
 }
 
 export interface RelationshipStatus {

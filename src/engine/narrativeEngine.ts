@@ -27,10 +27,10 @@ const _assembleProse = (state: RootState, baseContent: string): string => {
 
   // 4. Autonomous Actor Context (If NPCs are at this location)
   Object.entries(game.npcs).forEach(([npcId, npcData]) => {
-    if (npcData.locationId === player.location && !player.companions.includes(npcId)) {
+    if (npcData.simulatedState.lastLocation === player.location && !player.companions.includes(npcId)) {
       const actorFrags = (fragments.actorFragments as any)[npcId];
       if (actorFrags) {
-        const frag = actorFrags[npcData.disposition] || actorFrags['neutral'];
+        const frag = actorFrags[npcData.disposition || 'neutral'] || actorFrags['neutral'];
         if (frag) assembled.push(frag);
       }
     }
@@ -84,7 +84,7 @@ const _filterStorylets = (
 
     // --- NEW: NPC PRESENCE REQUIREMENT ---
     // If a storylet requires an NPC to be at the player's location
-    if ((pre as any).requiredNpc && game.npcs[(pre as any).requiredNpc]?.locationId !== player.location) {
+    if ((pre as any).requiredNpc && game.npcs[(pre as any).requiredNpc]?.simulatedState.lastLocation !== player.location) {
         return false;
     }
 

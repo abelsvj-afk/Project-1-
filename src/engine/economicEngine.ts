@@ -1,9 +1,8 @@
 import type { RootState, AppDispatch } from '../store';
 import { changeWealth } from '../store/slices/playerSlice';
-import { incrementTime, addBounty, setGlobalFlag, evolveNPC } from '../store/slices/gameSlice';
+import { incrementTime, addBounty } from '../store/slices/gameSlice';
 import politicalData from '../data/politicalData.json';
-import socialData from '../data/socialData.json';
-import type { Property, NPC } from '../types/game';
+import type { Property } from '../types/game';
 import { consolidateHistory } from './historyEngine';
 import { withDiagnostics } from './utils/diagnostics';
 
@@ -17,7 +16,8 @@ const _processEconomicTick = (state: RootState, dispatch: AppDispatch) => {
   // 1. Advance Game Time & Consolidate History
   dispatch(incrementTime(10)); 
   consolidateHistory(state);
-  const currentTime = game.gameTime;
+
+  // 2. Property Income & Upkeep
 
   // 2. Process Real Estate Income & Upkeep
   let netIncome = 0;

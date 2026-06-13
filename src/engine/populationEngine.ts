@@ -1,6 +1,6 @@
-import { NPC } from '../types/game';
+import type { NPC } from '../types/game';
 import { withDiagnostics } from './utils/diagnostics';
-import { AppDispatch } from '../store';
+import type { AppDispatch } from '../store';
 import { addNPC } from '../store/slices/gameSlice';
 
 const FIRST_NAMES = ["Joran", "Elris", "Merrick", "Lyra", "Tess", "Cade", "Orik", "Vesper", "Sila", "Brant"];
