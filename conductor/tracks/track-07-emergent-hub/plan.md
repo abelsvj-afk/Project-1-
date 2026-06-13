@@ -4,7 +4,7 @@
 - [x] **Deck dealing logic**: Update `narrativeEngine.ts` to include a `dealFromDeck` function that handles weights and repetition protection. [cfd726b]
 - [x] **Simulation Hookup**: Modify `App.tsx` to check `game.npcs` locations before assembling the Scene. [61306ae]
 
-## Phase 2: Hub Transformation
+## Phase 2: Hub Transformation [checkpoint: c092f2e]
 - [x] **Systemic UI Layout**: Refactor the Narrative view to show the "Base Scene" (Assembled Prose) at the top, followed by "Systemic Actions" (Fixed buttons for Scavenge/Socialize/etc). [f9d49cc]
 - [x] **History Consolidation**: Ensure `historyEngine.ts` is called regularly to prevent the Redux state from bloating with procedural fragments. [f9d49cc]
 
