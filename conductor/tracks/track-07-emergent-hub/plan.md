@@ -1,6 +1,6 @@
 # Implementation Plan: Emergent Hub & Fragment Assembly
 
-## Phase 1: Engine Foundation
+## Phase 1: Engine Foundation [checkpoint: 0ccc5da]
 - [x] **Deck dealing logic**: Update `narrativeEngine.ts` to include a `dealFromDeck` function that handles weights and repetition protection. [cfd726b]
 - [x] **Simulation Hookup**: Modify `App.tsx` to check `game.npcs` locations before assembling the Scene. [61306ae]
 
