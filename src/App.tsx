@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Sentry from "@sentry/react";
 import type { RootState } from './store';
 import { setLocation, changeAlignment, changePurity, addItem, changeWealth, gainExperience, setBlessedAbility, revealBlessedSkill } from './store/slices/playerSlice';
-import { filterStorylets, morphText, assembleProse } from './engine/narrativeEngine';
+import { filterStorylets, morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
+import { processHistoryConsolidation } from './engine/historyEngine';
 import { setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, addNarrativeHistory } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
 import type { Storylet, Choice } from './types/game';
@@ -158,6 +159,11 @@ const App: React.FC = () => {
     }
   }, [player.location, player.alignment, player.purity, game.seenStorylets, game.lastChoiceId, state, activeStorylet, isInitialized, dispatch]);
 
+  // History Consolidation
+  useEffect(() => {
+    processHistoryConsolidation(state, dispatch);
+  }, [game.narrativeHistory, state, dispatch]);
+
   const toggleNarration = (text: string) => {
     if (isNarrating) {
       tts.stop();
@@ -253,7 +259,17 @@ const App: React.FC = () => {
           {/* Independent Scrolling Area for Narrative */}
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-8 scroll-smooth" id="narrative-scroll">
             {view === 'narrative' ? (
-              <>
+                <>
+                {/* PERSISTENT HUB SCENE HEADER */}
+                {!activeStorylet && (
+                    <div className="mb-8 p-4 rounded bg-slate-800/40 border border-slate-700/50 animate-in fade-in duration-1000">
+                        <div className="text-[10px] text-amber-600 uppercase font-black tracking-[0.3em] mb-2">Current Scene</div>
+                        <p className="text-xl leading-relaxed text-slate-200 first-letter:text-3xl first-letter:font-bold first-letter:text-amber-500">
+                            {assembleProse(state, "")}
+                        </p>
+                    </div>
+                )}
+
                 {game.narrativeHistory.map((item, index) => (
                   <div key={`${item.id}-${index}`} className={`animate-in fade-in slide-in-from-bottom-4 duration-700 ${item.type === 'choice' ? 'border-l-2 border-amber-500/30 pl-4 py-2 italic text-slate-400' : ''}`}>
                     {item.title && <h2 className="text-xl font-bold mb-3 text-amber-200 uppercase tracking-tight">{item.title}</h2>}
@@ -331,45 +347,70 @@ const App: React.FC = () => {
       </main>
 
       {/* KEYBOARD-STYLE STICKY CHOICES BAR */}
-      {view === 'narrative' && activeStorylet && (
+      {view === 'narrative' && (
         <div className="w-full max-w-5xl shrink-0 bg-slate-900 border-t-2 border-x-2 border-amber-500/30 rounded-t-xl p-3 md:p-5 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] z-50 mb-0 transition-transform">
            <div className="flex justify-between items-center mb-3">
              <div className="text-xs md:text-sm uppercase font-black text-amber-500 tracking-widest flex items-center">
                <span className="w-2.5 h-2.5 bg-amber-500 rounded-full mr-2 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
-               Your Move
+               {activeStorylet ? 'Your Move' : 'Systemic Actions'}
              </div>
-             <div className="flex items-center gap-4">
-                <button 
-                    onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
-                    className={`text-[10px] uppercase font-black px-4 py-1.5 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500'}`}
-                >
-                    {isNarrating ? '[ STOP ]' : '[ NARRATE ]'}
-                </button>
-                {timeLeft !== null && activeStorylet.timeLimit && (
-                    <div className="flex items-center gap-2 bg-slate-950 px-3 py-1 rounded border border-red-900/50">
-                    <span className="text-xs font-bold text-red-500 uppercase tracking-tighter">{timeLeft}s</span>
-                    <div className="w-24 bg-slate-800 h-1.5 rounded-full overflow-hidden border border-slate-700">
-                        <div 
-                        className="bg-red-500 h-full transition-all duration-1000 linear" 
-                        style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
-                        />
-                    </div>
-                    </div>
-                )}
-             </div>
+             {activeStorylet && (
+                <div className="flex items-center gap-4">
+                    <button 
+                        onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
+                        className={`text-[10px] uppercase font-black px-4 py-1.5 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500'}`}
+                    >
+                        {isNarrating ? '[ STOP ]' : '[ NARRATE ]'}
+                    </button>
+                    {timeLeft !== null && activeStorylet.timeLimit && (
+                        <div className="flex items-center gap-2 bg-slate-950 px-3 py-1 rounded border border-red-900/50">
+                        <span className="text-xs font-bold text-red-500 uppercase tracking-tighter">{timeLeft}s</span>
+                        <div className="w-24 bg-slate-800 h-1.5 rounded-full overflow-hidden border border-slate-700">
+                            <div 
+                            className="bg-red-500 h-full transition-all duration-1000 linear" 
+                            style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
+                            />
+                        </div>
+                        </div>
+                    )}
+                </div>
+             )}
            </div>
            
            <div className="flex flex-col gap-2 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
-             {activeStorylet.choices.map((choice) => (
-              <button
-                key={choice.id}
-                onClick={() => handleChoice(choice)}
-                className="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-amber-900/50 hover:border-amber-500 border border-slate-600 transition-all group flex items-center text-sm md:text-base shrink-0 shadow-sm"
-              >
-                <span className="text-amber-500 mr-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">»</span>
-                <span className="font-medium text-slate-200 group-hover:text-amber-50">{choice.text}</span>
-              </button>
-            ))}
+             {activeStorylet ? (
+                 activeStorylet.choices.map((choice) => (
+                    <button
+                      key={choice.id}
+                      onClick={() => handleChoice(choice)}
+                      className="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-amber-900/50 hover:border-amber-500 border border-slate-600 transition-all group flex items-center text-sm md:text-base shrink-0 shadow-sm"
+                    >
+                      <span className="text-amber-500 mr-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">»</span>
+                      <span className="font-medium text-slate-200 group-hover:text-amber-50">{choice.text}</span>
+                    </button>
+                  ))
+             ) : (
+                <div className="flex flex-wrap gap-3">
+                    <button 
+                        onClick={() => dispatch(setGlobalFlag({ flag: 'hub_action', value: 'scavenge' }))}
+                        className="px-6 py-3 rounded border border-amber-500/50 bg-amber-500/10 text-amber-500 font-bold uppercase tracking-widest hover:bg-amber-500 hover:text-slate-900 transition-all text-xs"
+                    >
+                        [SCAVENGE]
+                    </button>
+                    <button 
+                        onClick={() => dispatch(setGlobalFlag({ flag: 'hub_action', value: 'socialize' }))}
+                        className="px-6 py-3 rounded border border-emerald-500/50 bg-emerald-500/10 text-emerald-500 font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-slate-900 transition-all text-xs"
+                    >
+                        [SOCIALIZE]
+                    </button>
+                    <button 
+                        onClick={() => {/* TODO: Travel System */}}
+                        className="px-6 py-3 rounded border border-blue-500/50 bg-blue-500/10 text-blue-500 font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-slate-900 transition-all text-xs"
+                    >
+                        [TRAVEL]
+                    </button>
+                </div>
+             )}
            </div>
         </div>
       )}

@@ -139,6 +139,15 @@ const gameSlice = createSlice({
         state.narrativeHistory.shift();
       }
     },
+    consolidateHistory: (state, action: PayloadAction<string>) => {
+      // Keep the last 10 entries and prepend a summary
+      const summary = action.payload;
+      const recent = state.narrativeHistory.slice(-10);
+      state.narrativeHistory = [
+          { id: 'history_summary', type: 'storylet', text: summary, title: 'Previous Memories' },
+          ...recent
+      ];
+    },
     evolveNPC: (state, action: PayloadAction<{ npcId: string; aggChange?: number; fearChange?: number; observedTrait?: string }>) => {
       const { npcId, aggChange = 0, fearChange = 0, observedTrait } = action.payload;
       if (!state.npcEvolution[npcId]) {
@@ -190,6 +199,7 @@ export const {
   revealKnowledge,
   setLastChoiceId,
   addNarrativeHistory,
+  consolidateHistory,
   evolveNPC,
   logWorldEvent,
   moveNPC,
