@@ -220,18 +220,22 @@ export interface NPC {
   schedule: NPCSchedule[];
   simulatedState: {
     currentAction: string;
-    goal: 'patrol' | 'hunt_player' | 'rest' | 'trade' | 'meditate';
+    goal: string;
     lastLocation: string;
+    isDead?: boolean;
+    isHired?: boolean;
   };
 }
 
-export type RelationshipStatus = 'stranger' | 'acquaintance' | 'friend' | 'companion' | 'lover' | 'spouse' | 'parent' | 'enemy';
-
+export interface RelationshipStatus {
+  trust: number; // -100 to 100
+  romance: number; // 0 to 100
+  fear: number; // 0 to 100
+}
 
 export interface Relationship {
   npcId: string;
   status: RelationshipStatus;
-  affinity: number; // -100 to 100
   history: string[];
 }
 

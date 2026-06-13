@@ -27,6 +27,31 @@
       "neutral": "Captain Vane stands with his back to you, staring at a schematic of the crater. You can hear a faint, rhythmic clicking coming from his iron collar.",
       "wary": "Vane's eyes narrow as you approach. 'You carry a very specific frequency, traveler. One that should have died during the Fall.'",
       "hostile": "Vane gestures, and the static in the air thickens. 'You are an unregistered anomaly. Your resonance belongs to the Watch.'"
+    },
+    "seraphina": {
+      "neutral": "Seraphina is adjusting the focal dials on a brass gear-wand, humming to herself.",
+      "wary": "Seraphina pauses her tinkering, her maternal smile fading into a sharp, calculating stare.",
+      "friendly": "Seraphina waves you over enthusiastically, 'Come here, sweetie, look what I just built!'"
+    },
+    "ryker": {
+      "neutral": "Valiant Ryker stands at attention, his massive Static-Blade resting heavily on the ground.",
+      "wary": "Ryker shifts his grip on his resonance sword. 'State your business, anomaly. Quickly.'",
+      "hostile": "Ryker draws his Static-Blade. The air hums with lethal, low-energy magic. 'In the name of the Archon, stand down!'"
+    },
+    "elara_spire": {
+      "neutral": "Elara floats slightly off the ground, twirling an organic root-wand, completely ignoring the dirt below.",
+      "wary": "Elara descends an inch, her ethereal tone laced with condescension. 'You reek of metal-rot.'",
+      "hostile": "Elara's organic wand pulses with biomorphic energy. 'Your flesh-bound existence is a flaw in the weave.'"
+    },
+    "thorne_merchant": {
+      "neutral": "Old Man Thorne is rubbing his hands together, wheezing as he counts a pile of rusted shards.",
+      "wary": "Thorne clutches a cursed artifact to his chest. 'You ain't the Watch, are you? Tell me you ain't the Watch.'",
+      "friendly": "Thorne grins a toothless smile. 'Got the good stuff for you today, friend. The really shiny stuff.'"
+    },
+    "silas_wraith": {
+      "neutral": "Silas melts out of the shadows, flipping a dagger that seems to absorb the surrounding light.",
+      "wary": "Silas's eyes are dead, tracking your every movement with absolute zero emotion.",
+      "hostile": "The air goes silent. Silas has vanished. You are the target now."
     }
   },
   "appearanceFragments": [
@@ -46,6 +71,22 @@
     "kaelen": [
       "Kaelen walks a few paces behind you, hand never far from their blade.",
       "Beside you, Kaelen scans the horizon with practiced ease."
+    ],
+    "seraphina": [
+      "Seraphina trails behind you, constantly tinkering with a brass gear-wand.",
+      "You smell oil and ozone as Seraphina calibrates her gear nearby."
+    ],
+    "ryker": [
+      "Ryker marches at your side, his heavy boots shaking the dust.",
+      "Ryker's static-blade hums a low, protective tone as he watches your back."
+    ],
+    "elara_spire": [
+      "Elara drifts silently beside you, avoiding the dirt beneath her feet.",
+      "A biomorphic aura surrounds Elara, making the air around her smell of fresh rain and ozone."
+    ],
+    "silas_wraith": [
+      "You catch a glimpse of Silas in the shadows. He is there, but perfectly silent.",
+      "A sudden chill in the air reminds you that Silas the Wraith is watching over you."
     ]
   }
 }

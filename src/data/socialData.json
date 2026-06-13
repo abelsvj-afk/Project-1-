@@ -20,7 +20,9 @@
       "simulatedState": {
         "currentAction": "patrol",
         "goal": "patrol",
-        "lastLocation": "borderlands_outpost"
+        "lastLocation": "borderlands_outpost",
+        "isDead": false,
+        "isHired": false
       }
     },
     {
@@ -44,7 +46,9 @@
       "simulatedState": {
         "currentAction": "trade",
         "goal": "trade",
-        "lastLocation": "outpost_market"
+        "lastLocation": "outpost_market",
+        "isDead": false,
+        "isHired": false
       }
     },
     {
@@ -67,7 +71,137 @@
       "simulatedState": {
         "currentAction": "oversight",
         "goal": "enforce",
-        "lastLocation": "iron_watch_hq"
+        "lastLocation": "iron_watch_hq",
+        "isDead": false,
+        "isHired": false
+      }
+    },
+    {
+      "id": "seraphina",
+      "name": "Seraphina",
+      "title": "The Gear-Witch",
+      "level": 12,
+      "statusTier": 2,
+      "factionId": "scavengers",
+      "personality": {
+        "archetype": "scholar",
+        "braveryThreshold": 50,
+        "tone": "maternal but sharp, like spinning gears",
+        "vocabulary": ["calibration", "gear-wand", "currents", "sweetie", "overclock"],
+        "visualTells": ["adjusting the focal dials on her brass wand", "wiping grease from her cheek"]
+      },
+      "schedule": [
+        { "timeStart": 600, "timeEnd": 2000, "location": "borderlands_warrens", "activity": "trade" },
+        { "timeStart": 2001, "timeEnd": 599, "location": "borderlands_warrens", "activity": "tinker" }
+      ],
+      "simulatedState": {
+        "currentAction": "trade",
+        "goal": "trade",
+        "lastLocation": "borderlands_warrens",
+        "isDead": false,
+        "isHired": false
+      }
+    },
+    {
+      "id": "ryker",
+      "name": "Valiant Ryker",
+      "title": "Static-Blade Knight",
+      "level": 8,
+      "statusTier": 2,
+      "factionId": "syndicate",
+      "personality": {
+        "archetype": "pragmatist",
+        "braveryThreshold": 85,
+        "tone": "booming and rigidly formal",
+        "vocabulary": ["duty", "the Archon", "static-field", "stand down", "resonance-blade"],
+        "visualTells": ["resting his hand on a massive sword that hums with low-energy magic", "standing at rigid attention"]
+      },
+      "schedule": [
+        { "timeStart": 600, "timeEnd": 1800, "location": "borderlands_outpost", "activity": "patrol" },
+        { "timeStart": 1801, "timeEnd": 599, "location": "iron_watch_hq", "activity": "rest" }
+      ],
+      "simulatedState": {
+        "currentAction": "patrol",
+        "goal": "patrol",
+        "lastLocation": "borderlands_outpost",
+        "isDead": false,
+        "isHired": false
+      }
+    },
+    {
+      "id": "elara_spire",
+      "name": "Elara of the Spires",
+      "title": "Pure Adept",
+      "level": 14,
+      "statusTier": 3,
+      "factionId": "adepts",
+      "personality": {
+        "archetype": "zealot",
+        "braveryThreshold": 70,
+        "tone": "ethereal and slightly condescending",
+        "vocabulary": ["purity", "the weave", "metal-rot", "true magic", "flesh-bound"],
+        "visualTells": ["floating slightly off the ground", "twirling an organic, root-like wand"]
+      },
+      "schedule": [
+        { "timeStart": 0, "timeEnd": 2400, "location": "adept_spires", "activity": "meditate" }
+      ],
+      "simulatedState": {
+        "currentAction": "meditate",
+        "goal": "meditate",
+        "lastLocation": "adept_spires",
+        "isDead": false,
+        "isHired": false
+      }
+    },
+    {
+      "id": "thorne_merchant",
+      "name": "Old Man Thorne",
+      "title": "Purveyor of Cursed Goods",
+      "level": 4,
+      "statusTier": 1,
+      "factionId": "neutral",
+      "personality": {
+        "archetype": "greed",
+        "braveryThreshold": 20,
+        "tone": "wheezing and secretive",
+        "vocabulary": ["shiny", "cursed", "cheap", "don't ask where I got it", "shards"],
+        "visualTells": ["rubbing his hands together", "glancing over his shoulder nervously"]
+      },
+      "schedule": [
+        { "timeStart": 1000, "timeEnd": 1400, "location": "static_crater", "activity": "scavenge" },
+        { "timeStart": 1401, "timeEnd": 999, "location": "outpost_market", "activity": "trade" }
+      ],
+      "simulatedState": {
+        "currentAction": "trade",
+        "goal": "trade",
+        "lastLocation": "outpost_market",
+        "isDead": false,
+        "isHired": false
+      }
+    },
+    {
+      "id": "silas_wraith",
+      "name": "Silas",
+      "title": "The Null-Wraith Assassin",
+      "level": 18,
+      "statusTier": 3,
+      "factionId": "neutral",
+      "personality": {
+        "archetype": "pragmatist",
+        "braveryThreshold": 95,
+        "tone": "whisper-quiet, absolute zero emotion",
+        "vocabulary": ["target", "sever", "contract", "silence", "null-point"],
+        "visualTells": ["melting into the shadows", "flipping a dagger that absorbs light"]
+      },
+      "schedule": [
+        { "timeStart": 0, "timeEnd": 2400, "location": "dust_flats", "activity": "hunt_player" }
+      ],
+      "simulatedState": {
+        "currentAction": "stalk",
+        "goal": "hunt_player",
+        "lastLocation": "dust_flats",
+        "isDead": false,
+        "isHired": false
       }
     }
   ]

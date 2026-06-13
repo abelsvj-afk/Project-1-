@@ -89,13 +89,18 @@ const gameSlice = createSlice({
         state.ownedProperties.push(action.payload);
       }
     },
-    updateAffinity: (state, action: PayloadAction<{ npcId: string; change: number }>) => {
-      const { npcId, change } = action.payload;
-      state.affinity[npcId] = Math.max(-100, Math.min(100, (state.affinity[npcId] || 0) + change));
+    updateRelationship: (state, action: PayloadAction<{ npcId: string; type: 'trust' | 'romance' | 'fear'; change: number }>) => {
+      const { npcId, type, change } = action.payload;
+      if (!state.relationships[npcId]) {
+        state.relationships[npcId] = { trust: 0, romance: 0, fear: 0 };
+      }
+      const current = state.relationships[npcId][type];
       
-      // Basic status shift logic
-      if (state.affinity[npcId] > 50) state.relationships[npcId] = 'friend';
-      if (state.affinity[npcId] < -50) state.relationships[npcId] = 'enemy';
+      if (type === 'trust') {
+        state.relationships[npcId][type] = Math.max(-100, Math.min(100, current + change));
+      } else {
+        state.relationships[npcId][type] = Math.max(0, Math.min(100, current + change));
+      }
     },
     setRelationship: (state, action: PayloadAction<{ npcId: string; status: RelationshipStatus }>) => {
       state.relationships[action.payload.npcId] = action.payload.status;
@@ -170,7 +175,7 @@ export const {
   unlockBlueprint,
   learnSpell,
   buyProperty,
-  updateAffinity,
+  updateRelationship,
   setRelationship,
   addBounty,
   incrementTime,

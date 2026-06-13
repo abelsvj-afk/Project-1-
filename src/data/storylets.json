@@ -409,5 +409,57 @@
         }
       }
       ]
-      }
+      },
+      {
+      "id": "merchant_seraphina",
+      "title": "Seraphina's Gear-Stall",
+      "content": "You step into a cluttered stall in the Warrens. Brass gears hang from the ceiling like chimes. Seraphina, the Gear-Witch, adjusts her goggles and smiles. 'Looking to buy a wand that actually works, sweetie? Or maybe something to overclock that spirit of yours?'",
+      "priority": 50,
+      "repeatable": true,
+      "prerequisites": {
+        "location": "borderlands_warrens",
+        "requiredNpc": "seraphina",
+        "globalFlags": { "hub_action": "none" }
+      },
+      "choices": [
+        {
+          "id": "seraphina_buy",
+          "text": "[TRADE] Browse her gear and salves.",
+          "effects": {
+            "triggerLoot": "merchant_seraphina"
+          }
+        },
+        {
+          "id": "seraphina_leave",
+          "text": "Leave the stall.",
+          "effects": {}
+        }
       ]
+      },
+      {
+      "id": "merchant_thorne",
+      "title": "Thorne's Wares",
+      "content": "Old Man Thorne squats by a rusted piece of plating in the Outpost Market, rubbing his hands together. He spots you and beckons you over. 'Got some shiny things today. Cursed, mostly. But cheap! Don't ask where I got them.'",
+      "priority": 45,
+      "repeatable": true,
+      "prerequisites": {
+        "location": "outpost_market",
+        "requiredNpc": "thorne_merchant",
+        "globalFlags": { "hub_action": "none" }
+      },
+      "choices": [
+        {
+          "id": "thorne_buy",
+          "text": "[TRADE] See what he dug up.",
+          "effects": {
+            "triggerLoot": "merchant_thorne"
+          }
+        },
+        {
+          "id": "thorne_leave",
+          "text": "Walk away.",
+          "effects": {}
+        }
+      ]
+      }
+]

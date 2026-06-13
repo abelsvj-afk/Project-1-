@@ -1,17 +1,37 @@
 {
   "tables": {
     "low_wastes": [
-      { "id": "rusted_shards", "weight": 50, "type": "currency", "amount": [10, 30] },
+      { "id": "rusted_shards", "weight": 40, "type": "currency", "amount": [10, 30] },
       { "id": "bloodroot", "weight": 20, "type": "item" },
       { "id": "copper_wire", "weight": 20, "type": "junk" },
-      { "id": "epidermal_salve", "weight": 10, "type": "item" }
+      { "id": "epidermal_salve", "weight": 10, "type": "item" },
+      { "id": "fractured_wand", "weight": 5, "type": "item", "description": "A splintered wooden wand leaking raw thermal energy." },
+      { "id": "dull_dagger", "weight": 5, "type": "item", "description": "A basic iron dagger." }
     ],
     "syndicate_outpost": [
       { "id": "shards", "weight": 40, "type": "currency", "amount": [20, 60] },
       { "id": "mending_salve", "weight": 20, "type": "item" },
-      { "id": "battery_pack", "weight": 20, "type": "junk" },
+      { "id": "battery_pack", "weight": 15, "type": "junk" },
       { "id": "goldenseal", "weight": 10, "type": "item" },
-      { "id": "scrip_voucher", "weight": 10, "type": "currency", "amount": [1, 5] }
+      { "id": "scrip_voucher", "weight": 10, "type": "currency", "amount": [1, 5] },
+      { "id": "standard_issue_baton", "weight": 5, "type": "item", "description": "A heavy iron baton used by local enforcers." }
+    ],
+    "adept_spires_loot": [
+      { "id": "pure_shards", "weight": 30, "type": "currency", "amount": [50, 150] },
+      { "id": "organic_wand_core", "weight": 25, "type": "item", "description": "A pulsating core of biomorphic resonance." },
+      { "id": "cognitive_herb", "weight": 25, "type": "item", "description": "Restores equilibrium rapidly." },
+      { "id": "null_dagger_fragment", "weight": 10, "type": "item", "description": "A jagged piece of void-glass." },
+      { "id": "adept_robes", "weight": 10, "type": "item", "description": "Silk robes that offer minor resonance shielding." }
+    ],
+    "merchant_seraphina": [
+      { "id": "brass_gear_wand", "weight": 33, "type": "item", "price": 150, "description": "A wand retrofitted with mechanical focus dials." },
+      { "id": "overclock_salve", "weight": 33, "type": "item", "price": 50, "description": "Greatly restores balance but damages vitality." },
+      { "id": "syndicate_baffle_shield", "weight": 34, "type": "item", "price": 300, "description": "A portable generator that masks resonance signatures." }
+    ],
+    "merchant_thorne": [
+      { "id": "cursed_echo_ring", "weight": 25, "type": "item", "price": 200, "description": "Boosts sync, but randomly causes hallucinations." },
+      { "id": "bloodroot_bundle", "weight": 50, "type": "item", "price": 45, "description": "A large bundle of healing herbs." },
+      { "id": "shattered_static_blade", "weight": 25, "type": "item", "price": 400, "description": "A broken knight's sword that still hums with lethal energy." }
     ]
   }
 }
