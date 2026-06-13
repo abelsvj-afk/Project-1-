@@ -1,10 +1,8 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
-import { updateRelationship } from '../store/slices/gameSlice';
 
 const KinshipRoster: React.FC = () => {
-  const dispatch = useDispatch();
   const game = useSelector((state: RootState) => state.game);
   const player = useSelector((state: RootState) => state.player);
 

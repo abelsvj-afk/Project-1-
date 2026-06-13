@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../store';
 import { upgradeEquipment } from '../store/slices/playerSlice';
-import type { Equipment, PlayerStats } from '../types/game';
+import type { PlayerStats } from '../types/game';
 
 const CharacterDossier: React.FC = () => {
   const dispatch = useDispatch();
