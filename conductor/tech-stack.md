@@ -6,7 +6,7 @@
 - **Framework**: React 19
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS / PostCSS
-- **State Management**: Redux Toolkit (with custom middleware for guardrails and logging)
+- **State Management**: Redux Toolkit (with custom middleware for guardrails, logging, and social matrix cascades)
 
 ## 2. Backend & Deployment
 - **Runtime**: Node.js (v22.x)
