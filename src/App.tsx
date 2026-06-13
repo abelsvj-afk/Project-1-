@@ -269,48 +269,6 @@ const App: React.FC = () => {
               <CombatConsole />
             )}
           </div>
-
-          {view === 'narrative' && activeStorylet && (
-            <div className="shrink-0 p-4 bg-slate-900 border-t border-slate-700 space-y-3 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
-               <div className="flex justify-between items-center mb-1">
-                 <div className="text-[10px] uppercase font-bold text-slate-500 tracking-widest flex items-center">
-                   <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse" />
-                   Decision Required
-                 </div>
-                 <div className="flex items-center gap-3">
-                    <button 
-                        onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
-                        className={`text-[9px] uppercase font-black px-3 py-1 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500/50'}`}
-                    >
-                        {isNarrating ? '[ STOP ]' : '[ NARRATE ]'}
-                    </button>
-                    {timeLeft !== null && activeStorylet.timeLimit && (
-                        <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-red-500 uppercase tracking-tighter">{timeLeft}s</span>
-                        <div className="w-20 bg-slate-800 h-1 rounded-full overflow-hidden border border-slate-700">
-                            <div 
-                            className="bg-red-500 h-full transition-all duration-1000 linear" 
-                            style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
-                            />
-                        </div>
-                        </div>
-                    )}
-                 </div>
-               </div>
-               <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-2">
-                 {activeStorylet.choices.map((choice) => (
-                  <button
-                    key={choice.id}
-                    onClick={() => handleChoice(choice)}
-                    className="w-full text-left p-3 rounded bg-slate-800 hover:bg-amber-900/40 hover:border-amber-700 border border-slate-700 transition-all group flex items-center text-sm shrink-0"
-                  >
-                    <span className="text-amber-500 mr-3 opacity-0 group-hover:opacity-100 transition-opacity">»</span>
-                    <span>{choice.text}</span>
-                  </button>
-                ))}
-               </div>
-            </div>
-          )}
         </section>
 
         {/* Right Column: Stats & Inventory */}
@@ -367,7 +325,51 @@ const App: React.FC = () => {
         </aside>
       </main>
 
-      <footer className="shrink-0 w-full max-w-5xl pt-2 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em] mb-2">
+      {/* KEYBOARD-STYLE STICKY CHOICES BAR */}
+      {view === 'narrative' && activeStorylet && (
+        <div className="w-full max-w-5xl shrink-0 bg-slate-900 border-t-2 border-x-2 border-amber-500/30 rounded-t-xl p-3 md:p-5 shadow-[0_-20px_50px_rgba(0,0,0,0.8)] z-50 mb-0 transition-transform">
+           <div className="flex justify-between items-center mb-3">
+             <div className="text-xs md:text-sm uppercase font-black text-amber-500 tracking-widest flex items-center">
+               <span className="w-2.5 h-2.5 bg-amber-500 rounded-full mr-2 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.8)]" />
+               Your Move
+             </div>
+             <div className="flex items-center gap-4">
+                <button 
+                    onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
+                    className={`text-[10px] uppercase font-black px-4 py-1.5 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500'}`}
+                >
+                    {isNarrating ? '[ STOP ]' : '[ NARRATE ]'}
+                </button>
+                {timeLeft !== null && activeStorylet.timeLimit && (
+                    <div className="flex items-center gap-2 bg-slate-950 px-3 py-1 rounded border border-red-900/50">
+                    <span className="text-xs font-bold text-red-500 uppercase tracking-tighter">{timeLeft}s</span>
+                    <div className="w-24 bg-slate-800 h-1.5 rounded-full overflow-hidden border border-slate-700">
+                        <div 
+                        className="bg-red-500 h-full transition-all duration-1000 linear" 
+                        style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
+                        />
+                    </div>
+                    </div>
+                )}
+             </div>
+           </div>
+           
+           <div className="flex flex-col gap-2 max-h-[35vh] overflow-y-auto pr-2 custom-scrollbar">
+             {activeStorylet.choices.map((choice) => (
+              <button
+                key={choice.id}
+                onClick={() => handleChoice(choice)}
+                className="w-full text-left p-4 rounded-lg bg-slate-800 hover:bg-amber-900/50 hover:border-amber-500 border border-slate-600 transition-all group flex items-center text-sm md:text-base shrink-0 shadow-sm"
+              >
+                <span className="text-amber-500 mr-3 opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all">»</span>
+                <span className="font-medium text-slate-200 group-hover:text-amber-50">{choice.text}</span>
+              </button>
+            ))}
+           </div>
+        </div>
+      )}
+
+      <footer className={`w-full max-w-5xl pt-2 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em] mb-1 shrink-0 ${view === 'narrative' && activeStorylet ? 'hidden md:flex' : ''}`}>
         <div>Systemic Core v0.1.0</div>
         <div className="flex gap-4">
             <button 
