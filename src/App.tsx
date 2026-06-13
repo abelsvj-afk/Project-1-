@@ -199,14 +199,14 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-8 font-mono flex flex-col items-center transition-all-custom">
-      <header className="w-full max-w-4xl mb-8 border-b pb-4 flex justify-between items-end" style={{ borderColor: 'var(--border-color)' }}>
+    <div className="h-screen w-full overflow-hidden p-2 md:p-6 font-mono flex flex-col items-center transition-all-custom text-slate-300 bg-[#0a0a0c]">
+      <header className="shrink-0 w-full max-w-5xl mb-4 border-b pb-2 flex justify-between items-end" style={{ borderColor: 'var(--border-color)' }}>
         <div>
-          <h1 className="text-4xl font-bold tracking-tighter uppercase" style={{ color: 'var(--accent-color)' }}>Eldoria</h1>
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>A Systemic Text-Based RPG</p>
-          <div className="mt-2 text-xs font-bold" style={{ color: 'var(--accent-color)', opacity: 0.8 }}>{player.name} | {player.appearance.bodyType} | {player.appearance.hairStyle}</div>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tighter uppercase" style={{ color: 'var(--accent-color)' }}>Eldoria</h1>
+          <p className="text-xs md:text-sm" style={{ color: 'var(--text-muted)' }}>A Systemic Text-Based RPG</p>
+          <div className="mt-1 text-[10px] md:text-xs font-bold" style={{ color: 'var(--accent-color)', opacity: 0.8 }}>{player.name} | {player.appearance.bodyType} | {player.appearance.hairStyle}</div>
         </div>
-        <div className="text-right">
+        <div className="text-right hidden sm:block">
           <div className="text-xs uppercase mb-1" style={{ color: 'var(--text-muted)' }}>Status</div>
           <div className="flex gap-4">
             <div className="px-3 py-1 rounded border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
@@ -225,10 +225,10 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="w-full max-w-4xl flex-1 flex flex-col md:flex-row gap-8 overflow-hidden mb-8">
+      <main className="w-full max-w-5xl flex-1 flex flex-col md:flex-row gap-6 overflow-hidden mb-2">
         {/* Left Column: Primary Interface */}
-        <section className="flex-1 bg-slate-800 rounded-lg border border-slate-700 shadow-2xl flex flex-col overflow-hidden">
-          <div className="flex justify-between items-center p-4 border-b border-slate-700 bg-slate-800 z-10">
+        <section className="flex-1 flex flex-col bg-slate-800 rounded-lg border border-slate-700 shadow-2xl overflow-hidden relative">
+          <div className="shrink-0 flex justify-between items-center p-3 md:p-4 border-b border-slate-700 bg-slate-800 z-10">
             <div className="flex gap-4">
               <button 
                 onClick={() => setView('narrative')}
@@ -245,7 +245,8 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 space-y-8 scroll-smooth" id="narrative-scroll">
+          {/* Independent Scrolling Area for Narrative */}
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-8 scroll-smooth" id="narrative-scroll">
             {view === 'narrative' ? (
               <>
                 {game.narrativeHistory.map((item, index) => (
@@ -270,7 +271,7 @@ const App: React.FC = () => {
           </div>
 
           {view === 'narrative' && activeStorylet && (
-            <div className="p-4 bg-slate-900/80 border-t border-slate-700 space-y-3 sticky bottom-0 z-20 backdrop-blur-md">
+            <div className="shrink-0 p-4 bg-slate-900 border-t border-slate-700 space-y-3 z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
                <div className="flex justify-between items-center mb-1">
                  <div className="text-[10px] uppercase font-bold text-slate-500 tracking-widest flex items-center">
                    <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse" />
@@ -296,28 +297,30 @@ const App: React.FC = () => {
                     )}
                  </div>
                </div>
-               {activeStorylet.choices.map((choice) => (
-                <button
-                  key={choice.id}
-                  onClick={() => handleChoice(choice)}
-                  className="w-full text-left p-3 rounded bg-slate-800 hover:bg-amber-900/40 hover:border-amber-700 border border-slate-700 transition-all group flex items-center text-sm"
-                >
-                  <span className="text-amber-500 mr-3 opacity-0 group-hover:opacity-100 transition-opacity">»</span>
-                  <span>{choice.text}</span>
-                </button>
-              ))}
+               <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-2">
+                 {activeStorylet.choices.map((choice) => (
+                  <button
+                    key={choice.id}
+                    onClick={() => handleChoice(choice)}
+                    className="w-full text-left p-3 rounded bg-slate-800 hover:bg-amber-900/40 hover:border-amber-700 border border-slate-700 transition-all group flex items-center text-sm shrink-0"
+                  >
+                    <span className="text-amber-500 mr-3 opacity-0 group-hover:opacity-100 transition-opacity">»</span>
+                    <span>{choice.text}</span>
+                  </button>
+                ))}
+               </div>
             </div>
           )}
         </section>
 
         {/* Right Column: Stats & Inventory */}
-        <aside className="w-full md:w-80 space-y-6 overflow-y-auto md:overflow-visible pr-2">
-          <div className="flex bg-slate-800 p-1 rounded-t-lg border-t border-x border-slate-700 overflow-x-auto">
+        <aside className="w-full md:w-80 shrink-0 flex flex-col gap-4 overflow-y-auto pr-2 pb-4">
+          <div className="shrink-0 flex bg-slate-800 p-1 rounded-lg border border-slate-700 overflow-x-auto">
             {(['inventory', 'skills', 'blueprints', 'civic', 'social'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 min-w-[60px] py-2 text-[8px] uppercase font-bold tracking-widest rounded transition-all ${
+                className={`flex-1 min-w-[50px] py-2 text-[8px] md:text-[9px] uppercase font-bold tracking-widest rounded transition-all ${
                   activeTab === tab ? 'bg-slate-700 text-amber-500' : 'text-slate-500 hover:text-slate-300'
                 }`}
               >
@@ -326,7 +329,7 @@ const App: React.FC = () => {
             ))}
           </div>
           
-          <div className="-mt-6">
+          <div className="flex-1 overflow-y-auto bg-slate-800 rounded-lg border border-slate-700 p-4">
             {activeTab === 'inventory' && <Inventory />}
             {activeTab === 'skills' && <SkillTree />}
             {activeTab === 'blueprints' && <BlueprintLibrary />}
@@ -334,7 +337,7 @@ const App: React.FC = () => {
             {activeTab === 'social' && <KinshipRoster />}
           </div>
 
-          <div className="bg-slate-800 p-4 rounded-lg border border-slate-700 flex justify-between items-center">
+          <div className="shrink-0 bg-slate-800 p-4 rounded-lg border border-slate-700 flex justify-between items-center">
             <div>
               <h3 className="text-xs uppercase font-bold text-slate-500 mb-1 tracking-widest">Location</h3>
               <div className="text-sm text-amber-600 font-bold uppercase tracking-tight">
@@ -349,7 +352,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
+          <div className="shrink-0 bg-slate-800 p-4 rounded-lg border border-slate-700">
              <div className="flex justify-between items-center mb-2">
                 <h3 className="text-xs uppercase font-bold text-slate-500 tracking-widest">Level {player.level}</h3>
                 <span className="text-[10px] text-slate-400 font-mono">{player.experience} / {player.level * 100} XP</span>
@@ -364,7 +367,7 @@ const App: React.FC = () => {
         </aside>
       </main>
 
-      <footer className="w-full max-w-4xl pt-4 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em]">
+      <footer className="shrink-0 w-full max-w-5xl pt-2 border-t border-slate-700 text-[10px] text-slate-600 flex justify-between items-center uppercase tracking-[0.2em] mb-2">
         <div>Systemic Core v0.1.0</div>
         <div className="flex gap-4">
             <button 
