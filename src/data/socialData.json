@@ -104,7 +104,12 @@
         "lastLocation": "borderlands_warrens",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "tradeInventory": [
+        { "id": "brass_gear_wand", "price": 150, "stock": 1 },
+        { "id": "overclock_salve", "price": 50, "stock": 5 },
+        { "id": "mending_salve", "price": 30, "stock": 3 }
+      ]
     },
     {
       "id": "ryker",
@@ -184,7 +189,12 @@
         "lastLocation": "outpost_market",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "tradeInventory": [
+        { "id": "cursed_echo_ring", "price": 200, "stock": 1 },
+        { "id": "bloodroot_bundle", "price": 45, "stock": 2 },
+        { "id": "shattered_static_blade", "price": 400, "stock": 1 }
+      ]
     },
     {
       "id": "silas_wraith",
