@@ -163,6 +163,30 @@ const _filterStorylets = (
 export const filterStorylets = withDiagnostics(_filterStorylets, 'filterStorylets');
 
 /**
+ * Weighted deck dealer. 
+ * Picks the best storylet from available ones based on priority and a small amount of randomness.
+ */
+const _dealFromDeck = (storylets: Storylet[], state: RootState): Storylet | null => {
+  const available = _filterStorylets(storylets, state);
+  
+  if (available.length === 0) return null;
+
+  // The 'filtered' list is already sorted by dynamicScore descending.
+  // To implement a "Deck" feel, we pick from the top-tier candidates.
+  const topScore = (available[0] as any).dynamicScore;
+  
+  // Get all candidates within a small range of the top score to allow some variety
+  // among equally valid procedural storylets.
+  const threshold = 10; 
+  const candidates = available.filter(s => (s as any).dynamicScore >= topScore - threshold);
+
+  // Pick one randomly from the candidates
+  return candidates[Math.floor(Math.random() * candidates.length)];
+};
+
+export const dealFromDeck = withDiagnostics(_dealFromDeck, 'dealFromDeck');
+
+/**
  * Replaces tags like {player.name} or {npc:kaelen} with actual values from the state.
  */
 const _interpolate = (text: string, state: RootState): string => {
