@@ -15,7 +15,7 @@ This file tracks all major tracks for the project. Each track has its own detail
 ## [~] Track: The Shattered Arrival
 [Link](./tracks/track-01-arrival/index.md)
 ---
-## [~] Track: World Narrative Design
+## [x] Track: World Narrative Design
 [Link](./tracks/track-02-world-narrative-design/index.md)
 ---
 ## [ ] Track: The Protagonist & Identity

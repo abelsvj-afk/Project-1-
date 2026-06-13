@@ -12,6 +12,19 @@ Eldoria's technology is not sleek cyberpunk, nor is it purely whimsical steampun
 1. **Resonance Sockets:** Most high-tier weapons and armor have physical slots. Players must insert "Resonance Shards" (captured spirit fragments) to power them.
 2. **The Risk of Overclocking:** Pushing a device too hard drains the Shard. A drained Shard becomes "Static," creating a localized dead-zone where tech fails and physical reality becomes brittle.
 
+## Spirit Burnout & Static Spots
+
+**Spirit Burnout:**
+When a spirit fragment is drained of its resonance too quickly (common in Syndicate refineries), it undergoes "Burnout." The gaseous light turns into a heavy, black sludge-like residue.
+- **Environmental Impact:** Burnout residue is toxic and physically heavy. It "weights" reality, making movement sluggish and breathing difficult.
+- **Narrative Hook:** Scavengers often risk their lives to "scrub" burnout sites for any remaining high-purity flakes.
+
+**Static Spots:**
+A "Static Spot" is a localized dead-zone where the Aetherian weave has been completely torn. 
+- **The Visuals:** In a Static Spot, the world loses its color, turning into a grainy grayscale. Sounds become muffled and distorted, like a failing radio broadcast.
+- **The Danger:** Physical objects in a Static Spot become brittle. A sword might shatter like glass; a sturdy wall might crumble into fine sand.
+- **The Player's Role:** The *Echo-Anchor* is the only thing that can temporarily "re-color" a Static Spot, allowing for safe passage or the recovery of lost artifacts.
+
 ## The Borderlands Geography
 
 The Borderlands is a desolate, red-dust desert surrounding the Nexus. It is a graveyard of the "Fall."

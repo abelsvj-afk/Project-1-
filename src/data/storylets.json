@@ -554,28 +554,133 @@
         ]
       },
       {
-        "id": "social_npc_observation_v1",
-        "title": "The Weight of Presence",
-        "content": "You watch {npc:active} from a distance for a moment. They are [NPC_REACT], seemingly absorbed in their own world. [INNER_MONOLOGUE] 'Every soul in this market has a story written in the red dust on their boots. I wonder what theirs is.'",
-        "priority": 20,
-        "repeatable": true,
+        "id": "event_syndicate_patrol_intercept",
+        "title": "The Iron Watch Intercept",
+        "content": "A high-pitched whine, like a snapping cable, cuts through the red dust. Two Syndicate Enforcers emerge from behind a rusted crawler, their brass goggles reflecting the bruise-colored sky. One of them checks a clicking device on their wrist. 'Resonance signature confirmed. You're the anomaly from the crater.' They raise their thermal-rifles. [NPC_REACT]. 'Overseer Vane doesn't like loose ends in his sector. You're coming with us to the Watch, or you're staying here as scrap.'",
+        "priority": 75,
         "prerequisites": {
-          "globalFlags": { "hub_action": "socialize" },
-          "requiredAnyNpc": true
+          "location": "outpost_market",
+          "globalFlags": { "syndicate_menace_high": true }
         },
         "choices": [
           {
-            "id": "social_obs_approach",
-            "text": "Approach them directly.",
+            "id": "patrol_surrender",
+            "text": "Surrender and go quietly.",
             "effects": {
-              "experienceGain": 5
+              "moveToLocation": "iron_watch_hq",
+              "setGlobalFlags": { "syndicate_menace_high": false, "prisoner_of_vane": true }
             }
           },
           {
-            "id": "social_obs_leave",
-            "text": "Keep your distance.",
+            "id": "patrol_resist_logic",
+            "text": "[Logic 14] 'My signature is a false positive caused by your own leaking grid. Check your calibration.'",
             "effects": {
-              "setGlobalFlags": { "hub_action": "none" }
+              "experienceGain": 30,
+              "setGlobalFlags": { "syndicate_menace_high": false, "fooled_patrol": true }
+            }
+          },
+          {
+            "id": "patrol_fight",
+            "text": "Draw your weapon and fight your way out.",
+            "effects": {
+              "setGlobalFlags": { "combat_started": true, "target_npc": "syndicate_enforcer_grunt" }
+            }
+          }
+        ]
+      },
+      {
+        "id": "story_vane_interrogation",
+        "title": "Vane's Clinical Audit",
+        "content": "The Iron Watch HQ is a tomb of cold iron and ticking gears. You are strapped into a chair that hums with a low, draining frequency. Overseer Vane paces before you, his brass monocle catching the flickering gaslight. 'You are an impossibility,' he says, his tone dismissive and tired. 'A localized null-point that shouldn't exist. Tell me, traveler, which of my competitors built you? And why are you leaking so much... potential?'",
+        "priority": 85,
+        "prerequisites": {
+          "location": "iron_watch_hq",
+          "globalFlags": { "prisoner_of_vane": true }
+        },
+        "choices": [
+          {
+            "id": "vane_truth",
+            "text": "'I'm from Earth. I don't know who built this world.'",
+            "effects": {
+              "purityChange": 5,
+              "alignmentChange": -5,
+              "setGlobalFlags": { "vane_curious": true }
+            }
+          },
+          {
+            "id": "vane_lie",
+            "text": "[Logic 12] 'I'm a prototype from the Spire Adepts. Release me, or their echoes will find you.'",
+            "effects": {
+              "alignmentChange": 10,
+              "setGlobalFlags": { "vane_wary": true }
+            }
+          }
+        ]
+      },
+      {
+        "id": "hazard_static_leak_v1",
+        "title": "A Rip in the Weave",
+        "content": "The world ahead of you suddenly flickers, the red dust turning into a grainy, soundless grayscale. A discarded iron gear nearby begins to crumble into fine sand. [INNER_MONOLOGUE] 'It's a Static Spot. The reality here is becoming brittle.' You can see a spirit fragment trapped in the center, its light turning a sickly black.",
+        "priority": 30,
+        "repeatable": true,
+        "prerequisites": {
+          "location": "dust_flats"
+        },
+        "choices": [
+          {
+            "id": "static_leak_anchor",
+            "text": "[Sync 14] Use the Echo-Anchor to re-color the zone.",
+            "effects": {
+              "experienceGain": 40,
+              "addItem": ["resonance_shard"],
+              "purityChange": 5
+            }
+          },
+          {
+            "id": "static_leak_avoid",
+            "text": "[Finesse 12] Carefully navigate around the dead-zone.",
+            "effects": {
+              "experienceGain": 15
+            }
+          }
+        ]
+      },
+      {
+        "id": "event_scavenger_desperation",
+        "title": "Desperation in the Warrens",
+        "content": "A young scavenger huddles in the shadows of the Warrens, their breathing heavy with the rattle of burnout-cough. They clutch a rusted resonance-filter to their chest. 'Please,' they wheeze, [NPC_REACT]. 'This filter... it's the only thing keeping the air in my shack breathable. I'll trade you my last Shards for a bottle of mending salve.'",
+        "priority": 25,
+        "repeatable": true,
+        "prerequisites": {
+          "location": "borderlands_warrens"
+        },
+        "choices": [
+          {
+            "id": "scavenger_help",
+            "text": "Give them a Mending Salve (Costs 1 Item).",
+            "effects": {
+              "requiredItems": ["mending_salve"],
+              "purityChange": 10,
+              "alignmentChange": 5,
+              "experienceGain": 25,
+              "wealthChange": 20
+            }
+          },
+          {
+            "id": "scavenger_exploit",
+            "text": "[Prowess 12] Take the resonance-filter by force.",
+            "effects": {
+              "purityChange": -15,
+              "alignmentChange": -10,
+              "addItem": ["resonance_filter"],
+              "experienceGain": 10
+            }
+          },
+          {
+            "id": "scavenger_ignore",
+            "text": "Walk away. You have your own problems.",
+            "effects": {
+              "purityChange": -2
             }
           }
         ]

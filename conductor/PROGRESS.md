@@ -14,7 +14,7 @@ This document tracks the implementation of core systems and features as defined 
 - [x] Storylet Structure (Prerequisites, Content, Effects)
 - [ ] Complex Prerequisites (Chronological, Stat Thresholds)
 - [ ] Global Progress Bottlenecks (Clue/Flag tracking)
-- [ ] Narrative Archetypes (The Gauntlet, Sorting Hat, etc.)
+- [x] Narrative Archetypes (The Gauntlet, Sorting Hat, etc.)
 - [ ] **Dynamic Identity Injection**
     - [ ] Name/Pronoun parsing in text
     - [ ] Appearance/Wardrobe parsing in text
@@ -69,7 +69,7 @@ This document tracks the implementation of core systems and features as defined 
 - [ ] **Social & Kinship System**
     - [ ] Companion System (Employees, Friends, Animals)
     - [ ] Romance & Family (Multiple relationships, Marriage, Childbirth)
-    - [ ] Autonomous NPCs (Real personal lives and schedules)
+    - [x] Autonomous NPCs (Real personal lives and schedules)
 - [ ] **Character Creator**
     - [ ] Visual Identity UI
     - [ ] Skill Tree (Sync, Logic, Prowess, Finesse)

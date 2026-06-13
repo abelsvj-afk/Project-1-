@@ -43,3 +43,25 @@ Syla is one of the "Fading Nobility," families whose bloodlines were naturally a
 
 **Example Procedural Dialogue Base:**
 > "The air around you does not sing, traveler. It is silent. Whether you are a wound in the world or the bandage that will close it... that is what the spirits must decide."
+
+---
+
+## Kaelen (The Glass-Eyes Scavenger)
+
+**Role:** Scavenger and initial guide. Independent agent.
+**Alignment Bias:** Highly Finesse-driven, Neutral Alignment, Pure-leaning (cautious, respects the natural order but is pragmatic).
+
+**Background:**
+Orphaned during a violent Syndicate expansion, Kaelen survived the Deep Warrens by learning the hidden resonance lines of the world. He doesn't use the Syndicate's heavy tech or the Adepts' pure magic; instead, he uses "Glass-Tech"—fossilized spirit fragments ground into optics and blades. He sees the world as a predator that needs to be outsmarted, not conquered or healed.
+
+**Motivations:**
+1. Survival in the short term; finding a way out of the Borderlands in the long term.
+2. Protecting the Scavenger Warrens from being crushed between the two major factions.
+
+**Seeded Personality Matrix (For Text Engine):**
+- *Tone:* Gravelly, cautious, observant, dry humor.
+- *Vocabulary Focus:* Scrap, resonance, shards, safe-zone, static-wind, currents.
+- *Visual Tells:* Checking the horizon, sharpening a serrated glass blade, adjusting his sand-goggles.
+
+**Example Procedural Dialogue Base:**
+> "The static-wind is picking up. If you don't want your lungs filled with glass-dust, you'll follow me. And keep that light in your chest dim—it's a dinner bell for the things that live in the red."

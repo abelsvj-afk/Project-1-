@@ -1,7 +1,7 @@
 # Track: World & Narrative Design
 
 ## Status
-In Progress
+Completed
 
 ## Description
 Fleshing out the deep lore, character backstories, and narrative arcs of Eldoria to ensure a solid foundation for implementation.

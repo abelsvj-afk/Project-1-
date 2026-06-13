@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as Sentry from "@sentry/react";
 import type { RootState } from './store';
 import { setLocation, changeAlignment, changePurity, addItem, changeWealth, gainExperience, setBlessedAbility, revealBlessedSkill } from './store/slices/playerSlice';
-import { filterStorylets, morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
+import { morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
 import { processHistoryConsolidation } from './engine/historyEngine';
 import { setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, addNarrativeHistory } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
