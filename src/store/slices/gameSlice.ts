@@ -166,6 +166,11 @@ const gameSlice = createSlice({
         state.npcs[npcId].disposition = disposition;
       }
     },
+    addNPC: (state, action: PayloadAction<NPC>) => {
+      if (!state.npcs[action.payload.id]) {
+        state.npcs[action.payload.id] = action.payload;
+      }
+    },
   },
 });
 
@@ -189,6 +194,7 @@ export const {
   logWorldEvent,
   moveNPC,
   updateNPCDisposition,
+  addNPC,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

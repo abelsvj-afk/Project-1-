@@ -7,6 +7,7 @@
       "level": 3,
       "statusTier": 1,
       "factionId": "syndicate",
+      "backstory": "Recruited from the slums with the promise of regular rations, this enforcer traded their freedom for a heavy iron collar and a static-baton. They care little for the Archon's grand plans, only for their next meal.",
       "personality": {
         "archetype": "pragmatist",
         "braveryThreshold": 40,
@@ -32,6 +33,7 @@
       "level": 5,
       "statusTier": 2,
       "factionId": "scavengers",
+      "backstory": "Orphaned during a violent Syndicate expansion, Kaelen survived the Deep Warrens by learning the hidden resonance lines of the world. He trusts no one easily, but he respects survival.",
       "personality": {
         "archetype": "pragmatist",
         "braveryThreshold": 60,
@@ -58,6 +60,7 @@
       "level": 15,
       "statusTier": 3,
       "factionId": "syndicate",
+      "backstory": "Once a brilliant scholar of Aetherian history, Vane uncovered the truth of the Fall. Horrified by the chaos of raw magic, he dedicated his life to absolute order, believing that only a controlled, localized 'Second Fall' can save humanity.",
       "personality": {
         "archetype": "zealot",
         "braveryThreshold": 90,
@@ -83,6 +86,7 @@
       "level": 12,
       "statusTier": 2,
       "factionId": "scavengers",
+      "backstory": "Seraphina lost her magical sensitivity in a factory accident decades ago. Refusing to be powerless, she invented 'Gear-Wands'—mechanical foci that allow non-magical individuals to manipulate resonance.",
       "personality": {
         "archetype": "scholar",
         "braveryThreshold": 50,
@@ -109,6 +113,7 @@
       "level": 8,
       "statusTier": 2,
       "factionId": "syndicate",
+      "backstory": "Ryker is a true believer in the Syndicate's law. Lacking the innate resonance to cast spells, he relies entirely on his heavily modified Static-Blade. He views magic users with extreme suspicion.",
       "personality": {
         "archetype": "pragmatist",
         "braveryThreshold": 85,
@@ -135,6 +140,7 @@
       "level": 14,
       "statusTier": 3,
       "factionId": "adepts",
+      "backstory": "Raised in the floating crystalline towers, Elara has never touched raw earth. She views technology as a blasphemous 'metal-rot' that infects the pure weave of Aetherian magic.",
       "personality": {
         "archetype": "zealot",
         "braveryThreshold": 70,
@@ -160,6 +166,7 @@
       "level": 4,
       "statusTier": 1,
       "factionId": "neutral",
+      "backstory": "A former tomb-robber who survived a cave-in that left him half-blind and deeply paranoid. He now peddles the dangerous artifacts he unearthed, prioritizing profit over safety.",
       "personality": {
         "archetype": "greed",
         "braveryThreshold": 20,
@@ -186,6 +193,7 @@
       "level": 18,
       "statusTier": 3,
       "factionId": "neutral",
+      "backstory": "An experiment from the early days of the Syndicate's resonance-harnessing. Silas's spirit was severed, leaving him devoid of empathy or physical presence. He is a ghost bound to contracts.",
       "personality": {
         "archetype": "pragmatist",
         "braveryThreshold": 95,

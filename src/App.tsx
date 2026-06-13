@@ -19,6 +19,7 @@ import KinshipRoster from './components/KinshipRoster';
 import { tts } from './engine/ttsEngine';
 import { triggerLootDrop } from './engine/lootEngine';
 import { simulateWorldTurn } from './engine/worldSimulationEngine';
+import { populateLocation } from './engine/populationEngine';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC = () => {
@@ -37,6 +38,13 @@ const App: React.FC = () => {
   const [isTTSFinished, setIsTTSFinished] = useState(true);
 
   useWorldEngine(isInitialized);
+
+  // Populate generic NPCs when entering a new location
+  useEffect(() => {
+    if (isInitialized) {
+      populateLocation(player.location, game.npcs, dispatch);
+    }
+  }, [player.location, isInitialized, dispatch]); // We omit game.npcs to prevent infinite loops, only triggering on location change
 
   // Auto-scroll to bottom of narrative
   useEffect(() => {

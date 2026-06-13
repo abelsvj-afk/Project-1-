@@ -18,6 +18,8 @@
 
 ### 3. Companion & NPC Integration
 - NPCs must be autonomous actors with their own goals and locations.
+- **Fable-Style Population**: The world must feel densely populated. Generic NPCs (villagers, guards, scavengers) must be procedurally generated on location entry with dynamic names, jobs, and backstories.
+- **Universal Social Matrix**: EVERY NPC (canon or generated) must be fully interactable. They must have state flags for life/death, hiring, and relation axes (trust, romance, fear).
 - **Companions**: When an NPC joins as a companion, their presence must be reflected in the Fragment Engine and they must provide mechanical/narrative utility in both Narrative and Combat views.
 
 ### 4. Pervasive Guardrails & Middleware

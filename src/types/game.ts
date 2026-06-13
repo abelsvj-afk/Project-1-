@@ -210,8 +210,10 @@ export interface NPC {
   stats: PlayerStats;
   affinities: string[];
   inventory: string[];
+  backstory: string;
+  isGenerated?: boolean;
   personality: {
-    archetype: 'coward' | 'zealot' | 'pragmatist' | 'predator';
+    archetype: 'coward' | 'zealot' | 'pragmatist' | 'predator' | 'scholar' | 'greed';
     braveryThreshold: number; // Morale: 0-100, when they flee
     tone: string;
     vocabulary: string[];
