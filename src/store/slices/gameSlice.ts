@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { ReputationMatrix, Bounty, RelationshipStatus } from '../../types/game';
+import type { ReputationMatrix, Bounty, RelationshipStatus, NPC } from '../../types/game';
+import socialData from '../../data/socialData.json';
 
 interface GameStateSlice {
   reputation: ReputationMatrix;
@@ -22,9 +23,18 @@ interface GameStateSlice {
   affinity: { [npcId: string]: number };
   knownNames: string[];
 
+  // Autonomy & NPC Tracking
+  npcs: { [npcId: string]: NPC };
+  npcEvolution: { [npcId: string]: { aggression: number; fear: number; observedPlayerTraits: string[] } };
+  worldHistory: { event: string; timestamp: number }[];
+
   gameTime: number;
   currentStorylets: string[];
   seenStorylets: string[];
+  knowledgeFlags: string[];
+  lastStoryletId?: string;
+  lastChoiceId?: string;
+  narrativeHistory: { id: string; type: 'storylet' | 'choice'; text: string; title?: string }[];
 }
 
 const initialState: GameStateSlice = {
@@ -40,9 +50,17 @@ const initialState: GameStateSlice = {
   relationships: {},
   affinity: {},
   knownNames: [],
+  npcs: (socialData.npcs as any[]).reduce((acc, npc) => {
+    acc[npc.id] = npc;
+    return acc;
+  }, {} as { [npcId: string]: NPC }),
+  npcEvolution: {},
+  worldHistory: [],
   gameTime: 800, // Start at 8:00 AM
   currentStorylets: [],
   seenStorylets: [],
+  knowledgeFlags: [],
+  narrativeHistory: [],
 };
 
 const gameSlice = createSlice({
@@ -94,11 +112,53 @@ const gameSlice = createSlice({
     markStoryletSeen: (state, action: PayloadAction<string>) => {
       if (!state.seenStorylets.includes(action.payload)) {
         state.seenStorylets.push(action.payload);
+        state.lastStoryletId = action.payload;
       }
     },
     revealName: (state, action: PayloadAction<string>) => {
       if (!state.knownNames.includes(action.payload)) {
         state.knownNames.push(action.payload);
+      }
+    },
+    revealKnowledge: (state, action: PayloadAction<string>) => {
+      if (!state.knowledgeFlags.includes(action.payload)) {
+        state.knowledgeFlags.push(action.payload);
+      }
+    },
+    setLastChoiceId: (state, action: PayloadAction<string>) => {
+      state.lastChoiceId = action.payload;
+    },
+    addNarrativeHistory: (state, action: PayloadAction<{ id: string; type: 'storylet' | 'choice'; text: string; title?: string }>) => {
+      state.narrativeHistory.push(action.payload);
+      if (state.narrativeHistory.length > 100) {
+        state.narrativeHistory.shift();
+      }
+    },
+    evolveNPC: (state, action: PayloadAction<{ npcId: string; aggChange?: number; fearChange?: number; observedTrait?: string }>) => {
+      const { npcId, aggChange = 0, fearChange = 0, observedTrait } = action.payload;
+      if (!state.npcEvolution[npcId]) {
+        state.npcEvolution[npcId] = { aggression: 50, fear: 0, observedPlayerTraits: [] };
+      }
+      const npc = state.npcEvolution[npcId];
+      npc.aggression = Math.max(0, Math.min(100, npc.aggression + aggChange));
+      npc.fear = Math.max(0, Math.min(100, npc.fear + fearChange));
+      if (observedTrait && !npc.observedPlayerTraits.includes(observedTrait)) {
+        npc.observedPlayerTraits.push(observedTrait);
+      }
+    },
+    logWorldEvent: (state, action: PayloadAction<string>) => {
+      state.worldHistory.push({ event: action.payload, timestamp: state.gameTime });
+    },
+    moveNPC: (state, action: PayloadAction<{ npcId: string; locationId: string }>) => {
+      const { npcId, locationId } = action.payload;
+      if (state.npcs[npcId]) {
+        state.npcs[npcId].simulatedState.lastLocation = locationId;
+      }
+    },
+    updateNPCDisposition: (state, action: PayloadAction<{ npcId: string; disposition: 'friendly' | 'hostile' | 'wary' | 'neutral' }>) => {
+      const { npcId, disposition } = action.payload;
+      if (state.npcs[npcId]) {
+        state.npcs[npcId].disposition = disposition;
       }
     },
   },
@@ -117,6 +177,13 @@ export const {
   setCurrentStorylets,
   markStoryletSeen,
   revealName,
+  revealKnowledge,
+  setLastChoiceId,
+  addNarrativeHistory,
+  evolveNPC,
+  logWorldEvent,
+  moveNPC,
+  updateNPCDisposition,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

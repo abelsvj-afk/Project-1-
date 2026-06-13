@@ -1,4 +1,5 @@
 import type { Appearance, BodyMarking } from '../types/game';
+import { withDiagnostics } from './utils/diagnostics';
 
 export interface PresenceMatrix {
   uncanny: number;      // 0-100: How 'not right' the person looks (clashing traits)
@@ -8,7 +9,7 @@ export interface PresenceMatrix {
   factionTags: string[]; // syndicate, occult, blueprint-devotee
 }
 
-export const calculatePresence = (appearance: Appearance): PresenceMatrix => {
+const _calculatePresence = (appearance: Appearance): PresenceMatrix => {
   let uncanny = 0;
   let intimidating = 0;
   let exotic = 0;
@@ -79,10 +80,14 @@ export const calculatePresence = (appearance: Appearance): PresenceMatrix => {
   };
 };
 
-export const getPresenceDescription = (matrix: PresenceMatrix): string => {
+export const calculatePresence = withDiagnostics(_calculatePresence, 'calculatePresence');
+
+const _getPresenceDescription = (matrix: PresenceMatrix): string => {
   if (matrix.uncanny > 60) return "You look deeply uncanny, your physical form defying natural logic.";
   if (matrix.intimidating > 60) return "You radiate a dangerous, predatory aura that makes people keep their distance.";
   if (matrix.exotic > 60) return "You look like a being from another world, marked by powerful, strange lineages.";
   if (matrix.normalized > 70) return "You look like just another face in the Borderlands, easily forgotten.";
   return "You have a distinct, varied presence that defies easy categorization.";
 };
+
+export const getPresenceDescription = withDiagnostics(_getPresenceDescription, 'getPresenceDescription');

@@ -40,31 +40,59 @@
       "description": "Sudden seizures disrupt your actions.",
       "type": "mental",
       "effectOnTick": { "balanceDrain": 5, "equilibriumDrain": 5 }
+    },
+    {
+      "id": "burn",
+      "name": "Burning",
+      "description": "Your flesh is scorched by thermal currents.",
+      "type": "physical",
+      "effectOnTick": { "vitalityChange": -5 }
+    },
+    {
+      "id": "frostbite",
+      "name": "Frostbite",
+      "description": "Ice crystals damage your nervous system.",
+      "type": "physical",
+      "effectOnTick": { "balanceDrain": 5 }
+    },
+    {
+      "id": "heavy_burden",
+      "name": "Heavy Burden",
+      "description": "The weight of the world is literally crushing you.",
+      "type": "physical",
+      "effectOnTick": { "balanceDrain": 15 }
+    },
+    {
+      "id": "dissonance",
+      "name": "Mental Dissonance",
+      "description": "Multiple voices scream in your mind simultaneously.",
+      "type": "mental",
+      "effectOnTick": { "equilibriumDrain": 15 }
     }
   ],
   "cures": [
     {
       "id": "bloodroot",
       "name": "Bloodroot",
-      "cures": ["paralysis"],
+      "cures": ["paralysis", "frostbite"],
       "delivery": "ingestion"
     },
     {
       "id": "epidermal_salve",
       "name": "Epidermal Salve",
-      "cures": ["blindness"],
+      "cures": ["blindness", "burn"],
       "delivery": "topical"
     },
     {
       "id": "skullcap",
       "name": "Skullcap",
-      "cures": ["stupidity"],
+      "cures": ["stupidity", "dissonance"],
       "delivery": "smoke"
     },
     {
       "id": "mending_salve",
       "name": "Mending Salve",
-      "cures": ["broken_limbs"],
+      "cures": ["broken_limbs", "heavy_burden"],
       "delivery": "topical"
     },
     {
@@ -83,35 +111,35 @@
   "spells": [
     {
       "id": "thermal_flare",
-      "name": "Thermal Flare",
+      "name": "Thermal Flare [FLAME]",
       "description": "A rapid excitation of air particles, manifesting as a burst of flame.",
       "current": "thermal",
       "cost": { "mentality": 10, "equilibrium": 1000 },
-      "effects": { "damage": 25, "applyAfflictions": ["blindness"] }
+      "effects": { "damage": 25, "applyAfflictions": ["blindness", "burn"] }
     },
     {
       "id": "vector_crush",
-      "name": "Vector Crush",
-      "description": "A localized spike in gravimetric weight designed to shatter armor and bone.",
+      "name": "Vector Crush [STONE]",
+      "description": "A localized spike in gravimetric weight manifesting as crushing pressure.",
       "current": "vector",
       "cost": { "mentality": 15, "equilibrium": 1500 },
-      "effects": { "damage": 20, "applyAfflictions": ["broken_limbs"] }
+      "effects": { "damage": 20, "applyAfflictions": ["broken_limbs", "heavy_burden"] }
     },
     {
-      "id": "biomorphic_blight",
-      "name": "Biomorphic Blight",
-      "description": "A targeted neural breakdown inducing temporary paralysis.",
+      "id": "biomorphic_frost",
+      "name": "Biomorphic Frost [ICE]",
+      "description": "A targeted neural breakdown that flash-freezes cellular activity.",
       "current": "biomorphic",
       "cost": { "mentality": 20, "equilibrium": 2000 },
-      "effects": { "damage": 5, "applyAfflictions": ["paralysis"] }
+      "effects": { "damage": 5, "applyAfflictions": ["paralysis", "frostbite"] }
     },
     {
       "id": "cognitive_static",
-      "name": "Cognitive Static",
+      "name": "Cognitive Static [VOID]",
       "description": "A sensory phonic disruptor that leaves the target confused and uncoordinated.",
       "current": "cognitive",
       "cost": { "mentality": 15, "equilibrium": 1200 },
-      "effects": { "damage": 0, "applyAfflictions": ["stupidity", "dizziness"] }
+      "effects": { "damage": 0, "applyAfflictions": ["stupidity", "dissonance"] }
     }
   ]
 }

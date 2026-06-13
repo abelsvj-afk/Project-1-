@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../store';
 import { useCombat } from '../hooks/useCombat';
-import { applyCure, setBalance, setEquilibrium } from '../store/slices/playerSlice';
+import { applyCure, setBalance, setEquilibrium, removeItem } from '../store/slices/playerSlice';
 import combatData from '../data/combatData.json';
 import type { CombatSpell } from '../types/game';
 
@@ -49,9 +49,35 @@ const CombatConsole: React.FC = () => {
 
   const handleCure = (cureId: string) => {
     const cure = combatData.cures.find(c => c.id === cureId);
-    if (cure) {
-      dispatch(applyCure(cure.cures));
-      addLog(`You apply ${cure.name}.`, "success");
+    if (!cure) return;
+
+    if (!player.inventory.includes(cure.id)) {
+        addLog(`You don't have any ${cure.name}.`, "error");
+        return;
+    }
+
+    if (cure.delivery === 'topical' || cure.delivery === 'smoke') {
+        if (player.balance > 0) {
+            addLog("You must regain physical balance first.", "error");
+            return;
+        }
+        dispatch(setBalance(1500));
+    } else if (cure.delivery === 'ingestion' || cure.delivery === 'inhalation') {
+        if (player.equilibrium > 0) {
+            addLog("You must regain mental equilibrium first.", "error");
+            return;
+        }
+        dispatch(setEquilibrium(1500));
+    }
+
+    dispatch(removeItem(cure.id));
+    
+    const afflictionToCure = cure.cures.find(a => player.afflictions.includes(a));
+    if (afflictionToCure) {
+      dispatch(applyCure([afflictionToCure]));
+      addLog(`You cured ${afflictionToCure.replace(/_/g, ' ')} with ${cure.name}.`, "success");
+    } else {
+      addLog(`You consumed ${cure.name}, but it had no effect.`, "warn");
     }
   };
 
@@ -136,18 +162,26 @@ const CombatConsole: React.FC = () => {
           </div>
         </div>
         <div className="space-y-2">
-          <h4 className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Cures</h4>
+          <h4 className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Inventory Cures</h4>
           <div className="grid grid-cols-1 gap-1">
-            {combatData.cures.map(c => (
-              <button
-                key={c.id}
-                disabled={!inCombat}
-                onClick={() => handleCure(c.id)}
-                className="text-left px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 rounded border border-slate-700 disabled:opacity-50"
-              >
-                {c.name}
-              </button>
-            ))}
+            {combatData.cures.map(c => {
+              const count = player.inventory.filter(i => i === c.id).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={c.id}
+                  disabled={!inCombat}
+                  onClick={() => handleCure(c.id)}
+                  className="flex justify-between px-3 py-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 rounded border border-slate-700 disabled:opacity-50"
+                >
+                  <span>{c.name}</span>
+                  <span className="text-slate-500">x{count}</span>
+                </button>
+              );
+            })}
+            {combatData.cures.every(c => !player.inventory.includes(c.id)) && (
+                <div className="text-xs text-slate-600 italic px-2">No cures in inventory.</div>
+            )}
           </div>
         </div>
       </div>
@@ -163,3 +197,4 @@ const CombatConsole: React.FC = () => {
 };
 
 export default CombatConsole;
+

@@ -1,0 +1,17 @@
+{
+  "tables": {
+    "low_wastes": [
+      { "id": "rusted_shards", "weight": 50, "type": "currency", "amount": [10, 30] },
+      { "id": "bloodroot", "weight": 20, "type": "item" },
+      { "id": "copper_wire", "weight": 20, "type": "junk" },
+      { "id": "epidermal_salve", "weight": 10, "type": "item" }
+    ],
+    "syndicate_outpost": [
+      { "id": "shards", "weight": 40, "type": "currency", "amount": [20, 60] },
+      { "id": "mending_salve", "weight": 20, "type": "item" },
+      { "id": "battery_pack", "weight": 20, "type": "junk" },
+      { "id": "goldenseal", "weight": 10, "type": "item" },
+      { "id": "scrip_voucher", "weight": 10, "type": "currency", "amount": [1, 5] }
+    ]
+  }
+}

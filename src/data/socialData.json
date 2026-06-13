@@ -1,49 +1,74 @@
 {
   "npcs": [
     {
+      "id": "syndicate_enforcer_grunt",
+      "name": "Syndicate Enforcer",
+      "title": "Local Peacekeeper",
+      "level": 3,
+      "statusTier": 1,
+      "factionId": "syndicate",
+      "personality": {
+        "archetype": "pragmatist",
+        "braveryThreshold": 40,
+        "tone": "bored but dangerous",
+        "vocabulary": ["infraction", "levy", "compliance", "standard"],
+        "visualTells": ["fiddling with a baton", "adjusting a heavy iron collar"]
+      },
+      "schedule": [
+        { "timeStart": 0, "timeEnd": 2400, "location": "borderlands_outpost", "activity": "patrol" }
+      ],
+      "simulatedState": {
+        "currentAction": "patrol",
+        "goal": "patrol",
+        "lastLocation": "borderlands_outpost"
+      }
+    },
+    {
       "id": "kaelen",
       "name": "Kaelen",
+      "title": "The Glass-Eyes Scavenger",
+      "level": 5,
+      "statusTier": 2,
       "factionId": "scavengers",
       "personality": {
-        "tone": "cautious but curious",
-        "vocabulary": ["scrap", "static", "shards", "ticks"],
-        "visualTells": ["wiping dust from their coat", "checking their resonance torch"]
+        "archetype": "pragmatist",
+        "braveryThreshold": 60,
+        "tone": "gravelly and cautious",
+        "vocabulary": ["scrap", "resonance", "shards", "safe-zone"],
+        "visualTells": ["checking the horizon", "sharpening a serrated blade"]
       },
       "schedule": [
-        { "timeStart": 600, "timeEnd": 1800, "location": "borderlands_desert", "activity": "scavenging" },
-        { "timeStart": 1801, "timeEnd": 2359, "location": "borderlands_warrens", "activity": "trading at the tavern" },
-        { "timeStart": 0, "timeEnd": 599, "location": "borderlands_shack", "activity": "sleeping" }
-      ]
+        { "timeStart": 800, "timeEnd": 1800, "location": "outpost_market", "activity": "trade" },
+        { "timeStart": 1801, "timeEnd": 799, "location": "borderlands_warrens", "activity": "rest" }
+      ],
+      "simulatedState": {
+        "currentAction": "trade",
+        "goal": "trade",
+        "lastLocation": "outpost_market"
+      }
     },
     {
-      "id": "overseer_vane",
-      "name": "Overseer Vane",
-      "factionId": "iron_syndicate",
+      "id": "vane",
+      "name": "Inquisitor Vane",
+      "title": "Hand of the Iron Watch",
+      "level": 15,
+      "statusTier": 3,
+      "factionId": "syndicate",
       "personality": {
-        "tone": "clinical and dismissive",
-        "vocabulary": ["efficiency", "protocol", "statistical", "anomaly"],
-        "visualTells": ["adjusting his brass monocle", "checking his pocket-watch"]
+        "archetype": "zealot",
+        "braveryThreshold": 90,
+        "tone": "precise and cold",
+        "vocabulary": ["heresy", "resonance-leak", "purification", "order"],
+        "visualTells": ["white knuckles", "a gaze that feels like physical pressure"]
       },
       "schedule": [
-        { "timeStart": 800, "timeEnd": 1700, "location": "iron_watch_hq", "activity": "administrative duties" },
-        { "timeStart": 1701, "timeEnd": 2100, "location": "iron_watch_mess_hall", "activity": "dining" },
-        { "timeStart": 2101, "timeEnd": 759, "location": "iron_watch_officer_quarters", "activity": "sleeping" }
-      ]
-    },
-    {
-      "id": "elder_syla",
-      "name": "Elder Syla",
-      "factionId": "adepts",
-      "personality": {
-        "tone": "patient and sorrowful",
-        "vocabulary": ["resonance", "echoes", "the Fall", "distortion"],
-        "visualTells": ["closing her eyes to listen", "hands glowing with soft light"]
-      },
-      "schedule": [
-        { "timeStart": 500, "timeEnd": 1200, "location": "silent_anchor_shrine", "activity": "meditation" },
-        { "timeStart": 1201, "timeEnd": 2000, "location": "borderlands_crater", "activity": "healing the land" },
-        { "timeStart": 2001, "timeEnd": 459, "location": "silent_anchor_tent", "activity": "rest" }
-      ]
+        { "timeStart": 0, "timeEnd": 2400, "location": "iron_watch_hq", "activity": "enforce" }
+      ],
+      "simulatedState": {
+        "currentAction": "oversight",
+        "goal": "enforce",
+        "lastLocation": "iron_watch_hq"
+      }
     }
   ]
 }

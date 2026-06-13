@@ -12,20 +12,23 @@
 ## 2. The Player: The Catalyst
 - **The Trigger:** You **crashed** into Eldoria. You didn't arrive in a vehicle; you were pulled through a "Static Spot" and hit the ground with the force of a meteor.
 - **The Impact Site:** You created a **Static Crater** in the Borderlands—a zone where magic is temporarily dead and physics follow Earth's rules.
-- **The Null-Point Anomaly (The "Cheat"):** A hybrid maturing skill known as the **Echo-Anchor**.
-    - **Stage 1 (Passive/Hidden):** You unknowingly act as a "Stabilizer." Tech in your vicinity runs 20% more efficiently; spirits nearby stop flickering. You don't know why.
+- **The Null-Point Anomaly (The Echo-Anchor):** 
+    - **The Truth:** The "light" in your chest is a **Fallen Spirit** from the original collapse of Aetheria. It is not just energy; it is a consciousness fused with your physical form.
+    - **Stage 1 (Hidden Skill):** You have already been blessed with a **Unique Skill** tied to this spirit. However, you are **unaware** of it.
+    - **The Discovery Mechanic:** You must gain knowledge and resonance-stability to "Discover" this skill. Until then, it operates as a hidden variable, providing passive bonuses you cannot yet control or name.
     - **Stage 2 (Maturity):** **Echo-Mapping.** You can "Restore" objects to their peak state.
     - **Stage 3 (Mastery):** **The Reality Anchor.** You project a "Null-Zone." Magic must follow Earth's physics.
-- **The Adaptation:** You have a **Modern Perspective**. You apply Earth's logical frameworks (physics, systems engineering, triage) to Eldoria's systems. This logic is **universal**—it applies to understanding the flow of raw magic just as much as it does to repairing a brass reactor.
-- **Identity Building (True RPG Choice):** Eldoria is a "Blank Canvas." You arrive with nothing and no pre-defined role. 
-    - You are not inherently "tech-savvy" or "magic-inclined." 
-    - Your **Echo-Anchor** is a neutral tool: it can stabilize a traditional wand's focus or optimize a mechanical reactor. 
-    - You choose your build (Pure Magic, Pure Tech, or Hybrid) based on your curiosity and the world's parameters.
 
-## 2. The Adversary: The Shattered Sovereign
-- **The Vessel:** The leader of a major faction (e.g., The Iron Syndicate).
-- **The Possession:** This leader was possessed by a corrupted, high-level Spirit fragment from the original **Fall**.
-- **The Manifestation:** A powerful political figure driven by a blighted ancient power. No AI involvement.
+## 3. The Adversary: The Shattered Sovereign / Inquisitor Vane
+- **The Inquisitor's True Face:** Captain Vane and the Iron Watch are not merely "enforcers." They have a **Darker Purpose** directly connected to **The Fall**. 
+- **The Harvest:** They are systematically harvesting specific "High-Resonance" spirits to fuel a machine or ritual intended to trigger a second, controlled Fall—one that would allow the Syndicate to rewrite Eldoria's physical laws.
+- **The Secret:** Vane himself is tied to the Fall in a way that suggests he may have been the one to trigger it, or is a direct descendant of the architect of the collapse.
+
+## 4. Key Canon NPCs
+- **Kaelen (The Variable Scavenger):**
+    - **Dynamic Loyalty:** Kaelen is the player's first window into the world. His loyalty is not scripted; it is a **systemic variable**. 
+    - **The Web of Actions:** Based on player choices (saving his life, sharing loot, revealing Earth logic), Kaelen can become a lifelong companion, a bitter rival, or a double agent working for Vane.
+    - **The Secret Path:** If Kaelen's trust is high, he reveals that the Syndicate is tracking the player's specific Echo-Anchor signature.
 
 ## 3. Systemic Pillars
 - **Hybrid Intelligence (Adaptive Dialogue):** To ensure a unique experience for every player regardless of hardware, Eldoria utilizes an adaptive dual-layered system:

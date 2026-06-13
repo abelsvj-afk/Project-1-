@@ -1,0 +1,81 @@
+{
+  "nodes": [
+    {
+      "id": "static_crater",
+      "name": "Static Crater",
+      "coordinates": { "x": 500, "y": 900 },
+      "type": "wasteland",
+      "faction": "neutral",
+      "description": "A glass-edged depression where you first awakened.",
+      "connections": ["dust_flats"]
+    },
+    {
+      "id": "dust_flats",
+      "name": "The Dust Flats",
+      "coordinates": { "x": 500, "y": 700 },
+      "type": "journey",
+      "faction": "scavengers",
+      "description": "An expanse of red dust and rusted wreckage.",
+      "connections": ["static_crater", "borderlands_outpost"]
+    },
+    {
+      "id": "borderlands_outpost",
+      "name": "Borderlands Outpost",
+      "coordinates": { "x": 500, "y": 500 },
+      "type": "hub",
+      "faction": "syndicate",
+      "description": "The last bastion of 'order' before the deep wastes.",
+      "connections": ["dust_flats", "outpost_market", "iron_watch_hq", "borderlands_warrens"]
+    },
+    {
+      "id": "outpost_market",
+      "name": "Outpost Market",
+      "coordinates": { "x": 450, "y": 450 },
+      "type": "sub_node",
+      "faction": "syndicate",
+      "description": "A frantic hub of trade and desperation.",
+      "connections": ["borderlands_outpost"]
+    },
+    {
+      "id": "borderlands_warrens",
+      "name": "The Warrens",
+      "coordinates": { "x": 550, "y": 450 },
+      "type": "sub_node",
+      "faction": "scavengers",
+      "description": "A labyrinth of tunnels beneath the outpost.",
+      "connections": ["borderlands_outpost"]
+    },
+    {
+      "id": "iron_watch_hq",
+      "name": "Iron Watch HQ",
+      "coordinates": { "x": 500, "y": 300 },
+      "type": "major_hub",
+      "faction": "syndicate",
+      "description": "The monolith of the Syndicate's local power.",
+      "connections": ["borderlands_outpost", "adept_spires"]
+    },
+    {
+      "id": "adept_spires",
+      "name": "The Adept Spires",
+      "coordinates": { "x": 800, "y": 200 },
+      "type": "major_hub",
+      "faction": "adepts",
+      "description": "Floating crystalline towers pulsing with raw entropy.",
+      "connections": ["iron_watch_hq"]
+    }
+  ],
+  "regions": [
+    {
+      "id": "the_low_wastes",
+      "name": "The Low Wastes",
+      "nodes": ["static_crater", "dust_flats"],
+      "threatLevel": 1
+    },
+    {
+      "id": "syndicate_territory",
+      "name": "Syndicate Reach",
+      "nodes": ["borderlands_outpost", "outpost_market", "iron_watch_hq"],
+      "threatLevel": 2
+    }
+  ]
+}

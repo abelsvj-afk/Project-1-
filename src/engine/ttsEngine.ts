@@ -7,6 +7,7 @@ export interface SpeechOptions {
   pitch?: number;
   volume?: number;
   voice?: SpeechSynthesisVoice;
+  onend?: () => void;
 }
 
 class TTSEngine {
@@ -48,6 +49,10 @@ class TTSEngine {
 
     if (options.voice) {
       this.currentUtterance.voice = options.voice;
+    }
+
+    if (options.onend) {
+      this.currentUtterance.onend = options.onend;
     }
 
     this.synth.speak(this.currentUtterance);

@@ -14,7 +14,8 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "thermal_entropy",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "thermal" }
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "thermal" },
+          "revealKnowledge": ["spirit_merging"]
         }
       },
       {
@@ -23,7 +24,8 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "vector_resonance",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "vector" }
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "vector" },
+          "revealKnowledge": ["spirit_merging"]
         }
       },
       {
@@ -32,7 +34,8 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "biomorphic_flux",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "biomorphic" }
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "biomorphic" },
+          "revealKnowledge": ["spirit_merging"]
         }
       },
       {
@@ -41,7 +44,8 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "cognitive_distortion",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "cognitive" }
+          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "cognitive" },
+          "revealKnowledge": ["spirit_merging"]
         }
       }
     ]
@@ -55,7 +59,7 @@
     "defaultChoiceId": "crater_wake_void",
     "prerequisites": {
       "location": "static_crater",
-      "globalFlags": { "blessed_skill_awakened": true }
+      "knowledgeFlags": ["spirit_merging"]
     },
     "choices": [
       {
@@ -92,16 +96,36 @@
   },
   {
     "id": "outpost_arrival_kaelen",
-    "title": "Arriving with the Scavenger",
-    "content": "The scavenger leads you through a gap in the outpost's reinforced perimeter. The guards nod as you pass, their eyes lingering on the scavenger's knife rather than your strange arrival. {npc:kaelen} spits into the red dust. 'The Market is ahead. Find a merchant named Vane if you want to trade that light in your chest for something useful. Just don't get caught by the Syndicate patrols.'",
+    "title": "Arriving with {npc:kaelen}",
+    "content": "The scavenger leads you through a gap in the outpost's reinforced perimeter. The guards nod as you pass, their eyes lingering on {npc:kaelen}'s knife rather than your strange arrival. {npc:kaelen} spits into the red dust. 'The Market is ahead. Find a merchant named Vane if you want to trade that light in your chest for something useful. Just don't get caught by the Syndicate patrols.'",
     "priority": 50,
     "prerequisites": {
       "location": "borderlands_outpost",
-      "globalFlags": { "kaelen_path": "resonance" }
+      "lastChoiceId": "crater_wake_resonance"
     },
     "choices": [
       {
         "id": "outpost_hub_enter",
+        "text": "Enter the Market Hub.",
+        "effects": {
+          "moveToLocation": "outpost_market",
+          "experienceGain": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "outpost_arrival_distortion",
+    "title": "Shadow of the Curse",
+    "content": "{npc:kaelen} keeps a wary distance as you approach the outpost. 'You've got a sharp tongue and a strange light, stranger,' they mutter, 'but the Syndicate doesn't like loose ends. I'll get you inside, but after that, you're on your own.'",
+    "priority": 50,
+    "prerequisites": {
+      "location": "borderlands_outpost",
+      "lastChoiceId": "crater_wake_distortion"
+    },
+    "choices": [
+      {
+        "id": "outpost_hub_enter_dist",
         "text": "Enter the Market Hub.",
         "effects": {
           "moveToLocation": "outpost_market",
@@ -117,7 +141,7 @@
     "priority": 50,
     "prerequisites": {
       "location": "borderlands_outpost",
-      "globalFlags": { "kaelen_path": "void" }
+      "lastChoiceId": "crater_wake_void"
     },
     "choices": [
       {
@@ -173,34 +197,217 @@
     ]
   },
   {
-    "id": "event_scavenge_find",
-    "title": "Wasteland Scavenging",
-    "content": "You spend hours combing through the jagged debris of a fallen Aetherian tower. Your {player.blessedAbility} hums as you near a cluster of buried conduits. [INNER_MONOLOGUE] 'There's still energy here. I can feel it.'",
+    "id": "event_enforcer_harassment",
+    "title": "Syndicate Compliance Check",
+    "content": "A {npc:syndicate_enforcer_grunt} blocks your path, their iron baton sparking with static energy. They look at the light pulsing in your chest with visible disgust. 'Newcomer, isn't it? You're leaking unregistered resonance. That's a Tier 1 infraction. Pay the 50 Shard Static-Levy now, or come with us to the Watch-Side Surplus for processing.'",
+    "priority": 25,
+    "prerequisites": {
+      "location": "outpost_market",
+      "npc_loc_syndicate_enforcer_grunt": "outpost_market"
+    },
+    "choices": [
+      {
+        "id": "enforcer_pay_levy",
+        "text": "Pay the levy (50 Shards).",
+        "effects": {
+          "wealthChange": -50,
+          "experienceGain": 5
+        }
+      },
+      {
+        "id": "enforcer_persuade",
+        "text": "[Logic 12] Explain that your 'static' is actually a byproduct of a new energy-saving blueprint.",
+        "effects": {
+          "experienceGain": 20,
+          "setGlobalFlags": { "enforcer_fooled": true }
+        }
+      },
+      {
+        "id": "enforcer_fight",
+        "text": "Refuse and draw your weapon.",
+        "effects": {
+          "setGlobalFlags": { "combat_started": true, "target_npc": "syndicate_enforcer_grunt" }
+        }
+      }
+    ]
+  },
+  {
+    "id": "event_socialize_tavern",
+    "title": "The Rusty Gear Tavern",
+    "content": "You push through the heavy leather flaps of the local tavern. It smells of stale beer and burning sage. In the corner, a merchant is hawking curative salves. At the bar, a drunken engineer is rambling about the inefficiency of the local steam engines. [INNER_MONOLOGUE] 'I could probably fix that engine if I showed them the Rankine cycle.'",
     "priority": 20,
     "repeatable": true,
+    "prerequisites": {
+      "location": "outpost_market",
+      "globalFlags": { "hub_action": "socialize" }
+    },
+    "choices": [
+      {
+        "id": "tavern_buy_salve",
+        "text": "Buy an Epidermal Salve (20 Shards).",
+        "effects": {
+          "wealthChange": -20,
+          "addItem": ["epidermal_salve"],
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      },
+      {
+        "id": "tavern_buy_bloodroot",
+        "text": "Buy Bloodroot Herb (15 Shards).",
+        "effects": {
+          "wealthChange": -15,
+          "addItem": ["bloodroot"],
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      },
+      {
+        "id": "tavern_share_blueprint",
+        "text": "[Logic 12] Explain the Rankine Cycle to the engineer.",
+        "effects": {
+          "experienceGain": 40,
+          "alignmentChange": 5,
+          "setGlobalFlags": { "hub_action": "none" },
+          "revealKnowledge": ["steam_cycle"]
+        }
+      },
+      {
+        "id": "tavern_chat_kaelen",
+        "text": "Talk to {npc:kaelen} at the bar.",
+        "effects": {
+          "setGlobalFlags": { "hub_action": "chat_kaelen" }
+        }
+      },
+      {
+        "id": "tavern_leave",
+        "text": "Have a drink and leave.",
+        "effects": {
+          "wealthChange": -5,
+          "experienceGain": 5,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      }
+    ]
+  },
+  {
+    "id": "story_kaelen_warning",
+    "title": "A Gravelly Warning",
+    "content": "{npc:kaelen} looks up from their murky drink. 'You're making too much noise, {player.name}. The static you're dragging behind you is like a flare in the void. Captain Vane has already sent a search party for the source. If you don't find a way to mask that resonance, you'll meet Thorne sooner than you'd like.'",
+    "priority": 30,
+    "prerequisites": {
+      "globalFlags": { "hub_action": "chat_kaelen", "npc_loc_kaelen": "borderlands_warrens" }
+    },
+    "choices": [
+      {
+        "id": "kaelen_ask_vane",
+        "text": "'Who is Captain Vane?'",
+        "effects": {
+          "setGlobalFlags": { "hub_action": "none", "story_progress": "knows_vane" },
+          "revealKnowledge": ["syndicate_hierarchy"]
+        }
+      }
+    ]
+  },
+  {
+    "id": "story_vane_summon",
+    "title": "The Captain's Summons",
+    "content": "Two Syndicate Enforcers corner you outside the market. 'Captain Vane requests your presence at the Iron Watch HQ. He doesn't like it when anomalies wander his territory without an audit. Don't make this difficult.'",
+    "priority": 80,
+    "prerequisites": {
+      "location": "outpost_market",
+      "requiredMilestone": "reached_outpost",
+      "globalFlags": { "story_progress": "knows_vane" },
+      "minWealth": 300
+    },
+    "choices": [
+      {
+        "id": "vane_accept",
+        "text": "Follow them to the HQ.",
+        "effects": {
+          "moveToLocation": "iron_watch_hq",
+          "setGlobalFlags": { "story_progress": "vane_meeting" }
+        }
+      },
+      {
+        "id": "vane_refuse",
+        "text": "Run for the Warrens.",
+        "effects": {
+          "moveToLocation": "borderlands_warrens",
+          "setGlobalFlags": { "story_progress": "vane_evaded" },
+          "experienceGain": 10
+        }
+      }
+    ]
+    },
+    {
+    "id": "journey_crater_to_outpost",
+    "title": "The Glass Desert",
+    "content": "The walk to the outpost is a test of endurance. The red dust clogs your lungs, and the rhythmic pulsing of the world is deafening in the silence. [INNER_MONOLOGUE] 'If this is the world now, I need to adapt fast.' You pass the skeletal remains of a steam-crawler, its brass gears partially fused by entropy. You can feel the residue of a massive energy discharge here.",
+    "priority": 60,
+    "prerequisites": {
+      "location": "dust_flats"
+    },
+    "choices": [
+      {
+        "id": "journey_scavenge_wreck",
+        "text": "[SCAVENGE] Search the crawler for parts.",
+        "effects": {
+          "wealthChange": 25,
+          "experienceGain": 15,
+          "moveToLocation": "borderlands_outpost"
+        }
+      },
+      {
+        "id": "journey_push_on",
+        "text": "Keep moving. The outpost is in sight.",
+        "effects": {
+          "moveToLocation": "borderlands_outpost",
+          "experienceGain": 5,
+          "revealKnowledge": ["reached_outpost"]
+        }
+      }
+    ]
+    },
+    {
+    "id": "outcome_hub_scavenge",
+    "title": "Scavenging Results",
+    "content": "You spend hours combing the outskirts of the market. The ground is littered with 'Ghost-Static'—the psychic residue of forgotten memories. You manage to find: {game.lastLoot}. [INNER_MONOLOGUE] 'It's not much, but it's a start.'",
+    "priority": 25,
     "prerequisites": {
       "location": "outpost_market",
       "globalFlags": { "hub_action": "scavenge" }
     },
     "choices": [
       {
-        "id": "scavenge_loot_iron",
-        "text": "Extract the Iron Syndicate plating.",
+        "id": "scavenge_success",
+        "text": "Return to the Market Hub.",
         "effects": {
-          "addItem": ["iron_scrap"],
-          "experienceGain": 15,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      },
-      {
-        "id": "scavenge_loot_resonance",
-        "text": "[Sync 12] Siphon the residual resonance dust.",
-        "effects": {
-          "addItem": ["resonance_dust"],
-          "experienceGain": 25,
+          "triggerLoot": "low_wastes",
+          "experienceGain": 10,
           "setGlobalFlags": { "hub_action": "none" }
         }
       }
-    ]
-  }
-]
+      ]
+      },
+      {
+      "id": "discover_blessed_skill",
+      "title": "A Resonance Realized",
+      "content": "You focus on the {player.blessedSkill}. As you apply your understanding of systemic resonance, the 'warmth' in your marrow suddenly crystallizes into a name and a function. [INNER_MONOLOGUE] 'It's not just heat. It's a signature. I can... stabilize the air around me.'",
+      "priority": 95,
+      "prerequisites": {
+      "knowledgeFlags": ["spirit_merging"],
+      "requiredStats": { "sync": 15 },
+      "globalFlags": { "skill_discovery_imminent": true }
+      },
+      "choices": [
+      {
+        "id": "skill_awakened",
+        "text": "Embrace the Echo-Anchor.",
+        "effects": {
+          "revealBlessedSkill": true,
+          "experienceGain": 50,
+          "setGlobalFlags": { "skill_discovery_imminent": false }
+        }
+      }
+      ]
+      }
+      ]

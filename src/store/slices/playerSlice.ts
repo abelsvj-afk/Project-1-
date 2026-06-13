@@ -36,6 +36,7 @@ const initialState: Player = {
   level: 1,
   experience: 0,
   skillPoints: 0,
+  isBlessedSkillRevealed: false,
   alignment: 0,
   purity: 0,
   wealth: 100,
@@ -66,7 +67,7 @@ const playerSlice = createSlice({
       state.purity = Math.max(-1000, Math.min(1000, state.purity + action.payload));
     },
     changeWealth: (state, action: PayloadAction<number>) => {
-      state.wealth += action.payload;
+      state.wealth = Math.max(0, state.wealth + action.payload);
     },
     addItem: (state, action: PayloadAction<string>) => {
       state.inventory.push(action.payload);
@@ -85,6 +86,9 @@ const playerSlice = createSlice({
     },
     setBlessedAbility: (state, action: PayloadAction<string>) => {
       state.blessedAbility = action.payload;
+    },
+    revealBlessedSkill: (state) => {
+      state.isBlessedSkillRevealed = true;
     },
     addCompanion: (state, action: PayloadAction<string>) => {
       if (!state.companions.includes(action.payload)) {
@@ -174,6 +178,9 @@ export const {
   changeMenace,
   gainExperience,
   setBlessedAbility,
+  revealBlessedSkill,
+  addCompanion,
+  removeCompanion,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

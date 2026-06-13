@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as Sentry from "@sentry/react";
 import type { RootState } from './store';
-import { setLocation, changeAlignment, changePurity, addItem, changeWealth, gainExperience, setBlessedAbility } from './store/slices/playerSlice';
-import { filterStorylets, morphText } from './engine/narrativeEngine';
-import { setGlobalFlag, markStoryletSeen, revealName } from './store/slices/gameSlice';
+import { setLocation, changeAlignment, changePurity, addItem, changeWealth, gainExperience, setBlessedAbility, revealBlessedSkill } from './store/slices/playerSlice';
+import { filterStorylets, morphText, assembleProse } from './engine/narrativeEngine';
+import { setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, addNarrativeHistory } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
 import type { Storylet, Choice } from './types/game';
 import CharacterCreator from './components/CharacterCreator';
@@ -12,10 +12,13 @@ import Inventory from './components/Inventory';
 import SkillTree from './components/SkillTree';
 import BlueprintLibrary from './components/BlueprintLibrary';
 import CombatConsole from './components/CombatConsole';
+import LoadingScreen from './components/LoadingScreen';
 import { useWorldEngine } from './hooks/useWorldEngine';
 import CivicDashboard from './components/CivicDashboard';
 import KinshipRoster from './components/KinshipRoster';
 import { tts } from './engine/ttsEngine';
+import { triggerLootDrop } from './engine/lootEngine';
+import { simulateWorldTurn } from './engine/worldSimulationEngine';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC = () => {
@@ -25,12 +28,13 @@ const App: React.FC = () => {
   const state = useSelector((state: RootState) => state);
 
   const [activeStorylet, setActiveStorylet] = useState<Storylet | null>(null);
-  const [narrativeHistory, setNarrativeHistory] = useState<{ id: string; type: 'storylet' | 'choice'; text: string; title?: string }[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social'>('inventory');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
   const [isNarrating, setIsNarrating] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [isTTSFinished, setIsTTSFinished] = useState(true);
 
   useWorldEngine(isInitialized);
 
@@ -40,16 +44,18 @@ const App: React.FC = () => {
     if (scrollAnchor) {
       scrollAnchor.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [narrativeHistory]);
+  }, [game.narrativeHistory]);
 
   const handleChoice = React.useCallback((choice: Choice) => {
     const { effects } = choice;
     tts.stop();
     setIsNarrating(false);
-    setTimeLeft(null); // Clear timer on choice
+    setTimeLeft(null); 
+    setIsTTSFinished(true);
 
-    // Add choice to history
-    setNarrativeHistory(prev => [...prev, { id: choice.id, type: 'choice', text: choice.text }]);
+    // Add choice to history in store
+    dispatch(addNarrativeHistory({ id: choice.id, type: 'choice', text: choice.text }));
+    dispatch(setLastChoiceId(choice.id));
 
     if (effects.alignmentChange) dispatch(changeAlignment(effects.alignmentChange));
     if (effects.purityChange) dispatch(changePurity(effects.purityChange));
@@ -68,14 +74,26 @@ const App: React.FC = () => {
     if (effects.revealNames) {
         effects.revealNames.forEach(name => dispatch(revealName(name)));
     }
+    if (effects.revealKnowledge) {
+        effects.revealKnowledge.forEach(k => dispatch(revealKnowledge(k)));
+    }
+    if ((effects as any).revealBlessedSkill) {
+        dispatch(revealBlessedSkill());
+    }
+    if ((effects as any).triggerLoot) {
+        triggerLootDrop((effects as any).triggerLoot, dispatch);
+    }
+
+    // Trigger autonomous world movement
+    simulateWorldTurn(state, dispatch);
 
     // After choice, refresh storylets
     setActiveStorylet(null);
-  }, [dispatch, state]);
+  }, [dispatch]);
 
-  // Timer Logic for Time-Sensitive Storylets
+  // Timer Logic for Time-Sensitive Storylets (Starts AFTER TTS)
   useEffect(() => {
-    if (activeStorylet?.timeLimit && timeLeft === null) {
+    if (activeStorylet?.timeLimit && timeLeft === null && isTTSFinished) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setTimeLeft(activeStorylet.timeLimit);
     }
@@ -88,8 +106,9 @@ const App: React.FC = () => {
       if (defaultChoice) handleChoice(defaultChoice);
       setTimeLeft(null);
     }
-  }, [timeLeft, activeStorylet, handleChoice]);
+  }, [timeLeft, activeStorylet, handleChoice, isTTSFinished]);
 
+  // Storylet Filtering & Auto-TTS
   useEffect(() => {
     if (!isInitialized) return;
     const filtered = filterStorylets(storyletsData as Storylet[], state);
@@ -99,55 +118,97 @@ const App: React.FC = () => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setActiveStorylet(nextStorylet);
         dispatch(markStoryletSeen(nextStorylet.id));
-        setTimeLeft(null); // Reset timer for new storylet
+        setTimeLeft(null);
+        setIsTTSFinished(false); // TTS starts now
         
-        // Add to history
-        const morphedContent = morphText(nextStorylet.content, state);
-        setNarrativeHistory(prev => [
-            ...prev, 
-            { id: nextStorylet.id, type: 'storylet', text: morphedContent, title: nextStorylet.title }
-        ]);
+        // Add to history in store (NEW: Assembled Prose)
+        const baseContent = morphText(nextStorylet.content, state);
+        const assembledContent = assembleProse(state, baseContent);
+        
+        dispatch(addNarrativeHistory({ 
+            id: nextStorylet.id, 
+            type: 'storylet', 
+            text: assembledContent, 
+            title: nextStorylet.title 
+        }));
+
+        // Trigger Auto-TTS
+        tts.stop();
+        setIsNarrating(true);
+        tts.speak(assembledContent, {
+            onend: () => {
+                setIsTTSFinished(true);
+                setIsNarrating(false);
+            }
+        });
       }
     }
-  }, [player.location, player.alignment, player.purity, game.seenStorylets, state, activeStorylet, isInitialized, dispatch]);
+  }, [player.location, player.alignment, player.purity, game.seenStorylets, game.lastChoiceId, state, activeStorylet, isInitialized, dispatch]);
 
   const toggleNarration = (text: string) => {
     if (isNarrating) {
       tts.stop();
       setIsNarrating(false);
+      setIsTTSFinished(true); // Manually stopping counts as finished for the timer
     } else {
-      tts.speak(text);
       setIsNarrating(true);
+      setIsTTSFinished(false);
+      
+      const assembledText = assembleProse(state, text);
+      
+      tts.speak(assembledText, {
+          onend: () => {
+              setIsTTSFinished(true);
+              setIsNarrating(false);
+          }
+      });
     }
   };
 
+  // Theme Morphing Effect
+  useEffect(() => {
+    let theme = 'default';
+    if (player.alignment > 500) theme = 'adept';
+    else if (player.alignment < -500) theme = 'debaser';
+    else if (player.purity < -500) theme = 'corrupted';
+    
+    document.body.setAttribute('data-theme', theme);
+  }, [player.alignment, player.purity]);
+
   if (!isInitialized) {
     return (
-      <div className="min-h-screen bg-slate-900 text-slate-100 p-8 font-mono flex items-center justify-center">
-        <CharacterCreator onComplete={() => setIsInitialized(true)} />
+      <div className="min-h-screen p-8 font-mono flex items-center justify-center">
+        <CharacterCreator onComplete={() => {
+            setIsLoading(true);
+            setIsInitialized(true);
+        }} />
       </div>
     );
   }
 
+  if (isLoading) {
+    return <LoadingScreen onComplete={() => setIsLoading(false)} />;
+  }
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-8 font-mono flex flex-col items-center">
-      <header className="w-full max-w-4xl mb-8 border-b border-slate-700 pb-4 flex justify-between items-end">
+    <div className="min-h-screen p-8 font-mono flex flex-col items-center transition-all-custom">
+      <header className="w-full max-w-4xl mb-8 border-b pb-4 flex justify-between items-end" style={{ borderColor: 'var(--border-color)' }}>
         <div>
-          <h1 className="text-4xl font-bold tracking-tighter text-amber-500 uppercase">Eldoria</h1>
-          <p className="text-slate-400 text-sm">A Systemic Text-Based RPG</p>
-          <div className="text-amber-200 mt-2 text-xs font-bold">{player.name} | {player.appearance.bodyType} | {player.appearance.hairStyle}</div>
+          <h1 className="text-4xl font-bold tracking-tighter uppercase" style={{ color: 'var(--accent-color)' }}>Eldoria</h1>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>A Systemic Text-Based RPG</p>
+          <div className="mt-2 text-xs font-bold" style={{ color: 'var(--accent-color)', opacity: 0.8 }}>{player.name} | {player.appearance.bodyType} | {player.appearance.hairStyle}</div>
         </div>
         <div className="text-right">
-          <div className="text-xs uppercase text-slate-500 mb-1">Status</div>
+          <div className="text-xs uppercase mb-1" style={{ color: 'var(--text-muted)' }}>Status</div>
           <div className="flex gap-4">
-            <div className="bg-slate-800 px-3 py-1 rounded border border-slate-700">
-              <span className="text-slate-500 mr-2">Alignment</span>
+            <div className="px-3 py-1 rounded border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+              <span className="mr-2" style={{ color: 'var(--text-muted)' }}>Alignment</span>
               <span className={`${player.alignment >= 0 ? 'text-blue-400' : 'text-red-400'} font-bold`}>
                 {player.alignment}
               </span>
             </div>
-            <div className="bg-slate-800 px-3 py-1 rounded border border-slate-700">
-              <span className="text-slate-500 mr-2">Purity</span>
+            <div className="px-3 py-1 rounded border" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}>
+              <span className="mr-2" style={{ color: 'var(--text-muted)' }}>Purity</span>
               <span className={`${player.purity >= 0 ? 'text-emerald-400' : 'text-purple-400'} font-bold`}>
                 {player.purity}
               </span>
@@ -174,20 +235,12 @@ const App: React.FC = () => {
                 Combat
               </button>
             </div>
-            {view === 'narrative' && activeStorylet && (
-              <button 
-                onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
-                className={`text-[10px] uppercase font-black px-3 py-1 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500/50'}`}
-              >
-                {isNarrating ? '[ STOP NARRATION ]' : '[ NARRATE ]'}
-              </button>
-            )}
           </div>
 
           <div className="flex-1 overflow-y-auto p-6 space-y-8 scroll-smooth" id="narrative-scroll">
             {view === 'narrative' ? (
               <>
-                {narrativeHistory.map((item, index) => (
+                {game.narrativeHistory.map((item, index) => (
                   <div key={`${item.id}-${index}`} className={`animate-in fade-in slide-in-from-bottom-4 duration-700 ${item.type === 'choice' ? 'border-l-2 border-amber-500/30 pl-4 py-2 italic text-slate-400' : ''}`}>
                     {item.title && <h2 className="text-xl font-bold mb-3 text-amber-200 uppercase tracking-tight">{item.title}</h2>}
                     <p className={`text-lg leading-relaxed ${item.type === 'storylet' ? 'first-letter:text-4xl first-letter:font-bold first-letter:mr-2 first-letter:float-left first-letter:text-amber-500 text-slate-300' : 'text-slate-400'}`}>
@@ -195,7 +248,7 @@ const App: React.FC = () => {
                     </p>
                   </div>
                 ))}
-                {!activeStorylet && narrativeHistory.length === 0 && (
+                {!activeStorylet && game.narrativeHistory.length === 0 && (
                    <div className="h-full flex items-center justify-center text-slate-500 italic">
                     The world is still...
                    </div>
@@ -209,23 +262,31 @@ const App: React.FC = () => {
           </div>
 
           {view === 'narrative' && activeStorylet && (
-            <div className="p-4 bg-slate-900/80 border-t border-slate-700 space-y-2 sticky bottom-0 z-20 backdrop-blur-md">
-               <div className="flex justify-between items-center mb-2">
+            <div className="p-4 bg-slate-900/80 border-t border-slate-700 space-y-3 sticky bottom-0 z-20 backdrop-blur-md">
+               <div className="flex justify-between items-center mb-1">
                  <div className="text-[10px] uppercase font-bold text-slate-500 tracking-widest flex items-center">
                    <span className="w-2 h-2 bg-amber-500 rounded-full mr-2 animate-pulse" />
                    Decision Required
                  </div>
-                 {timeLeft !== null && activeStorylet.timeLimit && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold text-red-500 uppercase tracking-tighter">Time Left: {timeLeft}s</span>
-                      <div className="w-24 bg-slate-800 h-1 rounded-full overflow-hidden border border-slate-700">
-                        <div 
-                          className="bg-red-500 h-full transition-all duration-1000 linear" 
-                          style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                 )}
+                 <div className="flex items-center gap-3">
+                    <button 
+                        onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
+                        className={`text-[9px] uppercase font-black px-3 py-1 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500/50'}`}
+                    >
+                        {isNarrating ? '[ STOP ]' : '[ NARRATE ]'}
+                    </button>
+                    {timeLeft !== null && activeStorylet.timeLimit && (
+                        <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-red-500 uppercase tracking-tighter">{timeLeft}s</span>
+                        <div className="w-20 bg-slate-800 h-1 rounded-full overflow-hidden border border-slate-700">
+                            <div 
+                            className="bg-red-500 h-full transition-all duration-1000 linear" 
+                            style={{ width: `${(timeLeft / activeStorylet.timeLimit) * 100}%` }}
+                            />
+                        </div>
+                        </div>
+                    )}
+                 </div>
                </div>
                {activeStorylet.choices.map((choice) => (
                 <button

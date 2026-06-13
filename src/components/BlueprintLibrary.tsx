@@ -17,7 +17,8 @@ const BlueprintLibrary: React.FC = () => {
       
       <div className="space-y-4">
         {blueprints.map((b) => {
-          const isUnlocked = game.unlockedBlueprints?.includes(b.id);
+          // Check knowledgeFlags for unlocked status
+          const isUnlocked = game.knowledgeFlags?.includes(b.id);
           return (
             <div key={b.id} className={`p-4 rounded border ${isUnlocked ? 'bg-slate-900/50 border-emerald-900/50' : 'bg-slate-900/20 border-slate-800 opacity-50'}`}>
               <div className="flex justify-between items-center mb-1">

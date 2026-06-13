@@ -1,0 +1,51 @@
+{
+  "locationIntros": {
+    "static_crater": [
+      "The silence of the crater is absolute, the glass edges reflecting a bruised sky.",
+      "Dust settles in the hollow of the crater, each grain pulsing with a faint, dying light."
+    ],
+    "borderlands_outpost": [
+      "The outpost is a jagged silhouette of iron and steam against the red horizon.",
+      "Steam vents hiss constantly here, masking the low hum of the Syndicate's grid."
+    ],
+    "outpost_market": [
+      "The market is a sea of desperate faces and rusted technology.",
+      "Ozone and stale beer permeate the air of the crowded market hub."
+    ]
+  },
+  "actorFragments": {
+    "kaelen": {
+      "neutral": "Kaelen is leaning against a rusted crate, idly sharpening a knife.",
+      "wary": "Kaelen watches you from the shadows, eyes tracking the light in your chest.",
+      "friendly": "Kaelen gives you a brief, respectful nod as you approach."
+    },
+    "syndicate_enforcer_grunt": {
+      "hostile": "A Syndicate enforcer stands nearby, their baton sparking with static energy.",
+      "neutral": "A lone enforcer patrols the perimeter, seemingly bored."
+    },
+    "vane": {
+      "neutral": "Captain Vane stands with his back to you, staring at a schematic of the crater. You can hear a faint, rhythmic clicking coming from his iron collar.",
+      "wary": "Vane's eyes narrow as you approach. 'You carry a very specific frequency, traveler. One that should have died during the Fall.'",
+      "hostile": "Vane gestures, and the static in the air thickens. 'You are an unregistered anomaly. Your resonance belongs to the Watch.'"
+    }
+  },
+  "appearanceFragments": [
+    "The light from your chest reflects off your {player.hairColor} hair.",
+    "Your {player.bodyType} frame casts a long, steady shadow.",
+    "You can feel the weight of your presence, {player.presenceDescription}",
+    "The red dust clings to your {player.skinTone} skin.",
+    "You feel {player.blessedSkill} pulsing in sync with your heartbeat."
+  ],
+  "factionFragments": {
+    "syndicate": {
+      "menace_high": "Syndicate posters nearby have been defaced, and the atmosphere is thick with tension.",
+      "influence_high": "Citizens step aside as you pass, recognizing your standing with the Iron Watch."
+    }
+  },
+  "companionFragments": {
+    "kaelen": [
+      "Kaelen walks a few paces behind you, hand never far from their blade.",
+      "Beside you, Kaelen scans the horizon with practiced ease."
+    ]
+  }
+}

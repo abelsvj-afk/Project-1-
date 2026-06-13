@@ -25,9 +25,9 @@ This document tracks the implementation of core systems and features as defined 
 ## 3. Morality, Reputation & Politics
 - [x] Absolute Alignment Scale (-1000 to 1000)
 - [x] Absolute Purity Scale (-1000 to 1000)
-- [ ] **Extreme Morphing (Visual/Textual)**
+- [x] **Extreme Morphing (Visual/Textual)**
     - [x] Basic text description shifts
-    - [ ] UI Color/Typography shifts based on Alignment
+    - [x] UI Color/Typography shifts based on Alignment
     - [ ] **Morphing Tiers** (Ghoul, Adept, Debaser, etc.)
 - [x] **Localized Reputation Matrix**
     - [x] State slice for reputation
@@ -45,7 +45,7 @@ This document tracks the implementation of core systems and features as defined 
     - [x] Basic Affliction state tracking
     - [x] Physiological Afflictions (Paralysis, Broken Limbs, Blindness)
     - [x] Psychological Afflictions (Stupidity, Epilepsy, Shivering)
-    - [ ] **Advanced Cure Matrix** (Salves, Herbs, Smoke, Ingestion)
+    - [x] **Advanced Cure Matrix** (Salves, Herbs, Smoke, Ingestion)
 - [x] **Curative Item Logic** (Initial Salves/Herbs)
 
 ## 5. Economy, Crafting & Property
@@ -58,7 +58,7 @@ This document tracks the implementation of core systems and features as defined 
 - [ ] **Inventory & Crafting**
     - [x] Dynamic Wardrobe System
     - [ ] Arcane-Industrial Recipe Crafting
-    - [ ] **Isekai Blueprints** (Modern concept "Inventions")
+    - [x] **Isekai Blueprints** (Modern concept "Inventions")
 
 ## 6. World Simulation, Social & Polish
 - [ ] **Global Clock & Weather**

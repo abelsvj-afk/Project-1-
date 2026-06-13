@@ -49,6 +49,7 @@ export interface Player {
   experience: number;
   skillPoints: number;
   blessedAbility?: string; // Unique Echo-Anchor affinity
+  isBlessedSkillRevealed: boolean;
   alignment: AlignmentValue; // Good/Evil
   purity: AlignmentValue;    // Pure/Corrupt
   wealth: number;
@@ -83,6 +84,9 @@ export interface StoryletPrerequisites {
   requiredItems?: string[];
   requiredStats?: Partial<PlayerStats>;
   globalFlags?: { [flag: string]: boolean | number | string };
+  lastStoryletId?: string;
+  lastChoiceId?: string;
+  knowledgeFlags?: string[];
 }
 
 export interface StoryletEffects {
@@ -97,6 +101,7 @@ export interface StoryletEffects {
   setGlobalFlags?: { [flag: string]: boolean | number | string };
   moveToLocation?: string;
   revealNames?: string[]; // NPC IDs to reveal
+  revealKnowledge?: string[]; // Knowledge flags to unlock
 }
 
 export interface Storylet {
@@ -193,19 +198,35 @@ export interface NPCSchedule {
   activity: string;
 }
 
+export type NPCStatusTier = 1 | 2 | 3 | 4; // 1: Grunt, 2: Specialist, 3: Lieutenant, 4: Apex
+
 export interface NPC {
   id: string;
   name: string;
+  title: string;
+  level: number;
+  statusTier: NPCStatusTier;
   factionId?: string;
+  stats: PlayerStats;
+  affinities: string[];
+  inventory: string[];
   personality: {
+    archetype: 'coward' | 'zealot' | 'pragmatist' | 'predator';
+    braveryThreshold: number; // Morale: 0-100, when they flee
     tone: string;
     vocabulary: string[];
     visualTells: string[];
   };
   schedule: NPCSchedule[];
+  simulatedState: {
+    currentAction: string;
+    goal: 'patrol' | 'hunt_player' | 'rest' | 'trade' | 'meditate';
+    lastLocation: string;
+  };
 }
 
 export type RelationshipStatus = 'stranger' | 'acquaintance' | 'friend' | 'companion' | 'lover' | 'spouse' | 'parent' | 'enemy';
+
 
 export interface Relationship {
   npcId: string;
@@ -234,6 +255,23 @@ export interface GameState {
   relationships: { [npcId: string]: RelationshipStatus };
   affinity: { [npcId: string]: number };
   
+  // Simulated Autonomy & "Machine Learning"
+  npcEvolution: { 
+    [npcId: string]: { 
+      aggression: number; // 0-100
+      fear: number; // 0-100
+      observedPlayerTraits: string[];
+    } 
+  };
+  worldHistory: { event: string; timestamp: number }[];
+
   gameTime: number; // Chronological marker (0-2400 per day)
   currentStorylets: string[]; // Active storylet IDs
+  seenStorylets: string[];
+  knownNames: string[];
+  knowledgeFlags: string[];
+  lastStoryletId?: string;
+  lastChoiceId?: string;
+  narrativeHistory: { id: string; type: 'storylet' | 'choice'; text: string; title?: string }[];
 }
+

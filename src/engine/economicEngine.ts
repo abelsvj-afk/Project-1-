@@ -1,49 +1,51 @@
 import type { RootState, AppDispatch } from '../store';
 import { changeWealth } from '../store/slices/playerSlice';
-import { incrementTime } from '../store/slices/gameSlice';
+import { incrementTime, addBounty, setGlobalFlag, evolveNPC } from '../store/slices/gameSlice';
 import politicalData from '../data/politicalData.json';
-import type { Property } from '../types/game';
+import socialData from '../data/socialData.json';
+import type { Property, NPC } from '../types/game';
+import { consolidateHistory } from './historyEngine';
+import { withDiagnostics } from './utils/diagnostics';
 
 /**
  * Processes a single economic/world tick (e.g., every 5 seconds).
- * Handles passive income, property upkeep, and game time advancement.
+ * Handles passive income, property upkeep, game time advancement, and NPC autonomy.
  */
-export const processEconomicTick = (state: RootState, dispatch: AppDispatch) => {
-  const { game } = state;
+const _processEconomicTick = (state: RootState, dispatch: AppDispatch) => {
+  const { player, game } = state;
 
-  // 1. Advance Game Time
-  dispatch(incrementTime(10)); // Advance by 10 "ticks" (minutes) per cycle
+  // 1. Advance Game Time & Consolidate History
+  dispatch(incrementTime(10)); 
+  consolidateHistory(state);
+  const currentTime = game.gameTime;
 
   // 2. Process Real Estate Income & Upkeep
   let netIncome = 0;
-  
-  game.ownedProperties.forEach((propertyId) => {
+  game.ownedProperties.forEach((propertyId: string) => {
     const data = politicalData.properties.find(p => p.id === propertyId) as Property | undefined;
     if (data) {
       let income = data.baseIncome;
       let upkeep = data.upkeep;
-
-      // Apply Faction Sanctions
       if (data.ownerFaction) {
         const factionRep = game.reputation[data.ownerFaction] || 0;
-        if (factionRep < -500) {
-          // Seizure/Sanction: Income dropped significantly
-          income *= 0.1;
-          upkeep *= 2.0; // Fines/Legal fees
-        } else if (factionRep < 0) {
-          income *= 0.7; // Heavy taxing
-        }
+        if (factionRep < -500) { income *= 0.1; upkeep *= 2.0; } 
+        else if (factionRep < 0) { income *= 0.7; }
       }
-
       netIncome += (income - upkeep);
     }
   });
+  if (netIncome !== 0) dispatch(changeWealth(Math.floor(netIncome / 12))); 
 
-  if (netIncome !== 0) {
-    dispatch(changeWealth(Math.floor(netIncome / 12))); // Distributed per "hour" (if 10 mins per 5s, 6 ticks = 1 hour)
-  }
-
-  // 3. Global Event Dispatcher (Simplified)
-  // Check for bounty triggers based on menace/actions
-  // This would usually be more complex, but we'll add basic logic here
+  // 3. Global Bounty Dispatcher
+  Object.entries(player.history.factionMenace).forEach(([factionId, menaceValue]) => {
+    const menace = menaceValue as number;
+    if (menace > 80) {
+      const existingBounty = game.activeBounties.find(b => b.factionId === factionId && b.targetId === 'player');
+      if (!existingBounty && Math.random() > 0.8) { 
+        dispatch(addBounty({ id: `bounty_${Date.now()}`, factionId, targetId: 'player', amount: Math.floor(menace * 10), reason: "High menace to faction interests" }));
+      }
+    }
+  });
 };
+
+export const processEconomicTick = withDiagnostics(_processEconomicTick, 'processEconomicTick');

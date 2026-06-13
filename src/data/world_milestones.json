@@ -1,0 +1,18 @@
+{
+  "milestones": [
+    { "id": "awakened", "name": "The Null Awakening", "type": "story", "hidden": false },
+    { "id": "reached_outpost", "name": "Borderlands Survivor", "type": "travel", "hidden": false },
+    { "id": "kaelen_ally", "name": "The Scavenger's Trust", "type": "relationship", "hidden": true },
+    { "id": "syndicate_enemy", "name": "Wanted by the Watch", "type": "reputation", "hidden": false },
+    { "id": "artifact_recovered", "name": "Echo-Anchor Recovered", "type": "artifact", "hidden": true }
+  ],
+  "gates": {
+    "lore": {
+      "syndicate_origin": { "milestone": "reached_outpost", "description": "Records found in the outpost archives." },
+      "entropy_theory": { "milestone": "artifact_recovered", "description": "Insights gleaned from the recovered anchor." }
+    },
+    "items": {
+      "inquisitor_key": { "milestone": "syndicate_enemy", "description": "Dropped by high-level enforcers once you are wanted." }
+    }
+  }
+}
