@@ -6,7 +6,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Logic & Data' (Protocol in workflow.md)
 
 ## Phase 2: UI & Integration
-- [ ] Task: Create `TradeMenu` component to handle merchant interactions.
+- [x] Task: Create `TradeMenu` component to handle merchant interactions. [checkpoint: ee1030b]
 - [ ] Task: Update `KinshipRoster` to display multidimensional relationship bars.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: UI & Integration' (Protocol in workflow.md)
 
