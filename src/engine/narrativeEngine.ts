@@ -173,6 +173,14 @@ export const filterStorylets = withDiagnostics(_filterStorylets, 'filterStorylet
  * Picks the best storylet from available ones based on priority and a small amount of randomness.
  */
 const _dealFromDeck = (storylets: Storylet[], state: RootState): Storylet | null => {
+  const { game } = state;
+
+  // --- NEW: FORCED STORYLET LOGIC ---
+  if (game.forcedStoryletId) {
+    const forced = storylets.find(s => s.id === game.forcedStoryletId);
+    if (forced) return forced;
+  }
+
   const available = _filterStorylets(storylets, state);
   
   if (available.length === 0) return null;
@@ -189,16 +197,6 @@ const _dealFromDeck = (storylets: Storylet[], state: RootState): Storylet | null
   // Pick one randomly from the candidates
   const selected = candidates[Math.floor(Math.random() * candidates.length)];
 
-  // --- NEW: INJECT PRESENT NPC ID ---
-  // If the selected storylet uses 'requiredAnyNpc', we identify who is actually there
-  // and inject their ID into the state context (as a virtual flag) for interpolation.
-  if ((selected.prerequisites as any).requiredAnyNpc) {
-      const presentNpcs = Object.values(state.game.npcs).filter(npc => npc.simulatedState.lastLocation === state.player.location);
-      if (presentNpcs.length > 0) {
-          (selected as any).activeNpcId = presentNpcs[Math.floor(Math.random() * presentNpcs.length)].id;
-      }
-  }
-
   return selected;
 };
 
@@ -207,7 +205,7 @@ export const dealFromDeck = withDiagnostics(_dealFromDeck, 'dealFromDeck');
 /**
  * Replaces tags like {player.name} or {npc:kaelen} with actual values from the state.
  */
-const _interpolate = (text: string, state: RootState, context?: Storylet): string => {
+const _interpolate = (text: string, state: RootState): string => {
   const { player, game } = state;
   
   let interpolated = text
@@ -222,6 +220,8 @@ const _interpolate = (text: string, state: RootState, context?: Storylet): strin
     .replace(/{player.height}/g, player.appearance.height)
     .replace(/{player.musculature}/g, player.appearance.musculature)
     .replace(/{player.presenceDescription}/g, player.presenceDescription || '')
+    .replace(/{player.stamina}/g, player.stamina.toString())
+    .replace(/{player.focus}/g, player.focus.toString())
     .replace(/{player.blessedSkill}/g, () => {
         if (!player.isBlessedSkillRevealed) return 'a strange, dormant warmth in your marrow';
         return player.blessedAbility || 'your Echo-Anchor resonance';
@@ -236,18 +236,21 @@ const _interpolate = (text: string, state: RootState, context?: Storylet): strin
   const npcNameRegex = /{npc:(.*?)}/g;
   interpolated = interpolated.replace(npcNameRegex, (_match, npcId) => {
     let finalId = npcId;
-    if (npcId === 'active' && context) {
-        finalId = (context as any).activeNpcId || 'stranger';
+    
+    // Resolve 'active' NPC from conversation context
+    if (npcId === 'active') {
+        finalId = game.activeConversationNpcId || 'stranger';
     }
 
     if (game.knownNames.includes(finalId)) {
-        // Capitalize name
-        return finalId.charAt(0).toUpperCase() + finalId.slice(1);
+        const npc = game.npcs[finalId];
+        return npc ? npc.name : (finalId.charAt(0).toUpperCase() + finalId.slice(1));
     }
     
     // Fallback descriptors based on initial encounter logic
     if (finalId === 'kaelen') return 'the scavenger';
     if (finalId === 'syndicate_enforcer_grunt') return 'the enforcer';
+    if (finalId === 'vane') return 'the Overseer';
     return 'the stranger';
   });
 
@@ -260,10 +263,10 @@ export const interpolate = withDiagnostics(_interpolate, 'interpolate');
  * Procedural text generation based on player state (Extreme Morphing).
  * Replaces placeholders and applies conditional modifiers.
  */
-const _morphText = (text: string, state: RootState, context?: Storylet): string => {
+const _morphText = (text: string, state: RootState): string => {
   const { player } = state;
 
-  let morphed = interpolate(text, state, context);
+  let morphed = interpolate(text, state);
 
   // 2. Presence-Based Context Injection
   if (player.presence && morphed.includes('[NPC_REACT]')) {

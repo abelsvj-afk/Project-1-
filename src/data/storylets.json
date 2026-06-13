@@ -95,46 +95,6 @@
     ]
   },
   {
-    "id": "outpost_arrival_kaelen",
-    "title": "Arriving with {npc:kaelen}",
-    "content": "The scavenger leads you through a gap in the outpost's reinforced perimeter. The guards nod as you pass, their eyes lingering on {npc:kaelen}'s knife rather than your strange arrival. {npc:kaelen} spits into the red dust. 'The Market is ahead. Find a merchant named Vane if you want to trade that light in your chest for something useful. Just don't get caught by the Syndicate patrols.'",
-    "priority": 50,
-    "prerequisites": {
-      "location": "borderlands_outpost",
-      "lastChoiceId": "crater_wake_resonance"
-    },
-    "choices": [
-      {
-        "id": "outpost_hub_enter",
-        "text": "Enter the Market Hub.",
-        "effects": {
-          "moveToLocation": "outpost_market",
-          "experienceGain": 10
-        }
-      }
-    ]
-  },
-  {
-    "id": "outpost_arrival_distortion",
-    "title": "Shadow of the Curse",
-    "content": "{npc:kaelen} keeps a wary distance as you approach the outpost. 'You've got a sharp tongue and a strange light, stranger,' they mutter, 'but the Syndicate doesn't like loose ends. I'll get you inside, but after that, you're on your own.'",
-    "priority": 50,
-    "prerequisites": {
-      "location": "borderlands_outpost",
-      "lastChoiceId": "crater_wake_distortion"
-    },
-    "choices": [
-      {
-        "id": "outpost_hub_enter_dist",
-        "text": "Enter the Market Hub.",
-        "effects": {
-          "moveToLocation": "outpost_market",
-          "experienceGain": 10
-        }
-      }
-    ]
-  },
-  {
     "id": "outpost_arrival_alone",
     "title": "The Lonely Outpost",
     "content": "You arrive at the Borderlands Outpost alone, your feet heavy with red dust. Without a local to vouch for you, the iron gates feel more like a cage than a sanctuary. A Syndicate guard blocks your path, their rifle humming with thermal energy. 'No strangers without a permit. Unless you've got Shards or something to trade.'",
@@ -164,34 +124,139 @@
     ]
   },
   {
-    "id": "event_enforcer_harassment",
-    "title": "Syndicate Compliance Check",
-    "content": "A {npc:syndicate_enforcer_grunt} blocks your path, their iron baton sparking with static energy. They look at the light pulsing in your chest with visible disgust. 'Newcomer, isn't it? You're leaking unregistered resonance. That's a Tier 1 infraction. Pay the 50 Shard Static-Levy now, or come with us to the Watch-Side Surplus for processing.'",
-    "priority": 25,
+    "id": "social_npc_chat_v1",
+    "title": "Interacting with {npc:active}",
+    "content": "{npc:active} looks up as you approach. 'Not many folks come through here with that kind of light in their eyes,' they mutter, [NPC_REACT]. [INNER_MONOLOGUE] 'They seem open enough to talk. I might learn something about the local currents.'",
+    "priority": 100,
+    "repeatable": true,
     "prerequisites": {
-      "location": "outpost_market",
-      "npc_loc_syndicate_enforcer_grunt": "outpost_market"
+      "globalFlags": { "hub_action": "socialize" }
     },
     "choices": [
       {
-        "id": "enforcer_pay_levy",
-        "text": "Pay the levy (50 Shards).",
+        "id": "social_chat_listen",
+        "text": "Listen to their stories.",
+        "followUpId": "outcome_social_listen",
         "effects": {
-          "wealthChange": -50,
-          "experienceGain": 5
+          "experienceGain": 15,
+          "setGlobalFlags": { "hub_action": "none" }
         }
       },
       {
-        "id": "enforcer_persuade",
-        "text": "[Logic 12] Explain that your 'static' is actually a byproduct of a new energy-saving blueprint.",
+        "id": "social_chat_share",
+        "text": "Share a bit of your own history.",
+        "followUpId": "outcome_social_share",
         "effects": {
-          "experienceGain": 20,
-          "setGlobalFlags": { "enforcer_fooled": true }
+          "alignmentChange": 5,
+          "experienceGain": 10,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      }
+    ]
+  },
+  {
+    "id": "outcome_social_listen",
+    "title": "{npc:active}'s Tale",
+    "content": "{npc:active} leans back, their eyes distant as they recount a fragment of their life in the Borderlands. You learn of the constant struggle for pure water and the fear of the Syndicate's 'Compliance Audits.' [INNER_MONOLOGUE] 'The weight of this world is heavy on them. I can feel the resonance of their exhaustion.'",
+    "priority": 5,
+    "prerequisites": { "globalFlags": { "hub_action": "none" } },
+    "choices": [
+      {
+        "id": "social_outcome_close",
+        "text": "Nod and move on.",
+        "effects": {}
+      }
+    ]
+  },
+  {
+    "id": "outcome_social_share",
+    "title": "Sharing the Burden",
+    "content": "You speak of the world you left behind—the green trees, the blue oceans, the lack of static in the air. {npc:active} listens in stunned silence, their jaw tightening. 'A world without Burnout?' they whisper. 'You're either a saint or a very dangerous liar.'",
+    "priority": 5,
+    "prerequisites": { "globalFlags": { "hub_action": "none" } },
+    "choices": [
+      {
+        "id": "social_share_close",
+        "text": "Let the silence hang.",
+        "effects": {}
+      }
+    ]
+  },
+  {
+    "id": "scavenge_generic_v1",
+    "title": "Sifting Through Slag",
+    "content": "You find a promising pile of debris—a mixture of rusted iron and shattered spirit-glass. [INNER_MONOLOGUE] 'There's a faint hum coming from the bottom of this pile. Something's still holding a charge.'",
+    "priority": 100,
+    "repeatable": true,
+    "prerequisites": {
+      "globalFlags": { "hub_action": "scavenge" }
+    },
+    "choices": [
+      {
+        "id": "scavenge_generic_dig",
+        "text": "Dig deep with your bare hands.",
+        "followUpId": "outcome_scavenge_generic",
+        "effects": {
+          "experienceGain": 10,
+          "triggerLoot": "low_wastes",
+          "setGlobalFlags": { "hub_action": "none" }
         }
       },
       {
-        "id": "enforcer_fight",
-        "text": "Refuse and draw your weapon.",
+        "id": "scavenge_generic_logic",
+        "text": "[Logic 12] Use a metal rod to probe for resonance spikes.",
+        "followUpId": "outcome_scavenge_generic",
+        "effects": {
+          "experienceGain": 25,
+          "triggerLoot": "low_wastes",
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      }
+    ]
+  },
+  {
+    "id": "outcome_scavenge_generic",
+    "title": "Scavenge Results",
+    "content": "After an hour of digging through the rusted ribs of a fallen crawler, you emerge covered in red dust. [INNER_MONOLOGUE] 'Not much left here, but every shard counts.' You found {game.lastLoot}.",
+    "priority": 5,
+    "prerequisites": { "globalFlags": { "hub_action": "none" } },
+    "choices": [
+      {
+        "id": "scavenge_outcome_close",
+        "text": "Pack it away.",
+        "effects": {}
+      }
+    ]
+  },
+  {
+    "id": "event_syndicate_patrol_intercept",
+    "title": "The Iron Watch Intercept",
+    "content": "A high-pitched whine, like a snapping cable, cuts through the red dust. Two Syndicate Enforcers emerge from behind a rusted crawler, their brass goggles reflecting the bruise-colored sky. One of them checks a clicking device on their wrist. 'Resonance signature confirmed. You're the anomaly from the crater.' They raise their thermal-rifles. [NPC_REACT]. 'Overseer Vane doesn't like loose ends in his sector. You're coming with us to the Watch, or you're staying here as scrap.'",
+    "priority": 75,
+    "prerequisites": {
+      "location": "outpost_market",
+      "globalFlags": { "syndicate_menace_high": true }
+    },
+    "choices": [
+      {
+        "id": "patrol_surrender",
+        "text": "Surrender and go quietly.",
+        "effects": {
+          "moveToLocation": "iron_watch_hq",
+          "setGlobalFlags": { "syndicate_menace_high": false, "prisoner_of_vane": true }
+        }
+      },
+      {
+        "id": "patrol_resist_logic",
+        "text": "[Logic 14] 'My signature is a false positive caused by your own leaking grid. Check your calibration.'",
+        "effects": {
+          "experienceGain": 30,
+          "setGlobalFlags": { "syndicate_menace_high": false, "fooled_patrol": true }
+        }
+      },
+      {
+        "id": "patrol_fight",
+        "text": "Draw your weapon and fight your way out.",
         "effects": {
           "setGlobalFlags": { "combat_started": true, "target_npc": "syndicate_enforcer_grunt" }
         }
@@ -199,490 +264,32 @@
     ]
   },
   {
-    "id": "event_socialize_tavern",
-    "title": "The Rusty Gear Tavern",
-    "content": "You push through the heavy leather flaps of the local tavern. It smells of stale beer and burning sage. In the corner, a merchant is hawking curative salves. At the bar, a drunken engineer is rambling about the inefficiency of the local steam engines. [INNER_MONOLOGUE] 'I could probably fix that engine if I showed them the Rankine cycle.'",
-    "priority": 20,
-    "repeatable": true,
+    "id": "story_vane_interrogation",
+    "title": "Vane's Clinical Audit",
+    "content": "The Iron Watch HQ is a tomb of cold iron and ticking gears. You are strapped into a chair that hums with a low, draining frequency. Overseer Vane paces before you, his brass monocle catching the flickering gaslight. 'You are an impossibility,' he says, his tone dismissive and tired. 'A localized null-point that shouldn't exist. Tell me, traveler, which of my competitors built you? And why are you leaking so much... potential?'",
+    "priority": 85,
     "prerequisites": {
-      "location": "outpost_market",
-      "globalFlags": { "hub_action": "socialize" }
+      "location": "iron_watch_hq",
+      "globalFlags": { "prisoner_of_vane": true }
     },
     "choices": [
       {
-        "id": "tavern_buy_salve",
-        "text": "Buy an Epidermal Salve (20 Shards).",
+        "id": "vane_truth",
+        "text": "'I'm from Earth. I don't know who built this world.'",
         "effects": {
-          "wealthChange": -20,
-          "addItem": ["epidermal_salve"],
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      },
-      {
-        "id": "tavern_buy_bloodroot",
-        "text": "Buy Bloodroot Herb (15 Shards).",
-        "effects": {
-          "wealthChange": -15,
-          "addItem": ["bloodroot"],
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      },
-      {
-        "id": "tavern_share_blueprint",
-        "text": "[Logic 12] Explain the Rankine Cycle to the engineer.",
-        "effects": {
-          "experienceGain": 40,
-          "alignmentChange": 5,
-          "setGlobalFlags": { "hub_action": "none" },
-          "revealKnowledge": ["steam_cycle"]
-        }
-      },
-      {
-        "id": "tavern_chat_kaelen",
-        "text": "Talk to {npc:kaelen} at the bar.",
-        "effects": {
-          "setGlobalFlags": { "hub_action": "chat_kaelen" }
-        }
-      },
-      {
-        "id": "tavern_leave",
-        "text": "Have a drink and leave.",
-        "effects": {
-          "wealthChange": -5,
-          "experienceGain": 5,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      }
-    ]
-  },
-  {
-    "id": "story_kaelen_warning",
-    "title": "A Gravelly Warning",
-    "content": "{npc:kaelen} looks up from their murky drink. 'You're making too much noise, {player.name}. The static you're dragging behind you is like a flare in the void. Captain Vane has already sent a search party for the source. If you don't find a way to mask that resonance, you'll meet Thorne sooner than you'd like.'",
-    "priority": 30,
-    "prerequisites": {
-      "globalFlags": { "hub_action": "chat_kaelen", "npc_loc_kaelen": "borderlands_warrens" }
-    },
-    "choices": [
-      {
-        "id": "kaelen_ask_vane",
-        "text": "'Who is Captain Vane?'",
-        "effects": {
-          "setGlobalFlags": { "hub_action": "none", "story_progress": "knows_vane" },
-          "revealKnowledge": ["syndicate_hierarchy"]
-        }
-      }
-    ]
-  },
-  {
-    "id": "story_vane_summon",
-    "title": "The Captain's Summons",
-    "content": "Two Syndicate Enforcers corner you outside the market. 'Captain Vane requests your presence at the Iron Watch HQ. He doesn't like it when anomalies wander his territory without an audit. Don't make this difficult.'",
-    "priority": 80,
-    "prerequisites": {
-      "location": "outpost_market",
-      "requiredMilestone": "reached_outpost",
-      "globalFlags": { "story_progress": "knows_vane" },
-      "minWealth": 300
-    },
-    "choices": [
-      {
-        "id": "vane_accept",
-        "text": "Follow them to the HQ.",
-        "effects": {
-          "moveToLocation": "iron_watch_hq",
-          "setGlobalFlags": { "story_progress": "vane_meeting" }
-        }
-      },
-      {
-        "id": "vane_refuse",
-        "text": "Run for the Warrens.",
-        "effects": {
-          "moveToLocation": "borderlands_warrens",
-          "setGlobalFlags": { "story_progress": "vane_evaded" },
-          "experienceGain": 10
-        }
-      }
-    ]
-    },
-    {
-    "id": "journey_crater_to_outpost",
-    "title": "The Glass Desert",
-    "content": "The walk to the outpost is a test of endurance. The red dust clogs your lungs, and the rhythmic pulsing of the world is deafening in the silence. [INNER_MONOLOGUE] 'If this is the world now, I need to adapt fast.' You pass the skeletal remains of a steam-crawler, its brass gears partially fused by entropy. You can feel the residue of a massive energy discharge here.",
-    "priority": 60,
-    "prerequisites": {
-      "location": "dust_flats"
-    },
-    "choices": [
-      {
-        "id": "journey_scavenge_wreck",
-        "text": "[SCAVENGE] Search the crawler for parts.",
-        "effects": {
-          "wealthChange": 25,
-          "experienceGain": 15,
-          "moveToLocation": "borderlands_outpost"
-        }
-      },
-      {
-        "id": "journey_push_on",
-        "text": "Keep moving. The outpost is in sight.",
-        "effects": {
-          "moveToLocation": "borderlands_outpost",
-          "experienceGain": 5,
-          "revealKnowledge": ["reached_outpost"]
-        }
-      }
-    ]
-    },
-    {
-    "id": "outcome_hub_scavenge",
-    "title": "Scavenging Results",
-    "content": "You spend hours combing the outskirts of the market. The ground is littered with 'Ghost-Static'—the psychic residue of forgotten memories. You manage to find: {game.lastLoot}. [INNER_MONOLOGUE] 'It's not much, but it's a start.'",
-    "priority": 25,
-    "prerequisites": {
-      "location": "outpost_market",
-      "globalFlags": { "hub_action": "scavenge" }
-    },
-    "choices": [
-      {
-        "id": "scavenge_success",
-        "text": "Return to the Market Hub.",
-        "effects": {
-          "triggerLoot": "low_wastes",
-          "experienceGain": 10,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      }
-      ]
-      },
-      {
-      "id": "scavenge_collapsed_shrine",
-      "title": "The Fallen Icon",
-      "content": "You find a half-buried shrine to a forgotten Aetherian saint. The marble is cracked, and a faint blue glow leaks from the base. [INNER_MONOLOGUE] 'Even their gods couldn't survive the Fall.' You can feel a weak pulse of resonance still trapped within the stone.",
-      "priority": 25,
-      "repeatable": true,
-      "prerequisites": {
-      "location": "outpost_market",
-      "globalFlags": { "hub_action": "scavenge" }
-      },
-      "choices": [
-      {
-        "id": "scavenge_shrine_siphon",
-        "text": "[Sync 12] Siphon the residual essence.",
-        "effects": {
-          "triggerLoot": "low_wastes",
-          "experienceGain": 20,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      },
-      {
-        "id": "scavenge_shrine_pry",
-        "text": "[Prowess 10] Pry the decorative brass away.",
-        "effects": {
-          "addItem": ["iron_scrap"],
-          "experienceGain": 10,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      }
-      ]
-      },
-      {
-      "id": "scavenge_rusty_ventilator",
-      "title": "The Hissing Vent",
-      "content": "A rusted ventilation shaft sticks out of the red dust like a broken bone. It's hissing rhythmic bursts of steam. [INNER_MONOLOGUE] 'If I can just bypass the safety lock, there might be something valuable in the filter.'",
-      "priority": 25,
-      "repeatable": true,
-      "prerequisites": {
-      "location": "outpost_market",
-      "globalFlags": { "hub_action": "scavenge" }
-      },
-      "choices": [
-      {
-        "id": "scavenge_vent_logic",
-        "text": "[Logic 12] Bypass the mechanical lock.",
-        "effects": {
-          "triggerLoot": "low_wastes",
-          "experienceGain": 25,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      },
-      {
-        "id": "scavenge_vent_force",
-        "text": "[Prowess 14] Rip the filter cover off.",
-        "effects": {
-          "addItem": ["iron_scrap"],
-          "experienceGain": 10,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      }
-      ]
-      },
-      {
-      "id": "scavenge_aether_seep",
-      "title": "The Shimmering Puddle",
-      "content": "A puddle of iridescent liquid has formed beneath a leaking pipe. It's not water; it's raw distortion. The air around it is cold enough to burn. [INNER_MONOLOGUE] 'It's dangerous, but pure distortion is a valuable catalyst.'",
-      "priority": 25,
-      "repeatable": true,
-      "prerequisites": {
-      "location": "outpost_market",
-      "globalFlags": { "hub_action": "scavenge" }
-      },
-      "choices": [
-      {
-        "id": "scavenge_aether_collect",
-        "text": "[Finesse 12] Carefully bottle a sample.",
-        "effects": {
-          "addItem": ["resonance_dust"],
-          "purityChange": -5,
-          "experienceGain": 15,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
-      },
-      {
-        "id": "scavenge_aether_stabilize",
-        "text": "[Sync 14] Stabilize the seep with your Anchor.",
-        "effects": {
-          "experienceGain": 30,
           "purityChange": 5,
-          "setGlobalFlags": { "hub_action": "none" }
+          "alignmentChange": -5,
+          "setGlobalFlags": { "vane_curious": true }
         }
-      }
-      ]
       },
       {
-      "id": "discover_blessed_skill",
-      "title": "A Resonance Realized",
-      "content": "You focus on the {player.blessedSkill}. As you apply your understanding of systemic resonance, the 'warmth' in your marrow suddenly crystallizes into a name and a function. [INNER_MONOLOGUE] 'It's not just heat. It's a signature. I can... stabilize the air around me.'",
-      "priority": 95,
-      "prerequisites": {
-      "knowledgeFlags": ["spirit_merging"],
-      "requiredStats": { "sync": 15 },
-      "globalFlags": { "skill_discovery_imminent": true }
-      },
-      "choices": [
-      {
-        "id": "skill_awakened",
-        "text": "Embrace the Echo-Anchor.",
+        "id": "vane_lie",
+        "text": "[Logic 12] 'I'm a prototype from the Spire Adepts. Release me, or their echoes will find you.'",
         "effects": {
-          "revealBlessedSkill": true,
-          "experienceGain": 50,
-          "setGlobalFlags": { "skill_discovery_imminent": false }
+          "alignmentChange": 10,
+          "setGlobalFlags": { "vane_wary": true }
         }
       }
-      ]
-      },
-      {
-      "id": "merchant_seraphina",
-      "title": "Seraphina's Gear-Stall",
-      "content": "You step into a cluttered stall in the Warrens. Brass gears hang from the ceiling like chimes. Seraphina, the Gear-Witch, adjusts her goggles and smiles. 'Looking to buy a wand that actually works, sweetie? Or maybe something to overclock that spirit of yours?'",
-      "priority": 50,
-      "repeatable": true,
-      "prerequisites": {
-        "location": "borderlands_warrens",
-        "requiredNpc": "seraphina",
-        "globalFlags": { "hub_action": "none" }
-      },
-      "choices": [
-        {
-          "id": "seraphina_buy",
-          "text": "[TRADE] Browse her gear and salves.",
-          "effects": {
-            "triggerLoot": "merchant_seraphina"
-          }
-        },
-        {
-          "id": "seraphina_leave",
-          "text": "Leave the stall.",
-          "effects": {}
-        }
-      ]
-      },
-      {
-        "id": "merchant_thorne",
-        "title": "Thorne's Wares",
-        "content": "Old Man Thorne squats by a rusted piece of plating in the Outpost Market, rubbing his hands together. He spots you and beckons you over. 'Got some shiny things today. Cursed, mostly. But cheap! Don't ask where I got them.'",
-        "priority": 45,
-        "repeatable": true,
-        "prerequisites": {
-          "location": "outpost_market",
-          "requiredNpc": "thorne_merchant",
-          "globalFlags": { "hub_action": "none" }
-        },
-        "choices": [
-          {
-            "id": "thorne_buy",
-            "text": "[TRADE] See what he dug up.",
-            "effects": {
-              "triggerLoot": "merchant_thorne"
-            }
-          },
-          {
-            "id": "thorne_leave",
-            "text": "Walk away.",
-            "effects": {}
-          }
-        ]
-      },
-      {
-        "id": "social_npc_chat_v1",
-        "title": "A Momentary Connection",
-        "content": "{npc:active} looks up as you approach. 'Not many folks come through here with that kind of light in their eyes,' they mutter, [NPC_REACT]. [INNER_MONOLOGUE] 'They seem open enough to talk. I might learn something about the local currents.'",
-        "priority": 25,
-        "repeatable": true,
-        "prerequisites": {
-          "globalFlags": { "hub_action": "socialize" },
-          "requiredAnyNpc": true
-        },
-        "choices": [
-          {
-            "id": "social_chat_listen",
-            "text": "Listen to their stories.",
-            "effects": {
-              "experienceGain": 15,
-              "setGlobalFlags": { "hub_action": "none" }
-            }
-          },
-          {
-            "id": "social_chat_share",
-            "text": "Share a bit of your own history.",
-            "effects": {
-              "alignmentChange": 5,
-              "experienceGain": 10,
-              "setGlobalFlags": { "hub_action": "none" }
-            }
-          }
-        ]
-      },
-      {
-        "id": "event_syndicate_patrol_intercept",
-        "title": "The Iron Watch Intercept",
-        "content": "A high-pitched whine, like a snapping cable, cuts through the red dust. Two Syndicate Enforcers emerge from behind a rusted crawler, their brass goggles reflecting the bruise-colored sky. One of them checks a clicking device on their wrist. 'Resonance signature confirmed. You're the anomaly from the crater.' They raise their thermal-rifles. [NPC_REACT]. 'Overseer Vane doesn't like loose ends in his sector. You're coming with us to the Watch, or you're staying here as scrap.'",
-        "priority": 75,
-        "prerequisites": {
-          "location": "outpost_market",
-          "globalFlags": { "syndicate_menace_high": true }
-        },
-        "choices": [
-          {
-            "id": "patrol_surrender",
-            "text": "Surrender and go quietly.",
-            "effects": {
-              "moveToLocation": "iron_watch_hq",
-              "setGlobalFlags": { "syndicate_menace_high": false, "prisoner_of_vane": true }
-            }
-          },
-          {
-            "id": "patrol_resist_logic",
-            "text": "[Logic 14] 'My signature is a false positive caused by your own leaking grid. Check your calibration.'",
-            "effects": {
-              "experienceGain": 30,
-              "setGlobalFlags": { "syndicate_menace_high": false, "fooled_patrol": true }
-            }
-          },
-          {
-            "id": "patrol_fight",
-            "text": "Draw your weapon and fight your way out.",
-            "effects": {
-              "setGlobalFlags": { "combat_started": true, "target_npc": "syndicate_enforcer_grunt" }
-            }
-          }
-        ]
-      },
-      {
-        "id": "story_vane_interrogation",
-        "title": "Vane's Clinical Audit",
-        "content": "The Iron Watch HQ is a tomb of cold iron and ticking gears. You are strapped into a chair that hums with a low, draining frequency. Overseer Vane paces before you, his brass monocle catching the flickering gaslight. 'You are an impossibility,' he says, his tone dismissive and tired. 'A localized null-point that shouldn't exist. Tell me, traveler, which of my competitors built you? And why are you leaking so much... potential?'",
-        "priority": 85,
-        "prerequisites": {
-          "location": "iron_watch_hq",
-          "globalFlags": { "prisoner_of_vane": true }
-        },
-        "choices": [
-          {
-            "id": "vane_truth",
-            "text": "'I'm from Earth. I don't know who built this world.'",
-            "effects": {
-              "purityChange": 5,
-              "alignmentChange": -5,
-              "setGlobalFlags": { "vane_curious": true }
-            }
-          },
-          {
-            "id": "vane_lie",
-            "text": "[Logic 12] 'I'm a prototype from the Spire Adepts. Release me, or their echoes will find you.'",
-            "effects": {
-              "alignmentChange": 10,
-              "setGlobalFlags": { "vane_wary": true }
-            }
-          }
-        ]
-      },
-      {
-        "id": "hazard_static_leak_v1",
-        "title": "A Rip in the Weave",
-        "content": "The world ahead of you suddenly flickers, the red dust turning into a grainy, soundless grayscale. A discarded iron gear nearby begins to crumble into fine sand. [INNER_MONOLOGUE] 'It's a Static Spot. The reality here is becoming brittle.' You can see a spirit fragment trapped in the center, its light turning a sickly black.",
-        "priority": 30,
-        "repeatable": true,
-        "prerequisites": {
-          "location": "dust_flats"
-        },
-        "choices": [
-          {
-            "id": "static_leak_anchor",
-            "text": "[Sync 14] Use the Echo-Anchor to re-color the zone.",
-            "effects": {
-              "experienceGain": 40,
-              "addItem": ["resonance_shard"],
-              "purityChange": 5
-            }
-          },
-          {
-            "id": "static_leak_avoid",
-            "text": "[Finesse 12] Carefully navigate around the dead-zone.",
-            "effects": {
-              "experienceGain": 15
-            }
-          }
-        ]
-      },
-      {
-        "id": "event_scavenger_desperation",
-        "title": "Desperation in the Warrens",
-        "content": "A young scavenger huddles in the shadows of the Warrens, their breathing heavy with the rattle of burnout-cough. They clutch a rusted resonance-filter to their chest. 'Please,' they wheeze, [NPC_REACT]. 'This filter... it's the only thing keeping the air in my shack breathable. I'll trade you my last Shards for a bottle of mending salve.'",
-        "priority": 25,
-        "repeatable": true,
-        "prerequisites": {
-          "location": "borderlands_warrens"
-        },
-        "choices": [
-          {
-            "id": "scavenger_help",
-            "text": "Give them a Mending Salve (Costs 1 Item).",
-            "effects": {
-              "requiredItems": ["mending_salve"],
-              "purityChange": 10,
-              "alignmentChange": 5,
-              "experienceGain": 25,
-              "wealthChange": 20
-            }
-          },
-          {
-            "id": "scavenger_exploit",
-            "text": "[Prowess 12] Take the resonance-filter by force.",
-            "effects": {
-              "purityChange": -15,
-              "alignmentChange": -10,
-              "addItem": ["resonance_filter"],
-              "experienceGain": 10
-            }
-          },
-          {
-            "id": "scavenger_ignore",
-            "text": "Walk away. You have your own problems.",
-            "effects": {
-              "purityChange": -2
-            }
-          }
-        ]
-      }
+    ]
+  }
 ]

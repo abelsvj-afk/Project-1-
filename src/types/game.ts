@@ -11,6 +11,8 @@ export interface PlayerStats {
   resonance: number;  // Connection to spirits (Biomorphic)
   vitality: number;
   mentality: number;
+  stamina: number;    // Physical action pool
+  focus: number;      // Mental action pool
 }
 
 export interface Equipment {
@@ -71,6 +73,8 @@ export interface Player {
   afflictions: string[];
   balance: number;           // Physical readiness (ms)
   equilibrium: number;       // Mental composure (ms)
+  stamina: number;           // Current Physical Pool
+  focus: number;             // Current Mental Pool
   inventory: (string | Equipment)[];
   equipment: {
     head?: Equipment;
@@ -142,6 +146,7 @@ export interface Choice {
   id: string;
   text: string;
   effects: StoryletEffects;
+  followUpId?: string; // Forces the next storylet
 }
 
 export type MagicCurrent = 'thermal' | 'vector' | 'biomorphic' | 'cognitive';
@@ -283,6 +288,10 @@ export interface GameState {
   companions: string[]; // IDs of NPC
   relationships: { [npcId: string]: RelationshipStatus };
   affinity: { [npcId: string]: number };
+  
+  // Forced Flow
+  forcedStoryletId?: string; 
+  activeConversationNpcId?: string;
   
   // Simulated Autonomy & "Machine Learning"
   npcEvolution: { 

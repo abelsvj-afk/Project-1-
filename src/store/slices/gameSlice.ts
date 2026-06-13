@@ -23,6 +23,10 @@ interface GameStateSlice {
   affinity: { [npcId: string]: number };
   knownNames: string[];
 
+  // Forced Flow
+  forcedStoryletId?: string;
+  activeConversationNpcId?: string;
+
   // Autonomy & NPC Tracking
   npcs: { [npcId: string]: NPC };
   npcEvolution: { [npcId: string]: { aggression: number; fear: number; observedPlayerTraits: string[] } };
@@ -73,6 +77,12 @@ const gameSlice = createSlice({
     },
     setGlobalFlag: (state, action: PayloadAction<{ flag: string; value: boolean | number | string }>) => {
       state.globalFlags[action.payload.flag] = action.payload.value;
+    },
+    setForcedStorylet: (state, action: PayloadAction<string | undefined>) => {
+      state.forcedStoryletId = action.payload;
+    },
+    setActiveConversationNpc: (state, action: PayloadAction<string | undefined>) => {
+      state.activeConversationNpcId = action.payload;
     },
     unlockBlueprint: (state, action: PayloadAction<string>) => {
       if (!state.unlockedBlueprints.includes(action.payload)) {
@@ -186,6 +196,8 @@ const gameSlice = createSlice({
 export const {
   updateReputation,
   setGlobalFlag,
+  setForcedStorylet,
+  setActiveConversationNpc,
   unlockBlueprint,
   learnSpell,
   buyProperty,

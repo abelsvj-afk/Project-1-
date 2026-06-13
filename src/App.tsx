@@ -5,7 +5,7 @@ import type { RootState } from './store';
 import { setLocation, changeAlignment, changePurity, addItem, changeWealth, gainExperience, setBlessedAbility, revealBlessedSkill } from './store/slices/playerSlice';
 import { morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
 import { processHistoryConsolidation } from './engine/historyEngine';
-import { setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, addNarrativeHistory } from './store/slices/gameSlice';
+import { setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, addNarrativeHistory, setForcedStorylet, setActiveConversationNpc, incrementTime } from './store/slices/gameSlice';
 import storyletsData from './data/storylets.json';
 import type { Storylet, Choice } from './types/game';
 import CharacterCreator from './components/CharacterCreator';
@@ -22,7 +22,8 @@ import { triggerLootDrop } from './engine/lootEngine';
 import { simulateWorldTurn } from './engine/worldSimulationEngine';
 import { populateLocation } from './engine/populationEngine';
 
-import CharacterDossier from './components/CharacterDossier';
+import Status from './components/Status';
+import { useStamina, useFocus, restoreResources } from './store/slices/playerSlice';
 
 // eslint-disable-next-line react-refresh/only-export-components
 const App: React.FC = () => {
@@ -34,7 +35,7 @@ const App: React.FC = () => {
   const [activeStorylet, setActiveStorylet] = useState<Storylet | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social' | 'dossier'>('dossier');
+  const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social' | 'status'>('status');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
   const [isNarrating, setIsNarrating] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -67,6 +68,15 @@ const App: React.FC = () => {
     // Add choice to history in store
     dispatch(addNarrativeHistory({ id: choice.id, type: 'choice', text: choice.text }));
     dispatch(setLastChoiceId(choice.id));
+
+    // --- NEW: FORCED CONTINUITY ---
+    if (choice.followUpId) {
+        dispatch(setForcedStorylet(choice.followUpId));
+    } else {
+        dispatch(setForcedStorylet(undefined));
+        // Clear NPC lock if we're not in a follow-up interaction
+        dispatch(setActiveConversationNpc(undefined));
+    }
 
     if (effects.alignmentChange) dispatch(changeAlignment(effects.alignmentChange));
     if (effects.purityChange) dispatch(changePurity(effects.purityChange));
@@ -102,6 +112,40 @@ const App: React.FC = () => {
     setActiveStorylet(null);
   }, [dispatch]);
 
+  const handleHubAction = (action: 'scavenge' | 'socialize' | 'rest') => {
+      if (action === 'rest') {
+          dispatch(restoreResources());
+          dispatch(incrementTime(800));
+          dispatch(addNarrativeHistory({ 
+              id: 'rest_action', 
+              type: 'storylet', 
+              text: "You find a relatively safe nook and collapse into a heavy, dreamless sleep. When you wake, your stamina is restored, but the world has moved on.",
+              title: "Rest & Recovery" 
+          }));
+          return;
+      }
+
+      // Check costs
+      if (action === 'scavenge' && player.stamina < 20) return;
+      if (action === 'socialize' && player.focus < 10) return;
+
+      // NPC Locking for Social
+      if (action === 'socialize') {
+          const presentNpcs = Object.values(game.npcs).filter(n => n.simulatedState.lastLocation === player.location);
+          if (presentNpcs.length > 0) {
+              const locked = presentNpcs[Math.floor(Math.random() * presentNpcs.length)];
+              dispatch(setActiveConversationNpc(locked.id));
+              dispatch(revealName(locked.id));
+          }
+      }
+
+      // Deduct costs
+      if (action === 'scavenge') dispatch(useStamina(20));
+      if (action === 'socialize') dispatch(useFocus(10));
+
+      dispatch(setGlobalFlag({ flag: 'hub_action', value: action }));
+  };
+
   // Timer Logic for Time-Sensitive Storylets (Starts AFTER TTS)
   useEffect(() => {
     if (activeStorylet?.timeLimit && timeLeft === null && isTTSFinished) {
@@ -130,15 +174,16 @@ const App: React.FC = () => {
       // we refresh the active storylet to update the 'Scene' assembly.
       const isNewId = !activeStorylet || activeStorylet.id !== nextStorylet.id;
       const isRepeatableRefresh = nextStorylet.repeatable && game.lastChoiceId !== state.game.lastChoiceId;
+      const isForced = game.forcedStoryletId === nextStorylet.id;
 
-      if (isNewId || isRepeatableRefresh) {
+      if (isNewId || isRepeatableRefresh || isForced) {
         setActiveStorylet(nextStorylet);
         dispatch(markStoryletSeen(nextStorylet.id));
         setTimeLeft(null);
         setIsTTSFinished(false); // TTS starts now
         
         // Add to history in store (Assembled Prose)
-        const baseContent = morphText(nextStorylet.content, state, nextStorylet);
+        const baseContent = morphText(nextStorylet.content, state);
         const assembledContent = assembleProse(state, baseContent);
         
         dispatch(addNarrativeHistory({ 
@@ -159,7 +204,7 @@ const App: React.FC = () => {
         });
       }
     }
-  }, [player.location, player.alignment, player.purity, game.seenStorylets, game.lastChoiceId, state, activeStorylet, isInitialized, dispatch]);
+  }, [player.location, player.alignment, player.purity, game.seenStorylets, game.lastChoiceId, game.forcedStoryletId, state, activeStorylet, isInitialized, dispatch]);
 
   // History Consolidation
   useEffect(() => {
@@ -175,7 +220,8 @@ const App: React.FC = () => {
       setIsNarrating(true);
       setIsTTSFinished(false);
       
-      const assembledText = assembleProse(state, text);
+      const morphed = morphText(text, state);
+      const assembledText = assembleProse(state, morphed);
       
       tts.speak(assembledText, {
           onend: () => {
@@ -297,7 +343,7 @@ const App: React.FC = () => {
         {/* Right Column: Stats & Inventory */}
         <aside className="w-full md:w-80 shrink-0 flex flex-col gap-4 overflow-y-auto pr-2 pb-4">
           <div className="flex bg-slate-900 rounded-lg p-1 border border-slate-700 gap-1 overflow-x-auto no-scrollbar">
-            {['dossier', 'inventory', 'skills', 'blueprints', 'civic', 'social'].map((tab) => (
+            {['status', 'inventory', 'skills', 'blueprints', 'civic', 'social'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
@@ -311,7 +357,7 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex-1 overflow-y-auto bg-slate-800 rounded-lg border border-slate-700 p-4 custom-scrollbar">
-            {activeTab === 'dossier' && <CharacterDossier />}
+            {activeTab === 'status' && <Status />}
             {activeTab === 'inventory' && <Inventory />}
             {activeTab === 'skills' && <SkillTree />}
             {activeTab === 'blueprints' && <BlueprintLibrary />}
@@ -320,14 +366,18 @@ const App: React.FC = () => {
           </div>
 
           <div className="shrink-0 bg-slate-800 p-4 rounded-lg border border-slate-700 flex justify-between items-center">
-            <div>
-              <h3 className="text-xs uppercase font-bold text-slate-500 mb-1 tracking-widest">Location</h3>
-              <div className="text-sm text-amber-600 font-bold uppercase tracking-tight">
-                {player.location.replace(/_/g, ' ')}
-              </div>
+            <div className="flex gap-4">
+                <div>
+                    <h3 className="text-[8px] uppercase font-bold text-orange-500 mb-1 tracking-widest">Stamina</h3>
+                    <div className="text-sm text-slate-100 font-bold">{player.stamina}</div>
+                </div>
+                <div>
+                    <h3 className="text-[8px] uppercase font-bold text-blue-400 mb-1 tracking-widest">Focus</h3>
+                    <div className="text-sm text-slate-100 font-bold">{player.focus}</div>
+                </div>
             </div>
             <div className="text-right">
-              <h3 className="text-xs uppercase font-bold text-slate-500 mb-1 tracking-widest">Time</h3>
+              <h3 className="text-[8px] uppercase font-bold text-slate-500 mb-1 tracking-widest">Time</h3>
               <div className="text-sm text-blue-400 font-mono font-bold">
                 {Math.floor(game.gameTime / 100)}:{(game.gameTime % 100).toString().padStart(2, '0')}
               </div>
@@ -360,7 +410,7 @@ const App: React.FC = () => {
              {activeStorylet && (
                 <div className="flex items-center gap-4">
                     <button 
-                        onClick={() => toggleNarration(morphText(activeStorylet.content, state))}
+                        onClick={() => toggleNarration(activeStorylet.content)}
                         className={`text-[10px] uppercase font-black px-4 py-1.5 rounded border transition-all ${isNarrating ? 'bg-amber-500 text-slate-900 border-amber-500 animate-pulse' : 'bg-slate-900 text-amber-500 border-slate-700 hover:border-amber-500'}`}
                     >
                         {isNarrating ? '[ STOP ]' : '[ NARRATE ]'}
@@ -395,22 +445,24 @@ const App: React.FC = () => {
              ) : (
                 <div className="flex flex-wrap gap-3">
                     <button 
-                        onClick={() => dispatch(setGlobalFlag({ flag: 'hub_action', value: 'scavenge' }))}
-                        className="px-6 py-3 rounded border border-amber-500/50 bg-amber-500/10 text-amber-500 font-bold uppercase tracking-widest hover:bg-amber-500 hover:text-slate-900 transition-all text-xs"
+                        onClick={() => handleHubAction('scavenge')}
+                        disabled={player.stamina < 20}
+                        className={`px-6 py-3 rounded border font-bold uppercase tracking-widest transition-all text-xs ${player.stamina >= 20 ? 'border-amber-500/50 bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-slate-900' : 'border-slate-800 bg-slate-900 text-slate-700 cursor-not-allowed'}`}
                     >
-                        [SCAVENGE]
+                        [SCAVENGE - 20 STAM]
                     </button>
                     <button 
-                        onClick={() => dispatch(setGlobalFlag({ flag: 'hub_action', value: 'socialize' }))}
-                        className="px-6 py-3 rounded border border-emerald-500/50 bg-emerald-500/10 text-emerald-500 font-bold uppercase tracking-widest hover:bg-emerald-500 hover:text-slate-900 transition-all text-xs"
+                        onClick={() => handleHubAction('socialize')}
+                        disabled={player.focus < 10}
+                        className={`px-6 py-3 rounded border font-bold uppercase tracking-widest transition-all text-xs ${player.focus >= 10 ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-slate-900' : 'border-slate-800 bg-slate-900 text-slate-700 cursor-not-allowed'}`}
                     >
-                        [SOCIALIZE]
+                        [SOCIALIZE - 10 FOCUS]
                     </button>
                     <button 
-                        onClick={() => {/* TODO: Travel System */}}
+                        onClick={() => handleHubAction('rest')}
                         className="px-6 py-3 rounded border border-blue-500/50 bg-blue-500/10 text-blue-500 font-bold uppercase tracking-widest hover:bg-blue-500 hover:text-slate-900 transition-all text-xs"
                     >
-                        [TRAVEL]
+                        [REST & RECOVER]
                     </button>
                 </div>
              )}

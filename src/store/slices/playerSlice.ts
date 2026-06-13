@@ -9,6 +9,8 @@ const initialStats: PlayerStats = {
   resonance: 10,
   vitality: 100,
   mentality: 100,
+  stamina: 100,
+  focus: 100,
 };
 
 const initialState: Player = {
@@ -42,6 +44,8 @@ const initialState: Player = {
   afflictions: [],
   balance: 0,
   equilibrium: 0,
+  stamina: 100,
+  focus: 100,
   inventory: [],
   equipment: {},
   location: 'static_crater',
@@ -64,7 +68,22 @@ const playerSlice = createSlice({
       if (state.skillPoints > 0) {
         state.stats[action.payload] += 1;
         state.skillPoints -= 1;
+        // If we upgraded stamina/focus, also boost current values
+        if (action.payload === 'stamina') state.stamina += 10;
+        if (action.payload === 'focus') state.focus += 10;
       }
+    },
+    useStamina: (state, action: PayloadAction<number>) => {
+      state.stamina = Math.max(0, state.stamina - action.payload);
+    },
+    useFocus: (state, action: PayloadAction<number>) => {
+      state.focus = Math.max(0, state.focus - action.payload);
+    },
+    restoreResources: (state) => {
+      state.stamina = state.stats.stamina;
+      state.focus = state.stats.focus;
+      state.stats.vitality = 100; // Restoring vitality too
+      state.stats.mentality = 100;
     },
     changeAlignment: (state, action: PayloadAction<number>) => {
       state.alignment = Math.max(-1000, Math.min(1000, state.alignment + action.payload));
@@ -81,7 +100,26 @@ const playerSlice = createSlice({
     equipItem: (state, action: PayloadAction<Equipment>) => {
       const item = action.payload;
       const slot = item.slot as keyof Player['equipment'];
+      
+      // If there's an existing item, move it back to bag
+      const existing = state.equipment[slot];
+      if (existing) {
+          state.inventory.push(existing);
+      }
+
       state.equipment[slot] = item;
+      
+      // Remove from inventory
+      state.inventory = state.inventory.filter(i => 
+          typeof i === 'string' ? true : i.id !== item.id
+      );
+    },
+    unequipItem: (state, action: PayloadAction<keyof Player['equipment']>) => {
+      const item = state.equipment[action.payload];
+      if (item) {
+        state.inventory.push(item);
+        delete state.equipment[action.payload];
+      }
     },
     upgradeEquipment: (state, action: PayloadAction<{ slot: keyof Player['equipment']; cost: number }>) => {
       const { slot, cost } = action.payload;
@@ -188,11 +226,15 @@ const playerSlice = createSlice({
 export const {
   updateStats,
   spendSkillPoint,
+  useStamina,
+  useFocus,
+  restoreResources,
   changeAlignment,
   changePurity,
   changeWealth,
   addItem,
   equipItem,
+  unequipItem,
   upgradeEquipment,
   removeItem,
   setLocation,

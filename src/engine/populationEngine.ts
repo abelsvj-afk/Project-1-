@@ -45,7 +45,9 @@ const _generateGenericNPC = (locationId: string): NPC => {
             finesse: 10,
             resonance: 10,
             vitality: 100,
-            mentality: 100
+            mentality: 100,
+            stamina: 100,
+            focus: 100
         },
         affinities: [],
         inventory: [],
