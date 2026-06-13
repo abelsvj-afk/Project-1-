@@ -10,6 +10,7 @@
 - [x] Task: Update `KinshipRoster` to display multidimensional relationship bars. [checkpoint: b215f04]
 - [x] Task: Conductor - User Manual Verification 'Phase 2: UI & Integration' (Protocol in workflow.md)
 
-## Phase 3: Verification [checkpoint: e28336e]
+## Phase 3: Verification [checkpoint: 0ba1b66]
 - [x] Task: Create `tests/simulate_social_loop.ts` to stress-test multi-NPC relationship cascades. [checkpoint: 8b45818]
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Verification' (Protocol in workflow.md)
+
