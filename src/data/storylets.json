@@ -389,6 +389,100 @@
       ]
       },
       {
+      "id": "scavenge_collapsed_shrine",
+      "title": "The Fallen Icon",
+      "content": "You find a half-buried shrine to a forgotten Aetherian saint. The marble is cracked, and a faint blue glow leaks from the base. [INNER_MONOLOGUE] 'Even their gods couldn't survive the Fall.' You can feel a weak pulse of resonance still trapped within the stone.",
+      "priority": 25,
+      "repeatable": true,
+      "prerequisites": {
+      "location": "outpost_market",
+      "globalFlags": { "hub_action": "scavenge" }
+      },
+      "choices": [
+      {
+        "id": "scavenge_shrine_siphon",
+        "text": "[Sync 12] Siphon the residual essence.",
+        "effects": {
+          "triggerLoot": "low_wastes",
+          "experienceGain": 20,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      },
+      {
+        "id": "scavenge_shrine_pry",
+        "text": "[Prowess 10] Pry the decorative brass away.",
+        "effects": {
+          "addItem": ["iron_scrap"],
+          "experienceGain": 10,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      }
+      ]
+      },
+      {
+      "id": "scavenge_rusty_ventilator",
+      "title": "The Hissing Vent",
+      "content": "A rusted ventilation shaft sticks out of the red dust like a broken bone. It's hissing rhythmic bursts of steam. [INNER_MONOLOGUE] 'If I can just bypass the safety lock, there might be something valuable in the filter.'",
+      "priority": 25,
+      "repeatable": true,
+      "prerequisites": {
+      "location": "outpost_market",
+      "globalFlags": { "hub_action": "scavenge" }
+      },
+      "choices": [
+      {
+        "id": "scavenge_vent_logic",
+        "text": "[Logic 12] Bypass the mechanical lock.",
+        "effects": {
+          "triggerLoot": "low_wastes",
+          "experienceGain": 25,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      },
+      {
+        "id": "scavenge_vent_force",
+        "text": "[Prowess 14] Rip the filter cover off.",
+        "effects": {
+          "addItem": ["iron_scrap"],
+          "experienceGain": 10,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      }
+      ]
+      },
+      {
+      "id": "scavenge_aether_seep",
+      "title": "The Shimmering Puddle",
+      "content": "A puddle of iridescent liquid has formed beneath a leaking pipe. It's not water; it's raw distortion. The air around it is cold enough to burn. [INNER_MONOLOGUE] 'It's dangerous, but pure distortion is a valuable catalyst.'",
+      "priority": 25,
+      "repeatable": true,
+      "prerequisites": {
+      "location": "outpost_market",
+      "globalFlags": { "hub_action": "scavenge" }
+      },
+      "choices": [
+      {
+        "id": "scavenge_aether_collect",
+        "text": "[Finesse 12] Carefully bottle a sample.",
+        "effects": {
+          "addItem": ["resonance_dust"],
+          "purityChange": -5,
+          "experienceGain": 15,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      },
+      {
+        "id": "scavenge_aether_stabilize",
+        "text": "[Sync 14] Stabilize the seep with your Anchor.",
+        "effects": {
+          "experienceGain": 30,
+          "purityChange": 5,
+          "setGlobalFlags": { "hub_action": "none" }
+        }
+      }
+      ]
+      },
+      {
       "id": "discover_blessed_skill",
       "title": "A Resonance Realized",
       "content": "You focus on the {player.blessedSkill}. As you apply your understanding of systemic resonance, the 'warmth' in your marrow suddenly crystallizes into a name and a function. [INNER_MONOLOGUE] 'It's not just heat. It's a signature. I can... stabilize the air around me.'",
