@@ -2,7 +2,7 @@
 
 ## Phase 1: Logic & Data
 - [x] Task: Update `socialData.json` with initial inventory and pricing for Seraphina and Thorne. [checkpoint: 7650b6d]
-- [ ] Task: Implement `socialMatrixMiddleware` to automate secondary relationship effects (e.g., high fear lowers trust).
+- [x] Task: Implement `socialMatrixMiddleware` to automate secondary relationship effects (e.g., high fear lowers trust). [checkpoint: 8b45818]
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Logic & Data' (Protocol in workflow.md)
 
 ## Phase 2: UI & Integration
