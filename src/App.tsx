@@ -119,17 +119,22 @@ const App: React.FC = () => {
   // Storylet Filtering & Auto-TTS
   useEffect(() => {
     if (!isInitialized) return;
-    const filtered = filterStorylets(storyletsData as Storylet[], state);
-    if (filtered.length > 0) {
-      const nextStorylet = filtered[0];
-      if (!activeStorylet || activeStorylet.id !== nextStorylet.id) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+
+    const nextStorylet = dealFromDeck(storyletsData as Storylet[], state);
+    
+    if (nextStorylet) {
+      // If we have a new storylet, or if it's a repeatable one and we've just made a choice,
+      // we refresh the active storylet to update the 'Scene' assembly.
+      const isNewId = !activeStorylet || activeStorylet.id !== nextStorylet.id;
+      const isRepeatableRefresh = nextStorylet.repeatable && game.lastChoiceId !== state.game.lastChoiceId;
+
+      if (isNewId || isRepeatableRefresh) {
         setActiveStorylet(nextStorylet);
         dispatch(markStoryletSeen(nextStorylet.id));
         setTimeLeft(null);
         setIsTTSFinished(false); // TTS starts now
         
-        // Add to history in store (NEW: Assembled Prose)
+        // Add to history in store (Assembled Prose)
         const baseContent = morphText(nextStorylet.content, state);
         const assembledContent = assembleProse(state, baseContent);
         
