@@ -103,8 +103,9 @@ const _assembleProse = (state: RootState, baseContent: string): string => {
 
   // 8. Context Profile Overlay — the world reflects the reputation you've built
   //    through your choices (occasional, so it stays an accent not a refrain).
-  const lean = dominantTag(game.contextProfile);
-  if (lean && game.contextProfile[lean] >= 6 && seed % 4 === 0) {
+  const profile = game.contextProfile ?? {};
+  const lean = dominantTag(profile);
+  if (lean && profile[lean] >= 6 && seed % 4 === 0) {
     const contextFrags = (fragments as any).contextFragments?.[lean];
     if (contextFrags && contextFrags.length) {
       assembled.push(contextFrags[Math.floor(seededRand(contextFrags.length))]);
@@ -130,7 +131,7 @@ const _narrativeBridge = (state: RootState, storylet: Storylet): string => {
   const isConsequence =
     game.forcedStoryletId === storylet.id ||
     (!!pre.lastChoiceId && pre.lastChoiceId === game.lastChoiceId) ||
-    (!!pre.requiresThread && game.openThreads.includes(pre.requiresThread));
+    (!!pre.requiresThread && (game.openThreads ?? []).includes(pre.requiresThread));
 
   if (!isConsequence) return '';
 
@@ -152,6 +153,9 @@ const _filterStorylets = (
   state: RootState
 ): Storylet[] => {
   const { player, game } = state;
+  // Defensive defaults — a partial/legacy state must never crash the deck.
+  const openThreads = game.openThreads ?? [];
+  const contextProfile = game.contextProfile ?? {};
 
   const filtered = storylets.filter((storylet) => {
     const { prerequisites: pre } = storylet;
@@ -199,7 +203,7 @@ const _filterStorylets = (
 
     if (pre.lastStoryletId && pre.lastStoryletId !== game.lastStoryletId) return false;
     if (pre.lastChoiceId && pre.lastChoiceId !== game.lastChoiceId) return false;
-    if (pre.requiresThread && !game.openThreads.includes(pre.requiresThread)) return false;
+    if (pre.requiresThread && !openThreads.includes(pre.requiresThread)) return false;
 
     return true;
   });
@@ -211,13 +215,13 @@ const _filterStorylets = (
     if (s.prerequisites.lastChoiceId === game.lastChoiceId) score += 1000;
     if (s.prerequisites.lastStoryletId === game.lastStoryletId) score += 500;
     // Advancing an open arc outranks any ambient/atmosphere card.
-    if (s.prerequisites.requiresThread && game.openThreads.includes(s.prerequisites.requiresThread)) score += 800;
+    if (s.prerequisites.requiresThread && openThreads.includes(s.prerequisites.requiresThread)) score += 800;
     // Anti-repeat: never immediately re-deal the beat we just showed.
     if (s.id === game.lastStoryletId) score -= 600;
     if (!game.seenStorylets.includes(s.id)) score += 50;
     // Spider-web bias: pull in storylets that resonate with — or dramatically
     // oppose — the player's accumulated leanings.
-    score += contextAffinity(s.tags, game.contextProfile);
+    score += contextAffinity(s.tags, contextProfile);
     return { ...s, dynamicScore: score };
   });
 

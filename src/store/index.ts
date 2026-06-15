@@ -6,7 +6,21 @@ import { guardrailMiddleware } from './middleware/guardrails';
 import { socialMatrixMiddleware } from './middleware/socialMatrix';
 import { persistenceMiddleware, loadSavedState } from './persistence';
 
-const preloadedState = loadSavedState();
+// Hydrate any saved state OVER the reducers' default state. Redux's preloadedState
+// replaces a slice wholesale, so a save written before a new field existed would
+// load that field as `undefined` and crash the engine. Merging over defaults
+// backfills missing fields while preserving saved progress.
+const savedState = loadSavedState();
+const defaultState = {
+  player: playerReducer(undefined, { type: '@@HYDRATE' }),
+  game: gameReducer(undefined, { type: '@@HYDRATE' }),
+};
+const preloadedState = savedState
+  ? {
+      player: { ...defaultState.player, ...savedState.player },
+      game: { ...defaultState.game, ...savedState.game },
+    }
+  : undefined;
 
 export const store = configureStore({
   reducer: {
