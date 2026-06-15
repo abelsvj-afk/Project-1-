@@ -59,6 +59,7 @@ export interface Pronouns {
 
 export interface Player {
   name: string;
+  sex: 'male' | 'female';
   appearance: Appearance;
   pronouns: Pronouns;
   stats: PlayerStats;
@@ -117,6 +118,9 @@ export interface StoryletPrerequisites {
   requiredAnyNpc?: boolean;
   requiredMilestone?: string;
   requiresThread?: string; // only available while this narrative thread is open
+  requiredCompanion?: string; // NPC must currently be an active companion
+  requiredRelationship?: { npcId: string; axis: 'trust' | 'romance' | 'fear'; min: number };
+  requiresOppositeSexTo?: string; // romance gate: player must be the opposite sex to this NPC
 }
 
 export interface StoryletEffects {
@@ -139,6 +143,7 @@ export interface StoryletEffects {
   dismissCompanion?: string; // NPC ID to remove from player.companions
   openThread?: string; // open a narrative thread the Director will follow up
   resolveThread?: string; // close a narrative thread
+  relationshipChanges?: { npcId: string; trust?: number; romance?: number; fear?: number }[];
 }
 
 export interface Storylet {
@@ -296,6 +301,7 @@ export interface NPC {
   id: string;
   name: string;
   title: string;
+  sex?: 'male' | 'female';
   level: number;
   statusTier: NPCStatusTier;
   factionId?: string;

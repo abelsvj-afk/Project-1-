@@ -12,11 +12,24 @@
         "archetype": "pragmatist",
         "braveryThreshold": 40,
         "tone": "bored but dangerous",
-        "vocabulary": ["infraction", "levy", "compliance", "standard"],
-        "visualTells": ["fiddling with a baton", "adjusting a heavy iron collar"]
+        "vocabulary": [
+          "infraction",
+          "levy",
+          "compliance",
+          "standard"
+        ],
+        "visualTells": [
+          "fiddling with a baton",
+          "adjusting a heavy iron collar"
+        ]
       },
       "schedule": [
-        { "timeStart": 0, "timeEnd": 2400, "location": "borderlands_outpost", "activity": "patrol" }
+        {
+          "timeStart": 0,
+          "timeEnd": 2400,
+          "location": "borderlands_outpost",
+          "activity": "patrol"
+        }
       ],
       "simulatedState": {
         "currentAction": "patrol",
@@ -24,7 +37,8 @@
         "lastLocation": "borderlands_outpost",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "sex": "male"
     },
     {
       "id": "kaelen",
@@ -38,12 +52,30 @@
         "archetype": "pragmatist",
         "braveryThreshold": 60,
         "tone": "gravelly and cautious",
-        "vocabulary": ["scrap", "resonance", "shards", "safe-zone"],
-        "visualTells": ["checking the horizon", "sharpening a serrated blade"]
+        "vocabulary": [
+          "scrap",
+          "resonance",
+          "shards",
+          "safe-zone"
+        ],
+        "visualTells": [
+          "checking the horizon",
+          "sharpening a serrated blade"
+        ]
       },
       "schedule": [
-        { "timeStart": 800, "timeEnd": 1800, "location": "outpost_market", "activity": "trade" },
-        { "timeStart": 1801, "timeEnd": 799, "location": "borderlands_warrens", "activity": "rest" }
+        {
+          "timeStart": 800,
+          "timeEnd": 1800,
+          "location": "outpost_market",
+          "activity": "trade"
+        },
+        {
+          "timeStart": 1801,
+          "timeEnd": 799,
+          "location": "borderlands_warrens",
+          "activity": "rest"
+        }
       ],
       "simulatedState": {
         "currentAction": "trade",
@@ -51,7 +83,8 @@
         "lastLocation": "outpost_market",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "sex": "male"
     },
     {
       "id": "vane",
@@ -65,11 +98,24 @@
         "archetype": "zealot",
         "braveryThreshold": 90,
         "tone": "precise and cold",
-        "vocabulary": ["heresy", "resonance-leak", "purification", "order"],
-        "visualTells": ["white knuckles", "a gaze that feels like physical pressure"]
+        "vocabulary": [
+          "heresy",
+          "resonance-leak",
+          "purification",
+          "order"
+        ],
+        "visualTells": [
+          "white knuckles",
+          "a gaze that feels like physical pressure"
+        ]
       },
       "schedule": [
-        { "timeStart": 0, "timeEnd": 2400, "location": "iron_watch_hq", "activity": "enforce" }
+        {
+          "timeStart": 0,
+          "timeEnd": 2400,
+          "location": "iron_watch_hq",
+          "activity": "enforce"
+        }
       ],
       "simulatedState": {
         "currentAction": "oversight",
@@ -77,7 +123,8 @@
         "lastLocation": "iron_watch_hq",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "sex": "male"
     },
     {
       "id": "seraphina",
@@ -91,12 +138,31 @@
         "archetype": "scholar",
         "braveryThreshold": 50,
         "tone": "maternal but sharp, like spinning gears",
-        "vocabulary": ["calibration", "gear-wand", "currents", "sweetie", "overclock"],
-        "visualTells": ["adjusting the focal dials on her brass wand", "wiping grease from her cheek"]
+        "vocabulary": [
+          "calibration",
+          "gear-wand",
+          "currents",
+          "sweetie",
+          "overclock"
+        ],
+        "visualTells": [
+          "adjusting the focal dials on her brass wand",
+          "wiping grease from her cheek"
+        ]
       },
       "schedule": [
-        { "timeStart": 600, "timeEnd": 2000, "location": "borderlands_warrens", "activity": "trade" },
-        { "timeStart": 2001, "timeEnd": 599, "location": "borderlands_warrens", "activity": "tinker" }
+        {
+          "timeStart": 600,
+          "timeEnd": 2000,
+          "location": "borderlands_warrens",
+          "activity": "trade"
+        },
+        {
+          "timeStart": 2001,
+          "timeEnd": 599,
+          "location": "borderlands_warrens",
+          "activity": "tinker"
+        }
       ],
       "simulatedState": {
         "currentAction": "trade",
@@ -106,10 +172,23 @@
         "isHired": false
       },
       "tradeInventory": [
-        { "id": "brass_gear_wand", "price": 150, "stock": 1 },
-        { "id": "overclock_salve", "price": 50, "stock": 5 },
-        { "id": "mending_salve", "price": 30, "stock": 3 }
-      ]
+        {
+          "id": "brass_gear_wand",
+          "price": 150,
+          "stock": 1
+        },
+        {
+          "id": "overclock_salve",
+          "price": 50,
+          "stock": 5
+        },
+        {
+          "id": "mending_salve",
+          "price": 30,
+          "stock": 3
+        }
+      ],
+      "sex": "female"
     },
     {
       "id": "ryker",
@@ -123,12 +202,31 @@
         "archetype": "pragmatist",
         "braveryThreshold": 85,
         "tone": "booming and rigidly formal",
-        "vocabulary": ["duty", "the Archon", "static-field", "stand down", "resonance-blade"],
-        "visualTells": ["resting his hand on a massive sword that hums with low-energy magic", "standing at rigid attention"]
+        "vocabulary": [
+          "duty",
+          "the Archon",
+          "static-field",
+          "stand down",
+          "resonance-blade"
+        ],
+        "visualTells": [
+          "resting his hand on a massive sword that hums with low-energy magic",
+          "standing at rigid attention"
+        ]
       },
       "schedule": [
-        { "timeStart": 600, "timeEnd": 1800, "location": "borderlands_outpost", "activity": "patrol" },
-        { "timeStart": 1801, "timeEnd": 599, "location": "iron_watch_hq", "activity": "rest" }
+        {
+          "timeStart": 600,
+          "timeEnd": 1800,
+          "location": "borderlands_outpost",
+          "activity": "patrol"
+        },
+        {
+          "timeStart": 1801,
+          "timeEnd": 599,
+          "location": "iron_watch_hq",
+          "activity": "rest"
+        }
       ],
       "simulatedState": {
         "currentAction": "patrol",
@@ -136,7 +234,8 @@
         "lastLocation": "borderlands_outpost",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "sex": "male"
     },
     {
       "id": "elara_spire",
@@ -150,11 +249,25 @@
         "archetype": "zealot",
         "braveryThreshold": 70,
         "tone": "ethereal and slightly condescending",
-        "vocabulary": ["purity", "the weave", "metal-rot", "true magic", "flesh-bound"],
-        "visualTells": ["floating slightly off the ground", "twirling an organic, root-like wand"]
+        "vocabulary": [
+          "purity",
+          "the weave",
+          "metal-rot",
+          "true magic",
+          "flesh-bound"
+        ],
+        "visualTells": [
+          "floating slightly off the ground",
+          "twirling an organic, root-like wand"
+        ]
       },
       "schedule": [
-        { "timeStart": 0, "timeEnd": 2400, "location": "adept_spires", "activity": "meditate" }
+        {
+          "timeStart": 0,
+          "timeEnd": 2400,
+          "location": "adept_spires",
+          "activity": "meditate"
+        }
       ],
       "simulatedState": {
         "currentAction": "meditate",
@@ -162,7 +275,8 @@
         "lastLocation": "adept_spires",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "sex": "female"
     },
     {
       "id": "thorne_merchant",
@@ -176,12 +290,31 @@
         "archetype": "greed",
         "braveryThreshold": 20,
         "tone": "wheezing and secretive",
-        "vocabulary": ["shiny", "cursed", "cheap", "don't ask where I got it", "shards"],
-        "visualTells": ["rubbing his hands together", "glancing over his shoulder nervously"]
+        "vocabulary": [
+          "shiny",
+          "cursed",
+          "cheap",
+          "don't ask where I got it",
+          "shards"
+        ],
+        "visualTells": [
+          "rubbing his hands together",
+          "glancing over his shoulder nervously"
+        ]
       },
       "schedule": [
-        { "timeStart": 1000, "timeEnd": 1400, "location": "static_crater", "activity": "scavenge" },
-        { "timeStart": 1401, "timeEnd": 999, "location": "outpost_market", "activity": "trade" }
+        {
+          "timeStart": 1000,
+          "timeEnd": 1400,
+          "location": "static_crater",
+          "activity": "scavenge"
+        },
+        {
+          "timeStart": 1401,
+          "timeEnd": 999,
+          "location": "outpost_market",
+          "activity": "trade"
+        }
       ],
       "simulatedState": {
         "currentAction": "trade",
@@ -191,10 +324,23 @@
         "isHired": false
       },
       "tradeInventory": [
-        { "id": "cursed_echo_ring", "price": 200, "stock": 1 },
-        { "id": "bloodroot_bundle", "price": 45, "stock": 2 },
-        { "id": "shattered_static_blade", "price": 400, "stock": 1 }
-      ]
+        {
+          "id": "cursed_echo_ring",
+          "price": 200,
+          "stock": 1
+        },
+        {
+          "id": "bloodroot_bundle",
+          "price": 45,
+          "stock": 2
+        },
+        {
+          "id": "shattered_static_blade",
+          "price": 400,
+          "stock": 1
+        }
+      ],
+      "sex": "male"
     },
     {
       "id": "silas_wraith",
@@ -208,11 +354,25 @@
         "archetype": "pragmatist",
         "braveryThreshold": 95,
         "tone": "whisper-quiet, absolute zero emotion",
-        "vocabulary": ["target", "sever", "contract", "silence", "null-point"],
-        "visualTells": ["melting into the shadows", "flipping a dagger that absorbs light"]
+        "vocabulary": [
+          "target",
+          "sever",
+          "contract",
+          "silence",
+          "null-point"
+        ],
+        "visualTells": [
+          "melting into the shadows",
+          "flipping a dagger that absorbs light"
+        ]
       },
       "schedule": [
-        { "timeStart": 0, "timeEnd": 2400, "location": "dust_flats", "activity": "hunt_player" }
+        {
+          "timeStart": 0,
+          "timeEnd": 2400,
+          "location": "dust_flats",
+          "activity": "hunt_player"
+        }
       ],
       "simulatedState": {
         "currentAction": "stalk",
@@ -220,7 +380,8 @@
         "lastLocation": "dust_flats",
         "isDead": false,
         "isHired": false
-      }
+      },
+      "sex": "male"
     }
   ]
 }

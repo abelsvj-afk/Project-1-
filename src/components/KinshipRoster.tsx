@@ -85,12 +85,32 @@ const KinshipRoster: React.FC = () => {
         <h4 className="text-[10px] uppercase font-bold text-slate-500 mb-3 tracking-widest">Active Companions</h4>
         <div className="space-y-2">
           {companionNPCs.length > 0 ? (
-            companionNPCs.map(c => (
-              <div key={c.id} className="flex justify-between items-center">
-                <div className="text-xs text-amber-200 font-bold uppercase">{c.name}</div>
-                <div className="text-[9px] text-slate-500 uppercase">{c.title}</div>
-              </div>
-            ))
+            companionNPCs.map(c => {
+              const rel = game.relationships[c.id] || { trust: 0, romance: 0, fear: 0 };
+              const isSpouse = game.globalFlags['married_to'] === c.id;
+              return (
+                <div key={c.id} className="space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <div className="text-xs text-amber-200 font-bold uppercase flex items-center gap-1.5">
+                      {c.name}
+                      {isSpouse && <span className="text-[8px] bg-rose-900/50 text-rose-300 px-1 py-0.5 rounded border border-rose-700/50">♥ Spouse</span>}
+                    </div>
+                    <div className="text-[9px] text-slate-500 uppercase">{c.title}</div>
+                  </div>
+                  {rel.romance > 0 && (
+                    <div>
+                      <div className="flex justify-between text-[8px] uppercase text-slate-500 mb-0.5">
+                        <span className="text-rose-400">Romance</span>
+                        <span className="text-rose-300 font-mono">{rel.romance}</span>
+                      </div>
+                      <div className="h-1 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-rose-500 transition-all duration-500" style={{ width: `${rel.romance}%` }} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })
           ) : (
             <div className="text-xs text-slate-600 italic">Traveling alone</div>
           )}

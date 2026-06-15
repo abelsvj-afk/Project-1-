@@ -937,5 +937,229 @@
     "tags": [
       "social"
     ]
+  },
+  {
+    "id": "kaelen_camp_ember",
+    "title": "Embers and Quiet",
+    "content": "Night settles over the wastes and {npc:kaelen} builds a low fire from scavenged board. For once there's nothing hunting you, nothing to run from. They pass you a dented cup of something warm and bitter, and for a while you just sit in the orange light, not needing to say anything at all.",
+    "priority": 45,
+    "prerequisites": {
+      "requiredCompanion": "kaelen",
+      "requiresOppositeSexTo": "kaelen"
+    },
+    "choices": [
+      {
+        "id": "ember_open",
+        "text": "Tell Kaelen something true about who you were before all this.",
+        "effects": {
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": 20,
+              "trust": 6
+            }
+          ],
+          "experienceGain": 10
+        },
+        "tags": [
+          "social",
+          "compassionate"
+        ]
+      },
+      {
+        "id": "ember_guard",
+        "text": "Keep your past to yourself, and just share the silence.",
+        "effects": {
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "trust": 10
+            }
+          ],
+          "experienceGain": 8
+        },
+        "tags": [
+          "cautious"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "id": "kaelen_camp_scars",
+    "title": "What the Wastes Took",
+    "content": "{npc:kaelen} traces an old burn scar along their forearm and, unprompted, tells you how they got it — the Syndicate raid that took the Warrens settlement, the people they couldn't carry out. 'I don't tell that to anyone,' they say, looking at you a little too long. 'Figure you've earned it.'",
+    "priority": 45,
+    "prerequisites": {
+      "requiredCompanion": "kaelen",
+      "requiredRelationship": {
+        "npcId": "kaelen",
+        "axis": "romance",
+        "min": 18
+      },
+      "requiresOppositeSexTo": "kaelen"
+    },
+    "choices": [
+      {
+        "id": "scars_hold",
+        "text": "Take their hand. Let them know they're not carrying it alone.",
+        "effects": {
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": 20,
+              "trust": 8
+            }
+          ],
+          "purityChange": 3,
+          "experienceGain": 12
+        },
+        "tags": [
+          "compassionate",
+          "social"
+        ]
+      },
+      {
+        "id": "scars_listen",
+        "text": "Listen, and offer hard-won understanding instead of comfort.",
+        "effects": {
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": 8,
+              "trust": 12
+            }
+          ],
+          "experienceGain": 10
+        },
+        "tags": [
+          "cautious",
+          "social"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "id": "kaelen_confession",
+    "title": "Said Plainly",
+    "content": "You catch {npc:kaelen} watching you across the camp, and this time they don't look away. 'I'm no good at this,' they admit, voice rough. 'Out here you learn not to want things — they get taken. But I want this. You. If that's fool's talk, tell me now and I'll never bring it up again.'",
+    "priority": 55,
+    "prerequisites": {
+      "requiredCompanion": "kaelen",
+      "requiredRelationship": {
+        "npcId": "kaelen",
+        "axis": "romance",
+        "min": 35
+      },
+      "requiresOppositeSexTo": "kaelen"
+    },
+    "choices": [
+      {
+        "id": "confession_yes",
+        "text": "'It's not fool's talk. I want this too.'",
+        "effects": {
+          "openThread": "romance_kaelen",
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": 18,
+              "trust": 10
+            }
+          ],
+          "experienceGain": 20
+        },
+        "tags": [
+          "social",
+          "compassionate"
+        ]
+      },
+      {
+        "id": "confession_no",
+        "text": "'I can't give you that. Not now. Maybe not ever.'",
+        "effects": {
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": -12,
+              "trust": -4
+            }
+          ],
+          "experienceGain": 8
+        },
+        "tags": [
+          "cautious"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "id": "kaelen_proposal",
+    "title": "A Promise in the Dust",
+    "content": "{npc:kaelen} turns a battered resonance-ring over in their fingers — scavenged, resized, clearly worked on in secret. 'Nothing lasts out here,' they say. 'But I'd like to try, with you. Make it official, in whatever way two people can in a broken world. Marry me. Or don't, and we go on as we are. Either way I'm not leaving.'",
+    "priority": 65,
+    "prerequisites": {
+      "requiresThread": "romance_kaelen",
+      "requiredRelationship": {
+        "npcId": "kaelen",
+        "axis": "romance",
+        "min": 50
+      },
+      "requiresOppositeSexTo": "kaelen"
+    },
+    "choices": [
+      {
+        "id": "proposal_accept",
+        "text": "'Yes. Whatever the wastes throw at us — together.'",
+        "effects": {
+          "setGlobalFlags": {
+            "married_to": "kaelen"
+          },
+          "resolveThread": "romance_kaelen",
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": 12,
+              "trust": 12
+            }
+          ],
+          "alignmentChange": 5,
+          "experienceGain": 30
+        },
+        "tags": [
+          "social",
+          "compassionate"
+        ]
+      },
+      {
+        "id": "proposal_wait",
+        "text": "'Not a ring. Just don't leave. That's enough for now.'",
+        "effects": {
+          "resolveThread": "romance_kaelen",
+          "relationshipChanges": [
+            {
+              "npcId": "kaelen",
+              "romance": 5,
+              "trust": 6
+            }
+          ],
+          "experienceGain": 12
+        },
+        "tags": [
+          "cautious",
+          "social"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
   }
 ]

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../store';
-import { buyProperty } from '../store/slices/gameSlice';
+import { buyProperty, hireEmployee, fireEmployee, promoteEmployee } from '../store/slices/gameSlice';
 import { changeWealth } from '../store/slices/playerSlice';
+import { EMPLOYEE_ROLES, HIRE_FEE, promotionCost, employeeDailyIncome } from '../engine/economicEngine';
 import politicalData from '../data/politicalData.json';
 import type { Property } from '../types/game';
 
@@ -10,11 +11,37 @@ const CivicDashboard: React.FC = () => {
   const dispatch = useDispatch();
   const game = useSelector((state: RootState) => state.game);
   const player = useSelector((state: RootState) => state.player);
+  const [roleChoice, setRoleChoice] = useState<{ [npcId: string]: string }>({});
 
   const handleBuy = (property: Property) => {
     if (player.wealth >= property.purchasePrice) {
       dispatch(changeWealth(-property.purchasePrice));
       dispatch(buyProperty(property.id));
+    }
+  };
+
+  const employeeIds = new Set(game.employees?.map(e => e.npcId) ?? []);
+  // Known NPCs present here who aren't already employed (companions can also work).
+  const hireable = Object.values(game.npcs).filter(npc =>
+    game.knownNames.includes(npc.id) &&
+    npc.simulatedState.lastLocation === player.location &&
+    !employeeIds.has(npc.id) &&
+    !npc.simulatedState.isDead
+  );
+
+  const handleHire = (npcId: string) => {
+    const role = roleChoice[npcId] || 'scavenger';
+    if (player.wealth >= HIRE_FEE) {
+      dispatch(changeWealth(-HIRE_FEE));
+      dispatch(hireEmployee({ npcId, role }));
+    }
+  };
+
+  const handlePromote = (npcId: string, tier: number) => {
+    const cost = promotionCost(tier);
+    if (player.wealth >= cost) {
+      dispatch(changeWealth(-cost));
+      dispatch(promoteEmployee(npcId));
     }
   };
 
@@ -93,6 +120,81 @@ const CivicDashboard: React.FC = () => {
             );
           })}
         </div>
+      </div>
+
+      {/* Workforce — hire / fire / promote NPCs for passive income */}
+      <div className="bg-slate-900/80 p-4 rounded border border-slate-700">
+        <div className="flex justify-between items-center mb-3">
+          <h4 className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Workforce</h4>
+          <span className="text-[9px] text-emerald-500 font-mono">
+            +{(game.employees ?? []).reduce((s, e) => s + employeeDailyIncome(e.role, e.tier), 0)}/day
+          </span>
+        </div>
+
+        {/* Current employees */}
+        <div className="space-y-2 mb-3">
+          {(game.employees ?? []).length > 0 ? (game.employees ?? []).map(emp => {
+            const npc = game.npcs[emp.npcId];
+            const role = EMPLOYEE_ROLES[emp.role];
+            const promoCost = promotionCost(emp.tier);
+            const maxed = emp.tier >= 3;
+            return (
+              <div key={emp.npcId} className="flex items-center justify-between bg-slate-800/60 p-2 rounded border border-slate-700">
+                <div>
+                  <div className="text-xs text-amber-200 font-bold">{npc?.name || emp.npcId}</div>
+                  <div className="text-[9px] text-slate-500 uppercase">
+                    {role?.label || emp.role} · T{emp.tier} · <span className="text-emerald-500">+{employeeDailyIncome(emp.role, emp.tier)}/day</span>
+                  </div>
+                </div>
+                <div className="flex gap-1.5">
+                  <button
+                    disabled={maxed || player.wealth < promoCost}
+                    onClick={() => handlePromote(emp.npcId, emp.tier)}
+                    className={`text-[9px] uppercase font-bold px-2 py-1 rounded border transition-all ${maxed ? 'border-slate-800 text-slate-700' : player.wealth >= promoCost ? 'border-emerald-700 text-emerald-400 hover:bg-emerald-700 hover:text-slate-900' : 'border-slate-800 text-slate-700'}`}
+                  >
+                    {maxed ? 'Max' : `Promote ${promoCost}`}
+                  </button>
+                  <button
+                    onClick={() => dispatch(fireEmployee(emp.npcId))}
+                    className="text-[9px] uppercase font-bold px-2 py-1 rounded border border-red-900 text-red-400 hover:bg-red-900/40 transition-all"
+                  >
+                    Fire
+                  </button>
+                </div>
+              </div>
+            );
+          }) : (
+            <div className="text-[10px] text-slate-600 italic">No one on the payroll.</div>
+          )}
+        </div>
+
+        {/* Hire panel */}
+        {hireable.length > 0 && (
+          <div className="border-t border-slate-800 pt-2 space-y-2">
+            <div className="text-[9px] uppercase text-slate-500 tracking-wider">Hire nearby ({HIRE_FEE} shards)</div>
+            {hireable.map(npc => (
+              <div key={npc.id} className="flex items-center justify-between gap-2">
+                <span className="text-xs text-slate-300 flex-1 truncate">{npc.name}</span>
+                <select
+                  value={roleChoice[npc.id] || 'scavenger'}
+                  onChange={e => setRoleChoice(prev => ({ ...prev, [npc.id]: e.target.value }))}
+                  className="text-[9px] bg-slate-800 border border-slate-700 rounded px-1 py-0.5 text-slate-300"
+                >
+                  {Object.entries(EMPLOYEE_ROLES).map(([id, r]) => (
+                    <option key={id} value={id}>{r.label}</option>
+                  ))}
+                </select>
+                <button
+                  disabled={player.wealth < HIRE_FEE}
+                  onClick={() => handleHire(npc.id)}
+                  className={`text-[9px] uppercase font-bold px-2 py-1 rounded border transition-all ${player.wealth >= HIRE_FEE ? 'border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-slate-900' : 'border-slate-800 text-slate-700'}`}
+                >
+                  Hire
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Town Laws */}

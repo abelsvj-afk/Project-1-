@@ -204,6 +204,17 @@ const _filterStorylets = (
     if (pre.lastStoryletId && pre.lastStoryletId !== game.lastStoryletId) return false;
     if (pre.lastChoiceId && pre.lastChoiceId !== game.lastChoiceId) return false;
     if (pre.requiresThread && !openThreads.includes(pre.requiresThread)) return false;
+    if (pre.requiredCompanion && !player.companions.includes(pre.requiredCompanion)) return false;
+    if (pre.requiredRelationship) {
+      const { npcId, axis, min } = pre.requiredRelationship;
+      const rel = game.relationships[npcId];
+      if (!rel || (rel[axis] ?? 0) < min) return false;
+    }
+    if (pre.requiresOppositeSexTo) {
+      // Romance is available only between opposite-sex partners.
+      const npcSex = game.npcs[pre.requiresOppositeSexTo]?.sex;
+      if (!player.sex || !npcSex || player.sex === npcSex) return false;
+    }
 
     return true;
   });

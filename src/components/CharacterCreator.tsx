@@ -21,14 +21,6 @@ const MARKING_LOCATIONS = [
 const SCAR_TYPES = ['jagged slash', 'chemical burn', 'surgical seam', 'mechanical port', 'shrapnel pockmarks', 'branding iron mark', 'frostbite scars', 'acid pitting', 'claw grooves'];
 const TATTOO_TYPES = ['geometric patterns', 'syndicate crest', 'ancient runes', 'faded blueprints', 'bio-luminescent ink', 'tribal etchings', 'star charts', 'industrial barcodes', 'occult sigils'];
 
-const PRONOUN_SETS = [
-  { label: 'He / Him / His', subject: 'he', object: 'him', possessive: 'his' },
-  { label: 'She / Her / Hers', subject: 'she', object: 'her', possessive: 'her' },
-  { label: 'They / Them / Theirs', subject: 'they', object: 'them', possessive: 'their' },
-  { label: 'Xe / Xem / Xir', subject: 'xe', object: 'xem', possessive: 'xir' },
-  { label: 'Custom', subject: '', object: '', possessive: '' },
-];
-
 const EYE_COLORS = ['clear', 'steel blue', 'emerald', 'amber', 'crimson', 'void black', 'luminescent violet', 'gold-flecked', 'icy white', 'molten orange', 'toxic green', 'amethyst', 'heterochromia (blue/green)', 'heterochromia (red/black)'];
 const EYE_TYPES = ['organic', 'cybernetic (lens)', 'cat-like', 'milky (blind)', 'glowing iris', 'hollow', 'reptilian', 'vertical slit', 'star-pupiled', 'clockwork', 'many-pupiled'];
 
@@ -72,10 +64,7 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
   const [isAudioStarted, setIsAudioStarted] = useState(false);
 
   const [name, setName] = useState('Stranger');
-  const [pronounIndex, setPronounIndex] = useState(2);
-  const [customSubject, setCustomSubject] = useState('');
-  const [customObject, setCustomObject] = useState('');
-  const [customPossessive, setCustomPossessive] = useState('');
+  const [sex, setSex] = useState<'male' | 'female'>('male');
 
   const [height, setHeight] = useState('average');
   const [bodyType, setBodyType] = useState('average');
@@ -111,16 +100,10 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
     };
   }, []);
 
-  const getPronouns = () => {
-    if (PRONOUN_SETS[pronounIndex].label === 'Custom') {
-      return { subject: customSubject || 'they', object: customObject || 'them', possessive: customPossessive || 'their' };
-    }
-    return {
-      subject: PRONOUN_SETS[pronounIndex].subject,
-      object: PRONOUN_SETS[pronounIndex].object,
-      possessive: PRONOUN_SETS[pronounIndex].possessive,
-    };
-  };
+  const getPronouns = () =>
+    sex === 'female'
+      ? { subject: 'she', object: 'her', possessive: 'her' }
+      : { subject: 'he', object: 'him', possessive: 'his' };
 
   const currentAppearance = {
     bodyType, musculature, height, hairStyle, hairColor, eyeColor, eyeType, skinTone,
@@ -160,6 +143,7 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
     const { subject, object, possessive } = getPronouns();
     dispatch(setIdentity({
       name,
+      sex,
       appearance: currentAppearance,
       pronouns: { subject, object, possessive },
       presence,
@@ -209,21 +193,18 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
                   className="w-full bg-slate-900 border border-slate-800 p-4 rounded text-slate-100 focus:border-amber-500 outline-none font-mono uppercase text-xl transition-colors hover:bg-slate-800"
                 />
                 <div className="space-y-2">
-                  <label className="block text-[10px] uppercase text-slate-500 font-bold tracking-widest">Pronoun Protocol</label>
-                  <select
-                    value={pronounIndex}
-                    onChange={(e) => { setPronounIndex(parseInt(e.target.value)); playSound('click'); }}
-                    className="w-full bg-slate-900 border border-slate-800 p-3 rounded text-slate-300 text-xs uppercase transition-all hover:border-amber-500"
-                  >
-                    {PRONOUN_SETS.map((set, i) => <option key={i} value={i}>{set.label}</option>)}
-                  </select>
-                  {PRONOUN_SETS[pronounIndex].label === 'Custom' && (
-                    <div className="grid grid-cols-3 gap-2 mt-2 animate-fade-in">
-                      <input placeholder="SUBJECT" value={customSubject} onChange={(e) => { setCustomSubject(e.target.value); playSound('type'); }} className="bg-slate-900 border border-slate-800 p-2 rounded text-slate-100 text-[10px] font-mono uppercase" />
-                      <input placeholder="OBJECT" value={customObject} onChange={(e) => { setCustomObject(e.target.value); playSound('type'); }} className="bg-slate-900 border border-slate-800 p-2 rounded text-slate-100 text-[10px] font-mono uppercase" />
-                      <input placeholder="POSSESSIVE" value={customPossessive} onChange={(e) => { setCustomPossessive(e.target.value); playSound('type'); }} className="bg-slate-900 border border-slate-800 p-2 rounded text-slate-100 text-[10px] font-mono uppercase" />
-                    </div>
-                  )}
+                  <label className="block text-[10px] uppercase text-slate-500 font-bold tracking-widest">Sex</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['male', 'female'] as const).map(opt => (
+                      <button
+                        key={opt}
+                        onClick={() => { setSex(opt); playSound('click'); }}
+                        className={`p-3 rounded border text-xs uppercase font-bold tracking-widest transition-all ${sex === opt ? 'border-amber-500 bg-amber-500/10 text-amber-400' : 'border-slate-800 bg-slate-900 text-slate-500 hover:border-slate-600'}`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>

@@ -28,10 +28,11 @@ const initialState: Player = {
     tattoos: [],
     facialFeatures: [],
   },
+  sex: 'male' as 'male' | 'female',
   pronouns: {
-    subject: 'they',
-    object: 'them',
-    possessive: 'their',
+    subject: 'he',
+    object: 'him',
+    possessive: 'his',
   },
   stats: initialStats,
   level: 1,
@@ -210,12 +211,16 @@ const playerSlice = createSlice({
     applyCure: (state, action: PayloadAction<string[]>) => {
       state.afflictions = state.afflictions.filter(a => !action.payload.includes(a));
     },
-    setIdentity: (state, action: PayloadAction<{ name: string; appearance: Appearance; pronouns: Pronouns; presence: any; presenceDescription: string }>) => {
+    setIdentity: (state, action: PayloadAction<{ name: string; sex: 'male' | 'female'; appearance: Appearance; pronouns: Pronouns; presence: any; presenceDescription: string }>) => {
       state.name = action.payload.name;
+      state.sex = action.payload.sex;
       state.appearance = action.payload.appearance;
       state.pronouns = action.payload.pronouns;
       state.presence = action.payload.presence;
       state.presenceDescription = action.payload.presenceDescription;
+    },
+    setSex: (state, action: PayloadAction<'male' | 'female'>) => {
+      state.sex = action.payload;
     },
   },
 });
@@ -244,6 +249,7 @@ export const {
   consumeMentality,
   applyCure,
   setIdentity,
+  setSex,
   logChoice,
   changeInfluence,
   changeMenace,

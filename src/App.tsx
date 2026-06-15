@@ -11,7 +11,7 @@ import { morphText, assembleProse, dealFromDeck, narrativeBridge } from './engin
 import { processHistoryConsolidation } from './engine/historyEngine';
 import {
   setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, reinforceContext, visitNode,
-  openThread, resolveThread,
+  openThread, resolveThread, updateRelationship,
   addNarrativeHistory, setForcedStorylet, setActiveConversationNpc, incrementTime,
   startCombat,
 } from './store/slices/gameSlice';
@@ -142,6 +142,13 @@ const App: React.FC = () => {
     if (effects.dismissCompanion) dispatch(removeCompanion(effects.dismissCompanion));
     if (effects.openThread) dispatch(openThread(effects.openThread));
     if (effects.resolveThread) dispatch(resolveThread(effects.resolveThread));
+    if (effects.relationshipChanges) {
+      effects.relationshipChanges.forEach(rc => {
+        (['trust', 'romance', 'fear'] as const).forEach(axis => {
+          if (rc[axis] !== undefined) dispatch(updateRelationship({ npcId: rc.npcId, type: axis, change: rc[axis]! }));
+        });
+      });
+    }
 
     // Trigger combat — switch to combat view automatically
     if (effects.triggerCombat) {

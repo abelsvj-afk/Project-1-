@@ -36,6 +36,10 @@ interface GameStateSlice {
   /** Open narrative threads — multi-beat arcs the Director keeps advancing until
    *  resolved, so choices lead to coherent consequences instead of random cards. */
   openThreads: string[];
+  /** Hired workforce — NPCs employed in a role/tier that generate passive income. */
+  employees: { npcId: string; role: string; tier: number }[];
+  /** Fractional passive income carried between ticks until it rounds to ≥1 shard. */
+  incomeBuffer: number;
 }
 
 const initialState: GameStateSlice = {
@@ -65,7 +69,11 @@ const initialState: GameStateSlice = {
   contextProfile: {},
   visitedNodes: ['static_crater'],
   openThreads: [],
+  employees: [],
+  incomeBuffer: 0,
 };
+
+const MAX_EMPLOYEE_TIER = 3;
 
 /** Upper bound on any single tag's weight so the profile stays responsive to
  *  recent shifts instead of locking in early. */
@@ -175,6 +183,22 @@ const gameSlice = createSlice({
     },
     resolveThread: (state, action: PayloadAction<string>) => {
       state.openThreads = state.openThreads.filter(t => t !== action.payload);
+    },
+    hireEmployee: (state, action: PayloadAction<{ npcId: string; role: string }>) => {
+      const { npcId, role } = action.payload;
+      if (!state.employees.some(e => e.npcId === npcId)) {
+        state.employees.push({ npcId, role, tier: 1 });
+      }
+    },
+    fireEmployee: (state, action: PayloadAction<string>) => {
+      state.employees = state.employees.filter(e => e.npcId !== action.payload);
+    },
+    promoteEmployee: (state, action: PayloadAction<string>) => {
+      const emp = state.employees.find(e => e.npcId === action.payload);
+      if (emp && emp.tier < MAX_EMPLOYEE_TIER) emp.tier += 1;
+    },
+    setIncomeBuffer: (state, action: PayloadAction<number>) => {
+      state.incomeBuffer = action.payload;
     },
     reinforceContext: (state, action: PayloadAction<string[]>) => {
       // Each reinforced tag grows; all other tags gently decay so the profile
@@ -329,6 +353,10 @@ export const {
   visitNode,
   openThread,
   resolveThread,
+  hireEmployee,
+  fireEmployee,
+  promoteEmployee,
+  setIncomeBuffer,
   addNarrativeHistory,
   consolidateHistory,
   evolveNPC,
