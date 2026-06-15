@@ -146,6 +146,10 @@ export interface Storylet {
   repeatable?: boolean;
   timeLimit?: number;
   defaultChoiceId?: string;
+  /** Thematic tags used by the Context Profile to bias which storylets are dealt.
+   *  A storylet resonates with a player whose profile shares its tags, and creates
+   *  tension when it carries tags opposing the player's dominant leanings. */
+  tags?: string[];
 }
 
 export interface Choice {
@@ -153,6 +157,8 @@ export interface Choice {
   text: string;
   effects: StoryletEffects;
   followUpId?: string;
+  /** Tags reinforced into the player's Context Profile when this choice is taken. */
+  tags?: string[];
 }
 
 export type MagicCurrent = 'thermal' | 'vector' | 'biomorphic' | 'cognitive';

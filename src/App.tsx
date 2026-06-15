@@ -10,7 +10,7 @@ import {
 import { morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
 import { processHistoryConsolidation } from './engine/historyEngine';
 import {
-  setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId,
+  setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, reinforceContext, visitNode,
   addNarrativeHistory, setForcedStorylet, setActiveConversationNpc, incrementTime,
   startCombat,
 } from './store/slices/gameSlice';
@@ -22,6 +22,7 @@ import Inventory from './components/Inventory';
 import SkillTree from './components/SkillTree';
 import BlueprintLibrary from './components/BlueprintLibrary';
 import CombatConsole from './components/CombatConsole';
+import WorldMap from './components/WorldMap';
 import LoadingScreen from './components/LoadingScreen';
 import { useWorldEngine } from './hooks/useWorldEngine';
 import CivicDashboard from './components/CivicDashboard';
@@ -44,7 +45,7 @@ const App: React.FC = () => {
   const [activeStorylet, setActiveStorylet] = useState<Storylet | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social' | 'status'>('status');
+  const [activeTab, setActiveTab] = useState<'inventory' | 'skills' | 'blueprints' | 'civic' | 'social' | 'status' | 'map'>('status');
   const [view, setView] = useState<'narrative' | 'combat'>('narrative');
   const [isNarrating, setIsNarrating] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -72,6 +73,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (isInitialized) {
       populateLocation(player.location, game.npcs, dispatch);
+      dispatch(visitNode(player.location));
     }
   }, [player.location, isInitialized, dispatch]); // omit game.npcs — only trigger on location change
 
@@ -91,6 +93,9 @@ const App: React.FC = () => {
 
     dispatch(addNarrativeHistory({ id: choice.id, type: 'choice', text: choice.text }));
     dispatch(setLastChoiceId(choice.id));
+
+    // Feed the player's expressed leaning into the hidden Context Profile.
+    if (choice.tags?.length) dispatch(reinforceContext(choice.tags));
 
     // Forced continuity
     if (choice.followUpId) {
@@ -379,7 +384,7 @@ const App: React.FC = () => {
                 <div id="scroll-anchor" />
               </>
             ) : (
-              <CombatConsole />
+              <CombatConsole onExit={() => setView('narrative')} />
             )}
           </div>
         </section>
@@ -387,7 +392,7 @@ const App: React.FC = () => {
         {/* Right Column */}
         <aside className="w-full md:w-80 shrink-0 flex flex-col gap-4 overflow-y-auto pr-2 pb-4">
           <div className="flex bg-slate-900 rounded-lg p-1 border border-slate-700 gap-1 overflow-x-auto no-scrollbar">
-            {['status', 'inventory', 'skills', 'blueprints', 'civic', 'social'].map((tab) => (
+            {['status', 'map', 'inventory', 'skills', 'blueprints', 'civic', 'social'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
@@ -402,6 +407,7 @@ const App: React.FC = () => {
 
           <div className="flex-1 overflow-y-auto bg-slate-800 rounded-lg border border-slate-700 p-4 custom-scrollbar">
             {activeTab === 'status' && <Status />}
+            {activeTab === 'map' && <WorldMap />}
             {activeTab === 'inventory' && <Inventory />}
             {activeTab === 'skills' && <SkillTree />}
             {activeTab === 'blueprints' && <BlueprintLibrary />}

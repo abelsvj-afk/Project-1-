@@ -28,6 +28,11 @@ interface GameStateSlice {
   lastStoryletId?: string;
   lastChoiceId?: string;
   narrativeHistory: { id: string; type: 'storylet' | 'choice'; text: string; title?: string }[];
+  /** Hidden "spider-web" profile: accumulated weight per thematic tag, built from
+   *  the choices the player makes. Drives which storylets/fragments resonate. */
+  contextProfile: { [tag: string]: number };
+  /** World-map nodes the player has set foot in (fog-of-war for the travel UI). */
+  visitedNodes: string[];
 }
 
 const initialState: GameStateSlice = {
@@ -54,7 +59,13 @@ const initialState: GameStateSlice = {
   seenStorylets: [],
   knowledgeFlags: [],
   narrativeHistory: [],
+  contextProfile: {},
+  visitedNodes: ['static_crater'],
 };
+
+/** Upper bound on any single tag's weight so the profile stays responsive to
+ *  recent shifts instead of locking in early. */
+const CONTEXT_TAG_CAP = 25;
 
 const gameSlice = createSlice({
   name: 'game',
@@ -148,6 +159,26 @@ const gameSlice = createSlice({
     setLastChoiceId: (state, action: PayloadAction<string>) => {
       state.lastChoiceId = action.payload;
     },
+    visitNode: (state, action: PayloadAction<string>) => {
+      if (!state.visitedNodes.includes(action.payload)) {
+        state.visitedNodes.push(action.payload);
+      }
+    },
+    reinforceContext: (state, action: PayloadAction<string[]>) => {
+      // Each reinforced tag grows; all other tags gently decay so the profile
+      // tracks the player's *recent* leanings (the "drift" of the spider-web).
+      const incoming = new Set(action.payload);
+      for (const tag of Object.keys(state.contextProfile)) {
+        if (!incoming.has(tag)) {
+          const decayed = state.contextProfile[tag] - 1;
+          if (decayed <= 0) delete state.contextProfile[tag];
+          else state.contextProfile[tag] = decayed;
+        }
+      }
+      for (const tag of incoming) {
+        state.contextProfile[tag] = Math.min(CONTEXT_TAG_CAP, (state.contextProfile[tag] || 0) + 3);
+      }
+    },
     addNarrativeHistory: (state, action: PayloadAction<{ id: string; type: 'storylet' | 'choice'; text: string; title?: string }>) => {
       state.narrativeHistory.push(action.payload);
       if (state.narrativeHistory.length > 100) {
@@ -217,6 +248,10 @@ const gameSlice = createSlice({
       if (state.activeCombat) {
         state.activeCombat.isOver = true;
         state.activeCombat.playerWon = action.payload.playerWon;
+        // Bridge the result back into the narrative layer so aftermath storylets
+        // can gate on it (e.g. globalFlags: { combat_outcome: "victory" }).
+        state.globalFlags['combat_outcome'] = action.payload.playerWon ? 'victory' : 'defeat';
+        state.globalFlags['combat_last_enemy'] = state.activeCombat.enemy.id;
       }
     },
     clearCombat: (state) => {
@@ -278,6 +313,8 @@ export const {
   revealName,
   revealKnowledge,
   setLastChoiceId,
+  reinforceContext,
+  visitNode,
   addNarrativeHistory,
   consolidateHistory,
   evolveNPC,

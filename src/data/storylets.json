@@ -14,9 +14,17 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "thermal_entropy",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "thermal" },
-          "revealKnowledge": ["spirit_merging"]
-        }
+          "setGlobalFlags": {
+            "blessed_skill_awakened": true,
+            "affinity": "thermal"
+          },
+          "revealKnowledge": [
+            "spirit_merging"
+          ]
+        },
+        "tags": [
+          "mystical"
+        ]
       },
       {
         "id": "awakening_merge_vector",
@@ -24,9 +32,17 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "vector_resonance",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "vector" },
-          "revealKnowledge": ["spirit_merging"]
-        }
+          "setGlobalFlags": {
+            "blessed_skill_awakened": true,
+            "affinity": "vector"
+          },
+          "revealKnowledge": [
+            "spirit_merging"
+          ]
+        },
+        "tags": [
+          "mystical"
+        ]
       },
       {
         "id": "awakening_merge_biomorphic",
@@ -34,9 +50,17 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "biomorphic_flux",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "biomorphic" },
-          "revealKnowledge": ["spirit_merging"]
-        }
+          "setGlobalFlags": {
+            "blessed_skill_awakened": true,
+            "affinity": "biomorphic"
+          },
+          "revealKnowledge": [
+            "spirit_merging"
+          ]
+        },
+        "tags": [
+          "mystical"
+        ]
       },
       {
         "id": "awakening_merge_cognitive",
@@ -44,10 +68,21 @@
         "effects": {
           "experienceGain": 50,
           "setBlessedAbility": "cognitive_distortion",
-          "setGlobalFlags": { "blessed_skill_awakened": true, "affinity": "cognitive" },
-          "revealKnowledge": ["spirit_merging"]
-        }
+          "setGlobalFlags": {
+            "blessed_skill_awakened": true,
+            "affinity": "cognitive"
+          },
+          "revealKnowledge": [
+            "spirit_merging"
+          ]
+        },
+        "tags": [
+          "mystical"
+        ]
       }
+    ],
+    "tags": [
+      "mystical"
     ]
   },
   {
@@ -59,7 +94,9 @@
     "defaultChoiceId": "crater_wake_void",
     "prerequisites": {
       "location": "static_crater",
-      "knowledgeFlags": ["spirit_merging"]
+      "knowledgeFlags": [
+        "spirit_merging"
+      ]
     },
     "choices": [
       {
@@ -68,10 +105,19 @@
         "effects": {
           "alignmentChange": 5,
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": true, "kaelen_path": "resonance" },
-          "revealNames": ["kaelen"],
+          "setGlobalFlags": {
+            "met_kaelen": true,
+            "kaelen_path": "resonance"
+          },
+          "revealNames": [
+            "kaelen"
+          ],
           "experienceGain": 25
-        }
+        },
+        "tags": [
+          "cautious",
+          "social"
+        ]
       },
       {
         "id": "crater_wake_distortion",
@@ -79,19 +125,34 @@
         "effects": {
           "purityChange": -5,
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": true, "kaelen_path": "distortion" },
+          "setGlobalFlags": {
+            "met_kaelen": true,
+            "kaelen_path": "distortion"
+          },
           "experienceGain": 25
-        }
+        },
+        "tags": [
+          "aggressive"
+        ]
       },
       {
         "id": "crater_wake_void",
         "text": "(Ignore them and climb out of the crater yourself).",
         "effects": {
           "moveToLocation": "borderlands_outpost",
-          "setGlobalFlags": { "met_kaelen": false, "kaelen_path": "void" },
+          "setGlobalFlags": {
+            "met_kaelen": false,
+            "kaelen_path": "void"
+          },
           "experienceGain": 10
-        }
+        },
+        "tags": [
+          "pragmatic"
+        ]
       }
+    ],
+    "tags": [
+      "mystical"
     ]
   },
   {
@@ -111,7 +172,10 @@
           "wealthChange": -50,
           "moveToLocation": "outpost_market",
           "experienceGain": 10
-        }
+        },
+        "tags": [
+          "pragmatic"
+        ]
       },
       {
         "id": "outpost_sneak_market",
@@ -119,8 +183,14 @@
         "effects": {
           "moveToLocation": "outpost_market",
           "experienceGain": 20
-        }
+        },
+        "tags": [
+          "cautious"
+        ]
       }
+    ],
+    "tags": [
+      "pragmatic"
     ]
   },
   {
@@ -130,7 +200,9 @@
     "priority": 100,
     "repeatable": true,
     "prerequisites": {
-      "globalFlags": { "hub_action": "socialize" }
+      "globalFlags": {
+        "hub_action": "socialize"
+      }
     },
     "choices": [
       {
@@ -139,8 +211,14 @@
         "followUpId": "outcome_social_listen",
         "effects": {
           "experienceGain": 15,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
+          "setGlobalFlags": {
+            "hub_action": "none"
+          }
+        },
+        "tags": [
+          "compassionate",
+          "social"
+        ]
       },
       {
         "id": "social_chat_share",
@@ -149,9 +227,18 @@
         "effects": {
           "alignmentChange": 5,
           "experienceGain": 10,
-          "setGlobalFlags": { "hub_action": "none" }
-        }
+          "setGlobalFlags": {
+            "hub_action": "none"
+          }
+        },
+        "tags": [
+          "compassionate",
+          "social"
+        ]
       }
+    ],
+    "tags": [
+      "social"
     ]
   },
   {
@@ -159,7 +246,11 @@
     "title": "{npc:active}'s Tale",
     "content": "{npc:active} leans back, their eyes distant as they recount a fragment of their life in the Borderlands. You learn of the constant struggle for pure water and the fear of the Syndicate's 'Compliance Audits.' [INNER_MONOLOGUE] 'The weight of this world is heavy on them. I can feel the resonance of their exhaustion.'",
     "priority": 5,
-    "prerequisites": { "globalFlags": { "hub_action": "none" } },
+    "prerequisites": {
+      "globalFlags": {
+        "hub_action": "none"
+      }
+    },
     "choices": [
       {
         "id": "social_outcome_close",
@@ -173,7 +264,11 @@
     "title": "Sharing the Burden",
     "content": "You speak of the world you left behind—the green trees, the blue oceans, the lack of static in the air. {npc:active} listens in stunned silence, their jaw tightening. 'A world without Burnout?' they whisper. 'You're either a saint or a very dangerous liar.'",
     "priority": 5,
-    "prerequisites": { "globalFlags": { "hub_action": "none" } },
+    "prerequisites": {
+      "globalFlags": {
+        "hub_action": "none"
+      }
+    },
     "choices": [
       {
         "id": "social_share_close",
@@ -189,7 +284,9 @@
     "priority": 100,
     "repeatable": true,
     "prerequisites": {
-      "globalFlags": { "hub_action": "scavenge" }
+      "globalFlags": {
+        "hub_action": "scavenge"
+      }
     },
     "choices": [
       {
@@ -199,8 +296,13 @@
         "effects": {
           "experienceGain": 10,
           "triggerLoot": "low_wastes",
-          "setGlobalFlags": { "hub_action": "none" }
-        }
+          "setGlobalFlags": {
+            "hub_action": "none"
+          }
+        },
+        "tags": [
+          "pragmatic"
+        ]
       },
       {
         "id": "scavenge_generic_logic",
@@ -209,9 +311,18 @@
         "effects": {
           "experienceGain": 25,
           "triggerLoot": "low_wastes",
-          "setGlobalFlags": { "hub_action": "none" }
-        }
+          "setGlobalFlags": {
+            "hub_action": "none"
+          }
+        },
+        "tags": [
+          "pragmatic",
+          "mystical"
+        ]
       }
+    ],
+    "tags": [
+      "pragmatic"
     ]
   },
   {
@@ -219,7 +330,11 @@
     "title": "Scavenge Results",
     "content": "After an hour of digging through the rusted ribs of a fallen crawler, you emerge covered in red dust. [INNER_MONOLOGUE] 'Not much left here, but every shard counts.' You found {game.lastLoot}.",
     "priority": 5,
-    "prerequisites": { "globalFlags": { "hub_action": "none" } },
+    "prerequisites": {
+      "globalFlags": {
+        "hub_action": "none"
+      }
+    },
     "choices": [
       {
         "id": "scavenge_outcome_close",
@@ -235,7 +350,9 @@
     "priority": 75,
     "prerequisites": {
       "location": "outpost_market",
-      "globalFlags": { "syndicate_menace_high": true }
+      "globalFlags": {
+        "syndicate_menace_high": true
+      }
     },
     "choices": [
       {
@@ -243,24 +360,49 @@
         "text": "Surrender and go quietly.",
         "effects": {
           "moveToLocation": "iron_watch_hq",
-          "setGlobalFlags": { "syndicate_menace_high": false, "prisoner_of_vane": true }
-        }
+          "setGlobalFlags": {
+            "syndicate_menace_high": false,
+            "prisoner_of_vane": true
+          }
+        },
+        "tags": [
+          "cautious",
+          "pro_syndicate"
+        ]
       },
       {
         "id": "patrol_resist_logic",
         "text": "[Logic 14] 'My signature is a false positive caused by your own leaking grid. Check your calibration.'",
         "effects": {
           "experienceGain": 30,
-          "setGlobalFlags": { "syndicate_menace_high": false, "fooled_patrol": true }
-        }
+          "setGlobalFlags": {
+            "syndicate_menace_high": false,
+            "fooled_patrol": true
+          }
+        },
+        "tags": [
+          "cautious"
+        ]
       },
       {
         "id": "patrol_fight",
         "text": "Draw your weapon and fight your way out.",
         "effects": {
-          "setGlobalFlags": { "combat_started": true, "target_npc": "syndicate_enforcer_grunt" }
-        }
+          "triggerCombat": "syndicate_thug",
+          "setGlobalFlags": {
+            "pending_encounter": "patrol",
+            "combat_outcome": "pending"
+          }
+        },
+        "tags": [
+          "aggressive",
+          "anti_syndicate",
+          "combat_heavy"
+        ]
       }
+    ],
+    "tags": [
+      "combat_heavy"
     ]
   },
   {
@@ -270,7 +412,9 @@
     "priority": 85,
     "prerequisites": {
       "location": "iron_watch_hq",
-      "globalFlags": { "prisoner_of_vane": true }
+      "globalFlags": {
+        "prisoner_of_vane": true
+      }
     },
     "choices": [
       {
@@ -279,17 +423,395 @@
         "effects": {
           "purityChange": 5,
           "alignmentChange": -5,
-          "setGlobalFlags": { "vane_curious": true }
-        }
+          "setGlobalFlags": {
+            "vane_curious": true
+          }
+        },
+        "tags": [
+          "cautious"
+        ]
       },
       {
         "id": "vane_lie",
         "text": "[Logic 12] 'I'm a prototype from the Spire Adepts. Release me, or their echoes will find you.'",
         "effects": {
           "alignmentChange": 10,
-          "setGlobalFlags": { "vane_wary": true }
+          "setGlobalFlags": {
+            "vane_wary": true
+          }
+        },
+        "tags": [
+          "cautious",
+          "anti_syndicate"
+        ]
+      }
+    ],
+    "tags": [
+      "cautious"
+    ]
+  },
+  {
+    "id": "aftermath_patrol_victory",
+    "title": "The Watch Falls Silent",
+    "content": "The last Enforcer crumples into the red dust, his thermal-rifle clattering against a rusted strut. The clicking signature-device on his wrist goes dead. [INNER_MONOLOGUE] 'Overseer Vane will know about this. But for now, the road is mine.' You stand alone in the quiet, the smell of scorched ozone fading on the wind. Whatever permit you needed, you just wrote it in their blood.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "patrol",
+        "combat_outcome": "victory"
+      }
+    },
+    "choices": [
+      {
+        "id": "patrol_victory_loot",
+        "text": "Strip the Enforcer of anything useful and move on.",
+        "effects": {
+          "wealthChange": 40,
+          "moveToLocation": "outpost_market",
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none",
+            "syndicate_blooded": true
+          }
         }
       }
+    ],
+    "tags": [
+      "combat_heavy",
+      "anti_syndicate"
+    ]
+  },
+  {
+    "id": "aftermath_patrol_defeat",
+    "title": "Dragged from the Dust",
+    "content": "Your knees buckle and the world tilts. A boot pins your shoulder to the ground as the Enforcers wrench the satchel from your hip. 'Not worth the paperwork to kill,' one grunts, counting your shards. They leave you breathing, bleeding, and considerably poorer. [INNER_MONOLOGUE] 'I need to be stronger before I cross the Watch again.'",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "patrol",
+        "combat_outcome": "defeat"
+      }
+    },
+    "choices": [
+      {
+        "id": "patrol_defeat_crawl",
+        "text": "Drag yourself back to the market and lick your wounds.",
+        "effects": {
+          "wealthChange": -40,
+          "moveToLocation": "outpost_market",
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none"
+          }
+        }
+      }
+    ],
+    "tags": [
+      "cautious"
+    ]
+  },
+  {
+    "id": "enc_dust_wraith_ambush",
+    "title": "Something in the Static",
+    "content": "The Dust Flats stretch out in every direction, a shimmering haze of heat and ground glass. Then the air in front of you curdles. A semi-corporeal shape unfolds from the static—all flickering limbs and hungry cold. [INNER_MONOLOGUE] 'It's drawn to the warmth in my chest. To the Anchor.' The Dust Wraith lunges before you can decide whether to run.",
+    "priority": 70,
+    "prerequisites": {
+      "location": "dust_flats"
+    },
+    "choices": [
+      {
+        "id": "wraith_fight",
+        "text": "Stand your ground and burn it back. (Fight)",
+        "effects": {
+          "triggerCombat": "dust_wraith",
+          "setGlobalFlags": {
+            "pending_encounter": "wraith",
+            "combat_outcome": "pending"
+          }
+        },
+        "tags": [
+          "aggressive",
+          "combat_heavy"
+        ]
+      },
+      {
+        "id": "wraith_evade",
+        "text": "[Finesse 10] Twist through the haze and break its line on you.",
+        "effects": {
+          "experienceGain": 15,
+          "moveToLocation": "borderlands_outpost",
+          "setGlobalFlags": {
+            "wraith_evaded": true
+          }
+        },
+        "tags": [
+          "cautious"
+        ]
+      }
+    ],
+    "tags": [
+      "combat_heavy",
+      "mystical"
+    ]
+  },
+  {
+    "id": "aftermath_wraith_victory",
+    "title": "The Cold Recedes",
+    "content": "The Wraith comes apart with a sound like tearing silk, its stolen heat bleeding back into the air. For a moment the Flats feel almost warm. [INNER_MONOLOGUE] 'It wanted what the spirit gave me. They all will.' You catch your breath. Whatever else this world is, it has teeth—and now, so do you.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "wraith",
+        "combat_outcome": "victory"
+      }
+    },
+    "choices": [
+      {
+        "id": "wraith_victory_continue",
+        "text": "Press on toward the outpost.",
+        "effects": {
+          "moveToLocation": "borderlands_outpost",
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none"
+          }
+        }
+      }
+    ],
+    "tags": [
+      "combat_heavy"
+    ]
+  },
+  {
+    "id": "aftermath_wraith_defeat",
+    "title": "Drained on the Flats",
+    "content": "The cold gets into your bones, your thoughts, your light. You go down in the glittering dust with the Wraith feeding on the warmth of you. It leaves only when there is little left worth taking. [INNER_MONOLOGUE] 'Still breathing. Barely.' You crawl on, shivering, the Anchor in your chest guttering like a candle in wind.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "wraith",
+        "combat_outcome": "defeat"
+      }
+    },
+    "choices": [
+      {
+        "id": "wraith_defeat_continue",
+        "text": "Stumble on to the outpost.",
+        "effects": {
+          "moveToLocation": "borderlands_outpost",
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none"
+          }
+        }
+      }
+    ],
+    "tags": [
+      "combat_heavy"
+    ]
+  },
+  {
+    "id": "enc_scrap_fiend_warrens",
+    "title": "The Feral in the Scrap",
+    "content": "The Warrens are a graveyard of fallen crawlers, their iron ribs clawing at the dark. You hear it before you see it—the wet rasp of breath through a crude metal grille. A Scrap Fiend rises from a nest of wiring, augmented limbs twitching, eyes bright with desperate hunger. [INNER_MONOLOGUE] 'Was that a person, once? Doesn't matter now. It's only hunger.'",
+    "priority": 70,
+    "prerequisites": {
+      "location": "borderlands_warrens"
+    },
+    "choices": [
+      {
+        "id": "scrap_fight",
+        "text": "Meet it head-on. (Fight)",
+        "effects": {
+          "triggerCombat": "scrap_fiend",
+          "setGlobalFlags": {
+            "pending_encounter": "scrap",
+            "combat_outcome": "pending"
+          }
+        },
+        "tags": [
+          "aggressive",
+          "combat_heavy"
+        ]
+      },
+      {
+        "id": "scrap_intimidate",
+        "text": "[Vessel 12] Flare the Anchor and roar it back into its nest.",
+        "effects": {
+          "experienceGain": 20,
+          "setGlobalFlags": {
+            "scrap_cowed": true
+          }
+        },
+        "tags": [
+          "aggressive",
+          "ruthless"
+        ]
+      }
+    ],
+    "tags": [
+      "combat_heavy"
+    ]
+  },
+  {
+    "id": "aftermath_scrap_victory",
+    "title": "Salvage Rights",
+    "content": "The Fiend collapses among the wreckage that made it, and the Wastes go quiet again. [INNER_MONOLOGUE] 'Its nest is full of the things it scavenged. No one's coming back for them.' You pick through the wiring and torn plating, and find more than you came for.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "scrap",
+        "combat_outcome": "victory"
+      }
+    },
+    "choices": [
+      {
+        "id": "scrap_victory_loot",
+        "text": "Loot the nest before something else smells the blood.",
+        "effects": {
+          "triggerLoot": "scavenger_common",
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none"
+          }
+        }
+      }
+    ],
+    "tags": [
+      "pragmatic"
+    ]
+  },
+  {
+    "id": "aftermath_scrap_defeat",
+    "title": "Left for the Wastes",
+    "content": "Its augmented fist catches you across the temple and the world goes white. When the ringing fades, the Fiend has dragged off your pack and vanished into the scrap. [INNER_MONOLOGUE] 'Lucky to keep my teeth.' You pull yourself upright among the dead crawlers, lighter and angrier than before.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "scrap",
+        "combat_outcome": "defeat"
+      }
+    },
+    "choices": [
+      {
+        "id": "scrap_defeat_continue",
+        "text": "Limp back out of the Wastes.",
+        "effects": {
+          "wealthChange": -25,
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none"
+          }
+        }
+      }
+    ],
+    "tags": [
+      "combat_heavy"
+    ]
+  },
+  {
+    "id": "enc_resonance_stalker_hunt",
+    "title": "The Thing That Hunts the Anchor",
+    "content": "Deep in the Warrens the gaslight dies, and the dark is not empty. Something has been following your resonance for a long time—patient, entropic, drawn to your Anchor like a predator to an open wound. The Resonance Stalker steps out of the black, and the temperature drops with it. [INNER_MONOLOGUE] 'This one isn't feral. It chose me. It's been waiting.'",
+    "priority": 80,
+    "prerequisites": {
+      "location": "borderlands_warrens",
+      "globalFlags": {
+        "blessed_skill_awakened": true
+      }
+    },
+    "choices": [
+      {
+        "id": "stalker_fight",
+        "text": "Face the hunter before it faces you. (Fight)",
+        "effects": {
+          "triggerCombat": "resonance_stalker",
+          "setGlobalFlags": {
+            "pending_encounter": "stalker",
+            "combat_outcome": "pending"
+          }
+        },
+        "tags": [
+          "aggressive",
+          "combat_heavy",
+          "mystical"
+        ]
+      },
+      {
+        "id": "stalker_flee",
+        "text": "Kill the light and slip away into the Warrens.",
+        "effects": {
+          "purityChange": -5,
+          "setGlobalFlags": {
+            "stalker_marked": true
+          }
+        },
+        "tags": [
+          "cautious"
+        ]
+      }
+    ],
+    "tags": [
+      "combat_heavy",
+      "mystical"
+    ]
+  },
+  {
+    "id": "aftermath_stalker_victory",
+    "title": "The Hunter Unmade",
+    "content": "The Stalker folds in on itself and is gone, and the entropy it carried unwinds into nothing. The Warrens breathe again. [INNER_MONOLOGUE] 'It won't be the last. But it knew what I was, and I put it down anyway.' Something has shifted—you are no longer only prey in this world.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "stalker",
+        "combat_outcome": "victory"
+      }
+    },
+    "choices": [
+      {
+        "id": "stalker_victory_continue",
+        "text": "Take the hunter's measure, and move deeper.",
+        "effects": {
+          "experienceGain": 40,
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none",
+            "slew_stalker": true
+          }
+        }
+      }
+    ],
+    "tags": [
+      "combat_heavy",
+      "mystical"
+    ]
+  },
+  {
+    "id": "aftermath_stalker_defeat",
+    "title": "Marked by the Hunter",
+    "content": "It is faster than thought and colder than the dark it came from. You fall, and it leans close enough that you feel the entropy pulling at the edges of you—then, inexplicably, it withdraws, as if savoring the chase. [INNER_MONOLOGUE] 'It let me live. It wants the hunt to last.' You wake later, alone, certain it will come again.",
+    "priority": 95,
+    "prerequisites": {
+      "globalFlags": {
+        "pending_encounter": "stalker",
+        "combat_outcome": "defeat"
+      }
+    },
+    "choices": [
+      {
+        "id": "stalker_defeat_continue",
+        "text": "Crawl into the light and swear to be ready next time.",
+        "effects": {
+          "setGlobalFlags": {
+            "pending_encounter": "none",
+            "combat_outcome": "none",
+            "stalker_marked": true
+          }
+        }
+      }
+    ],
+    "tags": [
+      "mystical"
     ]
   }
 ]

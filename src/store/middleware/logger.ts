@@ -1,7 +1,9 @@
 import type { Middleware } from '@reduxjs/toolkit';
 import * as Sentry from "@sentry/react";
 
-const isDev = import.meta.env.DEV;
+// Guard for non-Vite contexts (e.g. node-based simulation tests) where
+// import.meta.env is undefined.
+const isDev = import.meta.env?.DEV ?? false;
 
 export const loggerMiddleware: Middleware = (store) => (next) => (action: any) => {
   const result = next(action);

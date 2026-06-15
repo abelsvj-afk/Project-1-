@@ -3,6 +3,44 @@ import type { RootState } from '../store';
 import { withDiagnostics } from './utils/diagnostics';
 import fragments from '../data/fragments.json';
 
+/** Opposing thematic axes. A storylet carrying a tag whose opposite dominates the
+ *  player's Context Profile is surfaced as dramatic tension (the world pushes back). */
+const TAG_OPPOSITES: { [tag: string]: string } = {
+  aggressive: 'cautious', cautious: 'aggressive',
+  pro_syndicate: 'anti_syndicate', anti_syndicate: 'pro_syndicate',
+  mystical: 'pragmatic', pragmatic: 'mystical',
+  ruthless: 'compassionate', compassionate: 'ruthless',
+};
+
+const RESONANCE_WEIGHT = 4; // boost per point of shared-tag affinity
+const TENSION_WEIGHT = 2;   // boost per point of opposing-tag friction
+
+/** How strongly a storylet's tags align with — and deliberately clash against —
+ *  the player's accumulated leanings. Returns a score contribution for the deck. */
+export const contextAffinity = (
+  tags: string[] | undefined,
+  profile: { [tag: string]: number },
+): number => {
+  if (!tags || tags.length === 0) return 0;
+  let score = 0;
+  for (const tag of tags) {
+    score += (profile[tag] || 0) * RESONANCE_WEIGHT;
+    const opposite = TAG_OPPOSITES[tag];
+    if (opposite) score += (profile[opposite] || 0) * TENSION_WEIGHT;
+  }
+  return score;
+};
+
+/** The single tag the player currently leans into hardest, if any. */
+export const dominantTag = (profile: { [tag: string]: number }): string | null => {
+  let best: string | null = null;
+  let bestVal = 0;
+  for (const [tag, val] of Object.entries(profile)) {
+    if (val > bestVal) { bestVal = val; best = tag; }
+  }
+  return best;
+};
+
 /**
  * Assembles dynamic prose based on the current world state.
  * Uses seeded random to stay deterministic for the same game state snapshot.
@@ -61,6 +99,16 @@ const _assembleProse = (state: RootState, baseContent: string): string => {
 
   if (player.isBlessedSkillRevealed && player.location === 'iron_watch_hq') {
     assembled.push("Your Echo-Anchor recoils as if sensing a predator. A voice that isn't yours echoes: 'So... the Anchor has returned.'");
+  }
+
+  // 8. Context Profile Overlay — the world reflects the reputation you've built
+  //    through your choices (occasional, so it stays an accent not a refrain).
+  const lean = dominantTag(game.contextProfile);
+  if (lean && game.contextProfile[lean] >= 6 && seed % 4 === 0) {
+    const contextFrags = (fragments as any).contextFragments?.[lean];
+    if (contextFrags && contextFrags.length) {
+      assembled.push(contextFrags[Math.floor(seededRand(contextFrags.length))]);
+    }
   }
 
   return assembled.join(' ');
@@ -132,6 +180,9 @@ const _filterStorylets = (
     if (s.prerequisites.lastChoiceId === game.lastChoiceId) score += 1000;
     if (s.prerequisites.lastStoryletId === game.lastStoryletId) score += 500;
     if (!game.seenStorylets.includes(s.id)) score += 50;
+    // Spider-web bias: pull in storylets that resonate with — or dramatically
+    // oppose — the player's accumulated leanings.
+    score += contextAffinity(s.tags, game.contextProfile);
     return { ...s, dynamicScore: score };
   });
 

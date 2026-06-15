@@ -88,5 +88,39 @@
       "You catch a glimpse of Silas in the shadows. He is there, but perfectly silent.",
       "A sudden chill in the air reminds you that Silas the Wraith is watching over you."
     ]
+  },
+  "contextFragments": {
+    "aggressive": [
+      "Those who've seen you fight give you a wider berth than they used to.",
+      "There's a hardness to the way people meet your eyes now — you've earned a reputation for settling things with force."
+    ],
+    "cautious": [
+      "People speak more freely around you; word has spread that you'd rather talk than draw.",
+      "You've become known as someone who watches before they leap — and it shows in how others lower their guard."
+    ],
+    "pro_syndicate": [
+      "An Iron Watch patrol passes without a second glance — your cooperation hasn't gone unnoticed.",
+      "Somewhere a Syndicate ledger has your name in the column marked 'useful.'"
+    ],
+    "anti_syndicate": [
+      "A scrawled rebel sigil is chalked near where you stand — the underground knows your face.",
+      "Syndicate eyes linger on you a beat too long; you've made the wrong kind of friends, and the right kind of enemies."
+    ],
+    "mystical": [
+      "The Anchor in your chest thrums louder of late, as if answering the questions you keep asking of it.",
+      "Adepts you pass seem to sense something kindred — your fascination with the currents leaves a residue."
+    ],
+    "pragmatic": [
+      "You've stopped wondering what the static *means* and started counting what it's worth.",
+      "Merchants warm to you quickly now; you have the unmistakable air of someone who deals in results, not mysteries."
+    ],
+    "ruthless": [
+      "The desperate have learned not to beg from you. The look in your eye does the refusing for you.",
+      "There's a coldness trailing you now, the kind that makes even hardened scavengers find somewhere else to be."
+    ],
+    "compassionate": [
+      "A child you don't recognize waves at you; kindness travels faster than you'd think out here.",
+      "More than one stranger has named you to others as someone who stopped to help. It opens doors, and paints a target."
+    ]
   }
 }

@@ -10,7 +10,13 @@ import type { CombatSpell, EnemyTemplate } from '../types/game';
 
 const enemies = (combatData as any).enemies as EnemyTemplate[];
 
-const CombatConsole: React.FC = () => {
+interface CombatConsoleProps {
+  /** Called when the player dismisses the encounter (win/lose/flee) so the host
+   *  can return to the narrative view and surface any aftermath storylet. */
+  onExit?: () => void;
+}
+
+const CombatConsole: React.FC<CombatConsoleProps> = ({ onExit }) => {
   const dispatch = useDispatch();
   const player = useSelector((state: RootState) => state.player);
   const game = useSelector((state: RootState) => state.game);
@@ -56,12 +62,16 @@ const CombatConsole: React.FC = () => {
     setInCombat(false);
     // Small stamina penalty for fleeing
     dispatch({ type: 'player/useStamina', payload: 15 } as any);
-    setTimeout(() => dispatch(clearCombat()), 1500);
+    setTimeout(() => {
+      dispatch(clearCombat());
+      onExit?.();
+    }, 1500);
   };
 
   const handleClearVictory = () => {
     dispatch(clearCombat());
     setInCombat(false);
+    onExit?.();
   };
 
   const handleRevive = () => {
@@ -69,6 +79,7 @@ const CombatConsole: React.FC = () => {
     dispatch(clearCombat());
     setInCombat(false);
     dispatch(addCombatLog({ msg: 'You drag yourself back from the edge of death. Vitality restored.', type: 'system' }));
+    onExit?.();
   };
 
   const vitalityPct = (player.stats.vitality / 100) * 100;
