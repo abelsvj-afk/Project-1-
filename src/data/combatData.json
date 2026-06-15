@@ -131,7 +131,7 @@
       "description": "A targeted neural breakdown that flash-freezes cellular activity.",
       "current": "biomorphic",
       "cost": { "mentality": 20, "equilibrium": 2000 },
-      "effects": { "damage": 5, "applyAfflictions": ["paralysis", "frostbite"] }
+      "effects": { "damage": 15, "applyAfflictions": ["paralysis", "frostbite"] }
     },
     {
       "id": "cognitive_static",
@@ -139,7 +139,67 @@
       "description": "A sensory phonic disruptor that leaves the target confused and uncoordinated.",
       "current": "cognitive",
       "cost": { "mentality": 15, "equilibrium": 1200 },
-      "effects": { "damage": 0, "applyAfflictions": ["stupidity", "dissonance"] }
+      "effects": { "damage": 8, "applyAfflictions": ["stupidity", "dissonance"] }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "dust_wraith",
+      "name": "Dust Wraith",
+      "description": "A semi-corporeal spirit corrupted by static discharge. It lunges at living heat.",
+      "level": 1,
+      "maxVitality": 60,
+      "stats": { "vessel": 5, "logic": 3, "finesse": 6, "resonance": 8, "vitality": 60, "mentality": 40, "stamina": 60, "focus": 40 },
+      "attacks": [
+        { "name": "Static Claw", "damage": 10, "affliction": "shivering", "type": "physical", "balanceCost": 2000 },
+        { "name": "Void Drain", "damage": 6, "affliction": "dissonance", "type": "mental", "equilibriumCost": 2500 }
+      ],
+      "xpReward": 35,
+      "lootTable": "creature_common"
+    },
+    {
+      "id": "scrap_fiend",
+      "name": "Scrap Fiend",
+      "description": "A desperate scavenger turned feral, augmented with crude metallic implants.",
+      "level": 2,
+      "maxVitality": 85,
+      "stats": { "vessel": 8, "logic": 4, "finesse": 5, "resonance": 3, "vitality": 85, "mentality": 30, "stamina": 85, "focus": 30 },
+      "attacks": [
+        { "name": "Scrap Slash", "damage": 14, "affliction": "burn", "type": "physical", "balanceCost": 2200 },
+        { "name": "Metal Crush", "damage": 22, "affliction": "broken_limbs", "type": "physical", "balanceCost": 3000 }
+      ],
+      "xpReward": 50,
+      "lootTable": "scavenger_common"
+    },
+    {
+      "id": "syndicate_thug",
+      "name": "Syndicate Thug",
+      "description": "A low-ranking enforcer who crossed the wrong people. Takes his frustration out on anyone weaker.",
+      "level": 3,
+      "maxVitality": 110,
+      "stats": { "vessel": 10, "logic": 8, "finesse": 7, "resonance": 5, "vitality": 110, "mentality": 60, "stamina": 110, "focus": 60 },
+      "attacks": [
+        { "name": "Baton Strike", "damage": 16, "affliction": "paralysis", "type": "physical", "balanceCost": 2000 },
+        { "name": "Static Burst", "damage": 10, "affliction": "epilepsy", "type": "mental", "equilibriumCost": 2500 },
+        { "name": "Haymaker", "damage": 28, "type": "physical", "balanceCost": 3500 }
+      ],
+      "xpReward": 65,
+      "lootTable": "syndicate_common"
+    },
+    {
+      "id": "resonance_stalker",
+      "name": "Resonance Stalker",
+      "description": "A creature that feeds on entropy, drawn to your Echo-Anchor like a predator to a wound.",
+      "level": 5,
+      "maxVitality": 130,
+      "stats": { "vessel": 12, "logic": 15, "finesse": 12, "resonance": 18, "vitality": 130, "mentality": 100, "stamina": 100, "focus": 100 },
+      "attacks": [
+        { "name": "Entropy Drain", "damage": 18, "affliction": "dissonance", "type": "mental", "equilibriumCost": 2000 },
+        { "name": "Void Tendrils", "damage": 14, "affliction": "stupidity", "type": "mental", "equilibriumCost": 1500 },
+        { "name": "Phase Strike", "damage": 30, "type": "physical", "balanceCost": 2800 }
+      ],
+      "xpReward": 100,
+      "lootTable": "creature_rare"
     }
   ]
 }

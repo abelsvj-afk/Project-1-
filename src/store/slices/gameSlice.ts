@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { ReputationMatrix, Bounty, RelationshipStatus, NPC } from '../../types/game';
+import type { ReputationMatrix, Bounty, RelationshipStatus, NPC, ActiveCombat, ActiveEnemy, CombatLogEntry, EnemyTemplate } from '../../types/game';
 import socialData from '../../data/socialData.json';
 
 interface GameStateSlice {
@@ -8,30 +8,19 @@ interface GameStateSlice {
   globalFlags: { [flag: string]: boolean | number | string };
   unlockedBlueprints: string[];
   activeSpells: string[];
-  
-  // Politics
   activeLaws: string[];
   activeBounties: Bounty[];
   townControl: { [townId: string]: string };
-
-  // Economy
   ownedProperties: string[];
-
-  // Kinship
-  companions: string[];
   relationships: { [npcId: string]: RelationshipStatus };
   affinity: { [npcId: string]: number };
   knownNames: string[];
-
-  // Forced Flow
   forcedStoryletId?: string;
   activeConversationNpcId?: string;
-
-  // Autonomy & NPC Tracking
   npcs: { [npcId: string]: NPC };
   npcEvolution: { [npcId: string]: { aggression: number; fear: number; observedPlayerTraits: string[] } };
   worldHistory: { event: string; timestamp: number }[];
-
+  activeCombat: ActiveCombat | null;
   gameTime: number;
   currentStorylets: string[];
   seenStorylets: string[];
@@ -50,7 +39,6 @@ const initialState: GameStateSlice = {
   activeBounties: [],
   townControl: { "borderlands": "neutral" },
   ownedProperties: [],
-  companions: [],
   relationships: {},
   affinity: {},
   knownNames: [],
@@ -60,7 +48,8 @@ const initialState: GameStateSlice = {
   }, {} as { [npcId: string]: NPC }),
   npcEvolution: {},
   worldHistory: [],
-  gameTime: 800, // Start at 8:00 AM
+  activeCombat: null,
+  gameTime: 800,
   currentStorylets: [],
   seenStorylets: [],
   knowledgeFlags: [],
@@ -104,19 +93,35 @@ const gameSlice = createSlice({
       if (!state.relationships[npcId]) {
         state.relationships[npcId] = { trust: 0, romance: 0, fear: 0 };
       }
-      const current = state.relationships[npcId][type];
-      
+      const rel = state.relationships[npcId];
       if (type === 'trust') {
-        state.relationships[npcId][type] = Math.max(-100, Math.min(100, current + change));
+        rel.trust = Math.max(-100, Math.min(100, rel.trust + change));
       } else {
-        state.relationships[npcId][type] = Math.max(0, Math.min(100, current + change));
+        rel[type] = Math.max(0, Math.min(100, rel[type] + change));
+      }
+
+      // Cascade: high fear lowers trust (inline, no middleware needed)
+      if (type === 'fear' && change > 0 && rel.fear > 50) {
+        const trustLower = Math.floor(change * 0.5);
+        if (trustLower > 0) {
+          rel.trust = Math.max(-100, rel.trust - trustLower);
+        }
+      }
+
+      // Cascade: romance boosts trust
+      if (type === 'romance' && change > 0) {
+        const trustBoost = Math.floor(change * 0.2);
+        if (trustBoost > 0) {
+          rel.trust = Math.min(100, rel.trust + trustBoost);
+        }
       }
     },
     setRelationship: (state, action: PayloadAction<{ npcId: string; status: RelationshipStatus }>) => {
       state.relationships[action.payload.npcId] = action.payload.status;
     },
     addBounty: (state, action: PayloadAction<Bounty>) => {
-      state.activeBounties.push(action.payload);
+      const exists = state.activeBounties.some(b => b.factionId === action.payload.factionId && b.targetId === action.payload.targetId);
+      if (!exists) state.activeBounties.push(action.payload);
     },
     incrementTime: (state, action: PayloadAction<number>) => {
       state.gameTime = (state.gameTime + action.payload) % 2400;
@@ -150,12 +155,11 @@ const gameSlice = createSlice({
       }
     },
     consolidateHistory: (state, action: PayloadAction<string>) => {
-      // Keep the last 10 entries and prepend a summary
       const summary = action.payload;
       const recent = state.narrativeHistory.slice(-10);
       state.narrativeHistory = [
-          { id: 'history_summary', type: 'storylet', text: summary, title: 'Previous Memories' },
-          ...recent
+        { id: 'history_summary', type: 'storylet', text: summary, title: 'Previous Memories' },
+        ...recent
       ];
     },
     evolveNPC: (state, action: PayloadAction<{ npcId: string; aggChange?: number; fearChange?: number; observedTrait?: string }>) => {
@@ -172,6 +176,7 @@ const gameSlice = createSlice({
     },
     logWorldEvent: (state, action: PayloadAction<string>) => {
       state.worldHistory.push({ event: action.payload, timestamp: state.gameTime });
+      if (state.worldHistory.length > 50) state.worldHistory.shift();
     },
     moveNPC: (state, action: PayloadAction<{ npcId: string; locationId: string }>) => {
       const { npcId, locationId } = action.payload;
@@ -189,6 +194,69 @@ const gameSlice = createSlice({
       if (!state.npcs[action.payload.id]) {
         state.npcs[action.payload.id] = action.payload;
       }
+    },
+
+    // ─── Combat Actions ────────────────────────────────────────────────────
+    startCombat: (state, action: PayloadAction<EnemyTemplate>) => {
+      const template = action.payload;
+      const enemy: ActiveEnemy = {
+        ...template,
+        vitality: template.maxVitality,
+        balance: 2000, // 2 second delay before first attack
+        equilibrium: 2000,
+        afflictions: [],
+      };
+      state.activeCombat = {
+        enemy,
+        round: 1,
+        log: [{ msg: `A ${enemy.name} appears! ${enemy.description}`, type: 'system', ts: Date.now() }],
+        isOver: false,
+      };
+    },
+    endCombat: (state, action: PayloadAction<{ playerWon: boolean }>) => {
+      if (state.activeCombat) {
+        state.activeCombat.isOver = true;
+        state.activeCombat.playerWon = action.payload.playerWon;
+      }
+    },
+    clearCombat: (state) => {
+      state.activeCombat = null;
+    },
+    damageEnemy: (state, action: PayloadAction<number>) => {
+      if (state.activeCombat) {
+        state.activeCombat.enemy.vitality = Math.max(0, state.activeCombat.enemy.vitality - action.payload);
+      }
+    },
+    afflictEnemy: (state, action: PayloadAction<string>) => {
+      if (state.activeCombat && !state.activeCombat.enemy.afflictions.includes(action.payload)) {
+        state.activeCombat.enemy.afflictions.push(action.payload);
+      }
+    },
+    cureEnemyAffliction: (state, action: PayloadAction<string>) => {
+      if (state.activeCombat) {
+        state.activeCombat.enemy.afflictions = state.activeCombat.enemy.afflictions.filter(a => a !== action.payload);
+      }
+    },
+    tickEnemy: (state) => {
+      if (!state.activeCombat || state.activeCombat.isOver) return;
+      const enemy = state.activeCombat.enemy;
+      enemy.balance = Math.max(0, enemy.balance - 100);
+      enemy.equilibrium = Math.max(0, enemy.equilibrium - 100);
+    },
+    setEnemyBalance: (state, action: PayloadAction<number>) => {
+      if (state.activeCombat) state.activeCombat.enemy.balance = action.payload;
+    },
+    setEnemyEquilibrium: (state, action: PayloadAction<number>) => {
+      if (state.activeCombat) state.activeCombat.enemy.equilibrium = action.payload;
+    },
+    addCombatLog: (state, action: PayloadAction<Omit<CombatLogEntry, 'ts'>>) => {
+      if (state.activeCombat) {
+        state.activeCombat.log.push({ ...action.payload, ts: Date.now() });
+        if (state.activeCombat.log.length > 50) state.activeCombat.log.shift();
+      }
+    },
+    incrementCombatRound: (state) => {
+      if (state.activeCombat) state.activeCombat.round += 1;
     },
   },
 });
@@ -217,6 +285,17 @@ export const {
   moveNPC,
   updateNPCDisposition,
   addNPC,
+  startCombat,
+  endCombat,
+  clearCombat,
+  damageEnemy,
+  afflictEnemy,
+  cureEnemyAffliction,
+  tickEnemy,
+  setEnemyBalance,
+  setEnemyEquilibrium,
+  addCombatLog,
+  incrementCombatRound,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

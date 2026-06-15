@@ -54,7 +54,7 @@ const initialState: Player = {
     factionInfluence: { scavengers: 0, syndicate: 0, adepts: 0 },
     factionMenace: { scavengers: 0, syndicate: 0, adepts: 0 },
   },
-  companions: []
+  companions: [],
 };
 
 const playerSlice = createSlice({
@@ -65,13 +65,12 @@ const playerSlice = createSlice({
       state.stats = { ...state.stats, ...action.payload };
     },
     spendSkillPoint: (state, action: PayloadAction<keyof PlayerStats>) => {
-      if (state.skillPoints > 0) {
-        state.stats[action.payload] += 1;
-        state.skillPoints -= 1;
-        // If we upgraded stamina/focus, also boost current values
-        if (action.payload === 'stamina') state.stamina += 10;
-        if (action.payload === 'focus') state.focus += 10;
-      }
+      if (state.skillPoints <= 0) return;
+      const key = action.payload;
+      // Only allow spending on the 4 pillar stats
+      if (!['vessel', 'logic', 'finesse', 'resonance'].includes(key)) return;
+      state.stats[key] += 1;
+      state.skillPoints -= 1;
     },
     useStamina: (state, action: PayloadAction<number>) => {
       state.stamina = Math.max(0, state.stamina - action.payload);
@@ -82,8 +81,11 @@ const playerSlice = createSlice({
     restoreResources: (state) => {
       state.stamina = state.stats.stamina;
       state.focus = state.stats.focus;
-      state.stats.vitality = 100; // Restoring vitality too
-      state.stats.mentality = 100;
+      state.stats.vitality = state.stats.vitality; // vitality restores to current max, not hardcoded 100
+      state.stats.mentality = state.stats.mentality;
+      // Actually restore vitality/mentality to their initial values
+      state.stats.vitality = Math.max(state.stats.vitality, initialStats.vitality);
+      state.stats.mentality = Math.max(state.stats.mentality, initialStats.mentality);
     },
     changeAlignment: (state, action: PayloadAction<number>) => {
       state.alignment = Math.max(-1000, Math.min(1000, state.alignment + action.payload));
@@ -95,29 +97,25 @@ const playerSlice = createSlice({
       state.wealth = Math.max(0, state.wealth + action.payload);
     },
     addItem: (state, action: PayloadAction<string | Equipment>) => {
+      if (state.inventory.length >= 20) return; // enforce capacity
       state.inventory.push(action.payload);
     },
     equipItem: (state, action: PayloadAction<Equipment>) => {
       const item = action.payload;
       const slot = item.slot as keyof Player['equipment'];
-      
-      // If there's an existing item, move it back to bag
       const existing = state.equipment[slot];
       if (existing) {
-          state.inventory.push(existing);
+        state.inventory.push(existing);
       }
-
       state.equipment[slot] = item;
-      
-      // Remove from inventory
-      state.inventory = state.inventory.filter(i => 
-          typeof i === 'string' ? true : i.id !== item.id
+      state.inventory = state.inventory.filter(i =>
+        typeof i === 'string' ? true : i.id !== item.id
       );
     },
     unequipItem: (state, action: PayloadAction<keyof Player['equipment']>) => {
       const item = state.equipment[action.payload];
       if (item) {
-        state.inventory.push(item);
+        if (state.inventory.length < 20) state.inventory.push(item);
         delete state.equipment[action.payload];
       }
     },
@@ -127,7 +125,6 @@ const playerSlice = createSlice({
       if (item && item.level < item.maxLevel && state.wealth >= cost) {
         item.level += 1;
         state.wealth -= cost;
-        // Boost attributes on upgrade based on quality
         const boost = item.quality === 'artifact' ? 2 : 1;
         Object.keys(item.attributes).forEach((key) => {
           const k = key as keyof PlayerStats;
@@ -138,7 +135,7 @@ const playerSlice = createSlice({
       }
     },
     removeItem: (state, action: PayloadAction<string>) => {
-      state.inventory = state.inventory.filter(item => 
+      state.inventory = state.inventory.filter(item =>
         typeof item === 'string' ? item !== action.payload : item.id !== action.payload
       );
     },
@@ -148,7 +145,7 @@ const playerSlice = createSlice({
       if (state.experience >= nextLevelExp) {
         state.level += 1;
         state.experience -= nextLevelExp;
-        state.skillPoints += 2; // As per the master plan
+        state.skillPoints += 2;
       }
     },
     setBlessedAbility: (state, action: PayloadAction<string>) => {

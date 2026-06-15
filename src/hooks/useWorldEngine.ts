@@ -6,20 +6,31 @@ import { processEconomicTick } from '../engine/economicEngine';
 export const useWorldEngine = (isInitialized: boolean) => {
   const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep a ref to the latest state so the interval callback never reads stale values
+  const stateRef = useRef(state);
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     if (isInitialized) {
-      // Economic/World tick happens every 5 seconds
       timerRef.current = setInterval(() => {
-        processEconomicTick(state, dispatch);
+        processEconomicTick(stateRef.current, dispatch);
       }, 5000);
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current);
+    } else {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     }
-
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
     };
-  }, [isInitialized, dispatch, state]);
+  }, [isInitialized, dispatch]); // intentionally excludes state — stateRef handles freshness
 };

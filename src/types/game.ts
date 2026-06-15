@@ -11,8 +11,8 @@ export interface PlayerStats {
   resonance: number;  // Connection to spirits (Biomorphic)
   vitality: number;
   mentality: number;
-  stamina: number;    // Physical action pool
-  focus: number;      // Mental action pool
+  stamina: number;    // Physical action pool (max)
+  focus: number;      // Mental action pool (max)
 }
 
 export interface Equipment {
@@ -26,13 +26,13 @@ export interface Equipment {
     value: number;
   };
   level: number;
-  maxLevel: number; // Higher for better quality gear
+  maxLevel: number;
   description: string;
 }
 
 export interface BodyMarking {
   id: string;
-  type: string; // e.g., 'burn', 'geometric', 'rune'
+  type: string;
   location: 'face' | 'chest' | 'back' | 'left_arm' | 'right_arm' | 'left_leg' | 'right_leg';
   description: string;
 }
@@ -44,7 +44,7 @@ export interface Appearance {
   hairStyle: string;
   hairColor: string;
   eyeColor: string;
-  eyeType: string; // e.g., 'organic', 'cybernetic', 'blind'
+  eyeType: string;
   skinTone: string;
   scars: BodyMarking[];
   tattoos: BodyMarking[];
@@ -52,9 +52,9 @@ export interface Appearance {
 }
 
 export interface Pronouns {
-  subject: string;   // e.g., "he", "she", "they"
-  object: string;    // e.g., "him", "her", "them"
-  possessive: string; // e.g., "his", "her", "their"
+  subject: string;
+  object: string;
+  possessive: string;
 }
 
 export interface Player {
@@ -65,16 +65,16 @@ export interface Player {
   level: number;
   experience: number;
   skillPoints: number;
-  blessedAbility?: string; // Unique Echo-Anchor affinity
+  blessedAbility?: string;
   isBlessedSkillRevealed: boolean;
-  alignment: AlignmentValue; // Good/Evil
-  purity: AlignmentValue;    // Pure/Corrupt
+  alignment: AlignmentValue;
+  purity: AlignmentValue;
   wealth: number;
   afflictions: string[];
-  balance: number;           // Physical readiness (ms)
-  equilibrium: number;       // Mental composure (ms)
-  stamina: number;           // Current Physical Pool
-  focus: number;             // Current Mental Pool
+  balance: number;      // Physical cooldown (ms)
+  equilibrium: number;  // Mental cooldown (ms)
+  stamina: number;      // Current physical pool
+  focus: number;        // Current mental pool
   inventory: (string | Equipment)[];
   equipment: {
     head?: Equipment;
@@ -93,11 +93,11 @@ export interface Player {
   };
   presenceDescription?: string;
   history: {
-    majorChoices: string[]; // e.g., 'saved_kaelen', 'betrayed_syndicate'
-    factionInfluence: { [factionId: string]: number }; // -100 to 100
-    factionMenace: { [factionId: string]: number }; // 0 to 100
+    majorChoices: string[];
+    factionInfluence: { [factionId: string]: number };
+    factionMenace: { [factionId: string]: number };
   };
-  companions: string[]; // NPC IDs
+  companions: string[]; // NPC IDs — single source of truth
 }
 
 export interface StoryletPrerequisites {
@@ -113,6 +113,9 @@ export interface StoryletPrerequisites {
   lastStoryletId?: string;
   lastChoiceId?: string;
   knowledgeFlags?: string[];
+  requiredNpc?: string;
+  requiredAnyNpc?: boolean;
+  requiredMilestone?: string;
 }
 
 export interface StoryletEffects {
@@ -126,27 +129,30 @@ export interface StoryletEffects {
   statChange?: Partial<PlayerStats>;
   setGlobalFlags?: { [flag: string]: boolean | number | string };
   moveToLocation?: string;
-  revealNames?: string[]; // NPC IDs to reveal
-  revealKnowledge?: string[]; // Knowledge flags to unlock
+  revealNames?: string[];
+  revealKnowledge?: string[];
+  revealBlessedSkill?: boolean;
+  triggerLoot?: string;
+  triggerCombat?: string; // enemy template ID from combatData.enemies
 }
 
 export interface Storylet {
   id: string;
   title: string;
-  content: string; // Supports dynamic variables
+  content: string;
   prerequisites: StoryletPrerequisites;
   choices: Choice[];
-  priority?: number; // Higher numbers = higher priority
+  priority?: number;
   repeatable?: boolean;
-  timeLimit?: number; // in seconds
-  defaultChoiceId?: string; // ID of choice to auto-select on timeout
+  timeLimit?: number;
+  defaultChoiceId?: string;
 }
 
 export interface Choice {
   id: string;
   text: string;
   effects: StoryletEffects;
-  followUpId?: string; // Forces the next storylet
+  followUpId?: string;
 }
 
 export type MagicCurrent = 'thermal' | 'vector' | 'biomorphic' | 'cognitive';
@@ -184,8 +190,50 @@ export interface CombatAffliction {
 export interface CombatCure {
   id: string;
   name: string;
-  cures: string[]; // IDs of CombatAffliction
+  cures: string[];
   delivery: 'ingestion' | 'topical' | 'inhalation' | 'smoke';
+}
+
+export interface EnemyAttack {
+  name: string;
+  damage: number;
+  affliction?: string;
+  type: 'physical' | 'mental';
+  balanceCost?: number;
+  equilibriumCost?: number;
+}
+
+export interface EnemyTemplate {
+  id: string;
+  name: string;
+  description: string;
+  level: number;
+  maxVitality: number;
+  stats: PlayerStats;
+  attacks: EnemyAttack[];
+  xpReward: number;
+  lootTable: string;
+}
+
+export interface ActiveEnemy extends EnemyTemplate {
+  vitality: number;
+  balance: number;
+  equilibrium: number;
+  afflictions: string[];
+}
+
+export interface CombatLogEntry {
+  msg: string;
+  type: 'player' | 'enemy' | 'system';
+  ts: number;
+}
+
+export interface ActiveCombat {
+  enemy: ActiveEnemy;
+  round: number;
+  log: CombatLogEntry[];
+  isOver: boolean;
+  playerWon?: boolean;
 }
 
 export interface Property {
@@ -213,19 +261,25 @@ export interface Law {
 export interface Bounty {
   id: string;
   factionId: string;
-  targetId: string; // usually player
+  targetId: string;
   amount: number;
   reason: string;
 }
 
 export interface NPCSchedule {
-  timeStart: number; // 0-2400
+  timeStart: number;
   timeEnd: number;
   location: string;
   activity: string;
 }
 
-export type NPCStatusTier = 1 | 2 | 3 | 4; // 1: Grunt, 2: Specialist, 3: Lieutenant, 4: Apex
+export type NPCStatusTier = 1 | 2 | 3 | 4;
+
+export interface TradeItem {
+  id: string;
+  price: number;
+  stock: number;
+}
 
 export interface NPC {
   id: string;
@@ -239,9 +293,10 @@ export interface NPC {
   inventory: string[];
   backstory: string;
   isGenerated?: boolean;
+  tradeInventory?: TradeItem[];
   personality: {
     archetype: 'coward' | 'zealot' | 'pragmatist' | 'predator' | 'scholar' | 'greed';
-    braveryThreshold: number; // Morale: 0-100, when they flee
+    braveryThreshold: number;
     tone: string;
     vocabulary: string[];
     visualTells: string[];
@@ -258,9 +313,9 @@ export interface NPC {
 }
 
 export interface RelationshipStatus {
-  trust: number; // -100 to 100
+  trust: number;   // -100 to 100
   romance: number; // 0 to 100
-  fear: number; // 0 to 100
+  fear: number;    // 0 to 100
 }
 
 export interface Relationship {
@@ -274,37 +329,27 @@ export interface GameState {
   reputation: ReputationMatrix;
   globalFlags: { [flag: string]: boolean | number | string };
   unlockedBlueprints: string[];
-  activeSpells: string[]; // IDs of CombatSpell
-  
-  // Politics
-  activeLaws: string[]; // IDs of Law
+  activeSpells: string[];
+  activeLaws: string[];
   activeBounties: Bounty[];
-  townControl: { [townId: string]: string }; // townId -> factionId or 'player'
-  
-  // Economy
-  ownedProperties: string[]; // IDs of Property
-  
-  // Kinship
-  companions: string[]; // IDs of NPC
+  townControl: { [townId: string]: string };
+  ownedProperties: string[];
   relationships: { [npcId: string]: RelationshipStatus };
   affinity: { [npcId: string]: number };
-  
-  // Forced Flow
-  forcedStoryletId?: string; 
+  forcedStoryletId?: string;
   activeConversationNpcId?: string;
-  
-  // Simulated Autonomy & "Machine Learning"
-  npcEvolution: { 
-    [npcId: string]: { 
-      aggression: number; // 0-100
-      fear: number; // 0-100
+  npcs: { [npcId: string]: NPC };
+  npcEvolution: {
+    [npcId: string]: {
+      aggression: number;
+      fear: number;
       observedPlayerTraits: string[];
-    } 
+    }
   };
   worldHistory: { event: string; timestamp: number }[];
-
-  gameTime: number; // Chronological marker (0-2400 per day)
-  currentStorylets: string[]; // Active storylet IDs
+  activeCombat: ActiveCombat | null;
+  gameTime: number;
+  currentStorylets: string[];
   seenStorylets: string[];
   knownNames: string[];
   knowledgeFlags: string[];
@@ -312,4 +357,3 @@ export interface GameState {
   lastChoiceId?: string;
   narrativeHistory: { id: string; type: 'storylet' | 'choice'; text: string; title?: string }[];
 }
-

@@ -32,6 +32,31 @@
       { "id": "cursed_echo_ring", "weight": 25, "type": "item", "price": 200, "description": "Boosts sync, but randomly causes hallucinations." },
       { "id": "bloodroot_bundle", "weight": 50, "type": "item", "price": 45, "description": "A large bundle of healing herbs." },
       { "id": "shattered_static_blade", "weight": 25, "type": "item", "price": 400, "description": "A broken knight's sword that still hums with lethal energy." }
+    ],
+    "creature_common": [
+      { "id": "spirit_residue", "weight": 50, "type": "currency", "amount": [5, 20] },
+      { "id": "bloodroot", "weight": 25, "type": "item" },
+      { "id": "void_shard_fragment", "weight": 15, "type": "junk" },
+      { "id": "epidermal_salve", "weight": 10, "type": "item" }
+    ],
+    "creature_rare": [
+      { "id": "resonance_core", "weight": 30, "type": "currency", "amount": [40, 100] },
+      { "id": "skullcap", "weight": 25, "type": "item" },
+      { "id": "null_dagger_fragment", "weight": 25, "type": "item" },
+      { "id": "goldenseal", "weight": 20, "type": "item" }
+    ],
+    "scavenger_common": [
+      { "id": "scrap_shards", "weight": 45, "type": "currency", "amount": [10, 35] },
+      { "id": "mending_salve", "weight": 25, "type": "item" },
+      { "id": "copper_wire", "weight": 20, "type": "junk" },
+      { "id": "bloodroot", "weight": 10, "type": "item" }
+    ],
+    "syndicate_common": [
+      { "id": "syndicate_levy", "weight": 40, "type": "currency", "amount": [20, 60] },
+      { "id": "goldenseal", "weight": 20, "type": "item" },
+      { "id": "caloric_salve", "weight": 20, "type": "item" },
+      { "id": "battery_pack", "weight": 15, "type": "junk" },
+      { "id": "standard_issue_baton", "weight": 5, "type": "item" }
     ]
   }
 }

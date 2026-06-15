@@ -32,12 +32,11 @@ const PRONOUN_SETS = [
 const EYE_COLORS = ['clear', 'steel blue', 'emerald', 'amber', 'crimson', 'void black', 'luminescent violet', 'gold-flecked', 'icy white', 'molten orange', 'toxic green', 'amethyst', 'heterochromia (blue/green)', 'heterochromia (red/black)'];
 const EYE_TYPES = ['organic', 'cybernetic (lens)', 'cat-like', 'milky (blind)', 'glowing iris', 'hollow', 'reptilian', 'vertical slit', 'star-pupiled', 'clockwork', 'many-pupiled'];
 
-// High-fidelity audio URLs
 const UI_SOUNDS = {
-  click: 'https://cdn.pixabay.com/audio/2022/03/15/audio_7335661d40.mp3', // Sharp high-tech click
-  hover: 'https://cdn.pixabay.com/audio/2022/03/10/audio_f507b99c8a.mp3', // Subtle resonance
-  type: 'https://cdn.pixabay.com/audio/2022/03/10/audio_5f2c253457.mp3', // Fast tech blips
-  bgm: 'https://cdn.pixabay.com/audio/2023/02/24/audio_34b07f879b.mp3' // High quality cinematic ambient
+  click: 'https://cdn.pixabay.com/audio/2022/03/15/audio_7335661d40.mp3',
+  hover: 'https://cdn.pixabay.com/audio/2022/03/10/audio_f507b99c8a.mp3',
+  type: 'https://cdn.pixabay.com/audio/2022/03/10/audio_5f2c253457.mp3',
+  bgm: 'https://cdn.pixabay.com/audio/2023/02/24/audio_34b07f879b.mp3'
 };
 
 const playSound = (type: keyof typeof UI_SOUNDS) => {
@@ -50,15 +49,14 @@ const playSound = (type: keyof typeof UI_SOUNDS) => {
 
 const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
   const [displayedText, setDisplayedText] = useState('');
-  
+
   useEffect(() => {
     let i = 0;
-    let currentText = '';
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    let current = '';
     setDisplayedText('');
     const interval = setInterval(() => {
-      currentText += text.charAt(i);
-      setDisplayedText(currentText);
+      current += text.charAt(i);
+      setDisplayedText(current);
       i++;
       if (i >= text.length) clearInterval(interval);
     }, 8);
@@ -72,23 +70,23 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
   const dispatch = useDispatch();
   const bgmRef = useRef<HTMLAudioElement | null>(null);
   const [isAudioStarted, setIsAudioStarted] = useState(false);
-  
+
   const [name, setName] = useState('Stranger');
   const [pronounIndex, setPronounIndex] = useState(2);
   const [customSubject, setCustomSubject] = useState('');
   const [customObject, setCustomObject] = useState('');
   const [customPossessive, setCustomPossessive] = useState('');
-  
+
   const [height, setHeight] = useState('average');
   const [bodyType, setBodyType] = useState('average');
   const [musculature, setMusculature] = useState('lean');
   const [skinTone, setSkinTone] = useState('pale');
-  
+
   const [hairStyle, setHairStyle] = useState('unkempt');
   const [hairColor, setHairColor] = useState('dusty');
   const [eyeColor, setEyeColor] = useState('clear');
   const [eyeType, setEyeType] = useState('organic');
-  
+
   const [scars, setScars] = useState<BodyMarking[]>([]);
   const [tattoos, setTattoos] = useState<BodyMarking[]>([]);
 
@@ -102,10 +100,12 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
     }
   };
 
+  // Stop BGM on unmount
   useEffect(() => {
     return () => {
       if (bgmRef.current) {
         bgmRef.current.pause();
+        bgmRef.current.src = '';
         bgmRef.current = null;
       }
     };
@@ -134,7 +134,7 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
     startAtmosphere();
     playSound('click');
     const newMarking: BodyMarking = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: Math.random().toString(36).substring(2, 11),
       type: pendingType,
       location: pendingLoc,
       description: `${pendingType} on ${pendingLoc.replace('_', ' ')}`
@@ -150,6 +150,12 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
   };
 
   const handleFinish = () => {
+    // Stop BGM before leaving character creator
+    if (bgmRef.current) {
+      bgmRef.current.pause();
+      bgmRef.current.src = '';
+      bgmRef.current = null;
+    }
     playSound('click');
     const { subject, object, possessive } = getPronouns();
     dispatch(setIdentity({
@@ -163,11 +169,10 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
   };
 
   const pronouns = getPronouns();
-  const previewText = `You stand ${height}, a ${bodyType} and ${musculature} figure with ${skinTone} skin. Your ${hairStyle}, ${hairColor} hair frames a face marked by ${eyeColor} ${eyeType} eyes. ${scars.length > 0 ? `Your flesh bears the history of ${scars.map(s => s.description).join(', ')}. ` : ''}${tattoos.length > 0 ? `Ink depicting ${tattoos.map(t => t.description).join(', ')} is etched into your skin. ` : ''}${pronouns.subject.charAt(0).toUpperCase() + pronouns.subject.slice(1)} look(s) forged by the Borderlands. ${presenceDesc}`;
+  const previewText = `You stand ${height}, a ${bodyType} and ${musculature} figure with ${skinTone} skin. Your ${hairStyle}, ${hairColor} hair frames a face marked by ${eyeColor} ${eyeType} eyes. ${scars.length > 0 ? `Your flesh bears the history of ${scars.map(s => s.description).join(', ')}. ` : ''}${tattoos.length > 0 ? `Ink depicting ${tattoos.map(t => t.description).join(', ')} is etched into your skin. ` : ''}${pronouns.subject.charAt(0).toUpperCase() + pronouns.subject.slice(1)} look${pronouns.subject === 'they' ? '' : 's'} forged by the Borderlands. ${presenceDesc}`;
 
   return (
     <div className="relative bg-slate-950 text-slate-100 p-6 md:p-10 rounded-xl border border-slate-800 shadow-[0_0_100px_rgba(0,0,0,0.5)] max-w-5xl w-full h-[95vh] flex flex-col font-sans animate-fade-in" onClick={startAtmosphere}>
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4 border-b border-slate-800 pb-8 shrink-0">
         <div className="text-center md:text-left">
           <h2 className="text-3xl font-black text-amber-500 uppercase tracking-tighter italic">Biometric Manifestation</h2>
@@ -185,29 +190,28 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
             </div>
           </div>
           {!isAudioStarted && (
-            <div className="text-[10px] text-amber-500/50 animate-pulse font-mono tracking-widest cursor-pointer hover:text-amber-500">[ START BIOMETRIC BGM ]</div>
+            <div className="text-[10px] text-amber-500/50 animate-pulse font-mono tracking-widest cursor-pointer hover:text-amber-500">[ TAP TO START BGM ]</div>
           )}
         </div>
       </div>
-      
-      {/* Scrollable Content */}
+
       <div className="flex-1 overflow-y-auto pr-4 custom-scrollbar mb-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 pb-10">
           <div className="space-y-10">
             <section>
               <h3 className="text-slate-400 text-xs uppercase font-black mb-6 tracking-widest flex items-center border-l-2 border-amber-500 pl-3">Designation</h3>
               <div className="space-y-4">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="NAME"
-                  value={name} 
+                  value={name}
                   onChange={(e) => { setName(e.target.value); playSound('type'); }}
                   className="w-full bg-slate-900 border border-slate-800 p-4 rounded text-slate-100 focus:border-amber-500 outline-none font-mono uppercase text-xl transition-colors hover:bg-slate-800"
                 />
                 <div className="space-y-2">
                   <label className="block text-[10px] uppercase text-slate-500 font-bold tracking-widest">Pronoun Protocol</label>
-                  <select 
-                    value={pronounIndex} 
+                  <select
+                    value={pronounIndex}
                     onChange={(e) => { setPronounIndex(parseInt(e.target.value)); playSound('click'); }}
                     className="w-full bg-slate-900 border border-slate-800 p-3 rounded text-slate-300 text-xs uppercase transition-all hover:border-amber-500"
                   >
@@ -281,7 +285,7 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
                 <button onClick={() => addMarking(SCAR_TYPES.includes(pendingType))} className="w-full bg-slate-700 hover:bg-amber-600/20 hover:text-amber-500 p-3 rounded text-xs uppercase font-bold tracking-widest border border-slate-600 transition-all">Apply Marking</button>
               </div>
               <div className="space-y-2">
-                {[...scars.map(s => ({...s, isScar: true})), ...tattoos.map(t => ({...t, isScar: false}))].map(m => (
+                {[...scars.map(s => ({ ...s, isScar: true })), ...tattoos.map(t => ({ ...t, isScar: false }))].map(m => (
                   <div key={m.id} className={`flex justify-between items-center p-3 rounded border animate-fade-in ${m.isScar ? 'bg-red-900/10 border-red-900/30' : 'bg-blue-900/10 border-blue-900/30'}`}>
                     <div>
                       <div className={`text-[10px] font-black uppercase ${m.isScar ? 'text-red-400' : 'text-blue-400'}`}>{m.type}</div>
@@ -296,13 +300,12 @@ const CharacterCreator: React.FC<CharacterCreatorProps> = ({ onComplete }) => {
         </div>
       </div>
 
-      {/* Sticky Preview */}
       <div className="shrink-0 pt-6 border-t border-slate-800 bg-slate-950/95 backdrop-blur-sm shadow-[0_-20px_50px_rgba(0,0,0,0.5)] z-50">
         <div className="relative p-6 bg-black/40 rounded-lg border-l-4 border-amber-500 text-slate-400 text-xs leading-relaxed font-mono min-h-[80px]">
           <div className="absolute top-2 right-4 text-[8px] text-amber-500/20 font-black tracking-[1.5em] select-none uppercase">Analytical Preview Stream</div>
           <TypewriterText text={previewText} />
         </div>
-        <button 
+        <button
           onClick={handleFinish}
           className="group relative w-full mt-6 overflow-hidden rounded-lg bg-amber-600 p-5 font-black uppercase tracking-[0.6em] text-sm transition-all hover:bg-amber-500 shadow-[0_0_40px_rgba(217,119,6,0.2)] active:scale-[0.98]"
         >
