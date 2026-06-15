@@ -33,6 +33,9 @@ interface GameStateSlice {
   contextProfile: { [tag: string]: number };
   /** World-map nodes the player has set foot in (fog-of-war for the travel UI). */
   visitedNodes: string[];
+  /** Open narrative threads — multi-beat arcs the Director keeps advancing until
+   *  resolved, so choices lead to coherent consequences instead of random cards. */
+  openThreads: string[];
 }
 
 const initialState: GameStateSlice = {
@@ -61,6 +64,7 @@ const initialState: GameStateSlice = {
   narrativeHistory: [],
   contextProfile: {},
   visitedNodes: ['static_crater'],
+  openThreads: [],
 };
 
 /** Upper bound on any single tag's weight so the profile stays responsive to
@@ -163,6 +167,14 @@ const gameSlice = createSlice({
       if (!state.visitedNodes.includes(action.payload)) {
         state.visitedNodes.push(action.payload);
       }
+    },
+    openThread: (state, action: PayloadAction<string>) => {
+      if (!state.openThreads.includes(action.payload)) {
+        state.openThreads.push(action.payload);
+      }
+    },
+    resolveThread: (state, action: PayloadAction<string>) => {
+      state.openThreads = state.openThreads.filter(t => t !== action.payload);
     },
     reinforceContext: (state, action: PayloadAction<string[]>) => {
       // Each reinforced tag grows; all other tags gently decay so the profile
@@ -315,6 +327,8 @@ export const {
   setLastChoiceId,
   reinforceContext,
   visitNode,
+  openThread,
+  resolveThread,
   addNarrativeHistory,
   consolidateHistory,
   evolveNPC,

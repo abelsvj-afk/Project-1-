@@ -116,6 +116,7 @@ export interface StoryletPrerequisites {
   requiredNpc?: string;
   requiredAnyNpc?: boolean;
   requiredMilestone?: string;
+  requiresThread?: string; // only available while this narrative thread is open
 }
 
 export interface StoryletEffects {
@@ -136,6 +137,8 @@ export interface StoryletEffects {
   triggerCombat?: string; // enemy template ID from combatData.enemies
   recruitCompanion?: string; // NPC ID to add to player.companions
   dismissCompanion?: string; // NPC ID to remove from player.companions
+  openThread?: string; // open a narrative thread the Director will follow up
+  resolveThread?: string; // close a narrative thread
 }
 
 export interface Storylet {

@@ -815,26 +815,106 @@
     ]
   },
   {
-    "id": "recruit_kaelen",
-    "title": "An Offer of Company",
-    "content": "{npc:kaelen} catches up to you near the outpost gates, thumbs hooked in a worn bandolier. [NPC_REACT] 'Look,' they say, voice low, 'the wastes chew up loners. You've got that light in your chest pulling every hungry thing for miles — and I know the safe lines through this country better than anyone left breathing. Watch your back, you watch mine. Deal?'",
-    "priority": 60,
+    "id": "outpost_arrival_kaelen_trust",
+    "title": "Vouched For",
+    "content": "{npc:kaelen} walks you through the iron gates with a hand raised to the guards. 'They're with me,' they call, and the rifles lower. [NPC_REACT] Inside the walls, the scavenger turns to you, studying the steady light in your chest. 'You asked who I was, back in that crater. Fair question. Most folks out here don't bother asking before they start swinging.'",
+    "priority": 80,
     "prerequisites": {
       "location": "borderlands_outpost",
-      "globalFlags": {
-        "met_kaelen": true
-      }
+      "lastChoiceId": "crater_wake_resonance"
     },
     "choices": [
       {
-        "id": "recruit_kaelen_yes",
-        "text": "'Deal. I could use eyes I can trust.'",
+        "id": "arrival_trust_ask",
+        "text": "'So tell me. Who are you — and what is this place?'",
+        "effects": {
+          "openThread": "kaelen_bond",
+          "experienceGain": 15
+        },
+        "tags": [
+          "social",
+          "mystical"
+        ]
+      },
+      {
+        "id": "arrival_trust_guard",
+        "text": "Nod, but keep your guard up. Trust is earned.",
+        "effects": {
+          "openThread": "kaelen_bond",
+          "experienceGain": 10
+        },
+        "tags": [
+          "cautious"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "id": "outpost_arrival_kaelen_wary",
+    "title": "An Uneasy Escort",
+    "content": "{npc:kaelen} got you through the gates, but they've kept three steps between you the whole way, knife-hand never far from the hilt. [NPC_REACT] 'I've seen what your kind of light does to people,' they mutter. 'Threatened me back there like it was nothing. So we're clear — I brought you in, but I don't owe you a thing.'",
+    "priority": 80,
+    "prerequisites": {
+      "location": "borderlands_outpost",
+      "lastChoiceId": "crater_wake_distortion"
+    },
+    "choices": [
+      {
+        "id": "arrival_wary_apologize",
+        "text": "'I was afraid and I lashed out. I'm sorry. Truce?'",
+        "effects": {
+          "openThread": "kaelen_bond",
+          "purityChange": 5,
+          "experienceGain": 10
+        },
+        "tags": [
+          "compassionate",
+          "social"
+        ]
+      },
+      {
+        "id": "arrival_wary_cold",
+        "text": "Say nothing. Let them keep their fear.",
+        "effects": {
+          "openThread": "kaelen_bond",
+          "setGlobalFlags": {
+            "kaelen_wary": true
+          },
+          "experienceGain": 10
+        },
+        "tags": [
+          "ruthless"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
+  },
+  {
+    "id": "kaelen_offer",
+    "title": "An Offer in the Outpost",
+    "content": "{npc:kaelen} leans against a rust-streaked strut and looks you over one more time, weighing something. 'Here's the shape of it,' they say. 'That Anchor in your chest pulls every hungry thing in the wastes straight to you — Syndicate included. You won't last a week alone. I know the safe lines through this country better than anyone breathing. So. Watch each other's backs, or we part here and now.'",
+    "priority": 70,
+    "prerequisites": {
+      "location": "borderlands_outpost",
+      "requiresThread": "kaelen_bond"
+    },
+    "choices": [
+      {
+        "id": "kaelen_offer_accept",
+        "text": "'Deal. I'd rather not face the wastes alone.'",
         "effects": {
           "recruitCompanion": "kaelen",
-          "experienceGain": 15,
+          "resolveThread": "kaelen_bond",
           "setGlobalFlags": {
             "kaelen_recruited": true
-          }
+          },
+          "moveToLocation": "outpost_market",
+          "experienceGain": 20
         },
         "tags": [
           "social",
@@ -842,12 +922,12 @@
         ]
       },
       {
-        "id": "recruit_kaelen_no",
+        "id": "kaelen_offer_decline",
         "text": "'I travel alone. Less to lose that way.'",
         "effects": {
-          "setGlobalFlags": {
-            "kaelen_recruited": false
-          }
+          "resolveThread": "kaelen_bond",
+          "moveToLocation": "outpost_market",
+          "experienceGain": 10
         },
         "tags": [
           "pragmatic"

@@ -7,10 +7,11 @@ import {
   changeWealth, gainExperience, setBlessedAbility, revealBlessedSkill, updateStats,
   useStamina, useFocus, restoreResources, addCompanion, removeCompanion,
 } from './store/slices/playerSlice';
-import { morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
+import { morphText, assembleProse, dealFromDeck, narrativeBridge } from './engine/narrativeEngine';
 import { processHistoryConsolidation } from './engine/historyEngine';
 import {
   setGlobalFlag, markStoryletSeen, revealName, revealKnowledge, setLastChoiceId, reinforceContext, visitNode,
+  openThread, resolveThread,
   addNarrativeHistory, setForcedStorylet, setActiveConversationNpc, incrementTime,
   startCombat,
 } from './store/slices/gameSlice';
@@ -139,6 +140,8 @@ const App: React.FC = () => {
     }
     if (effects.recruitCompanion) dispatch(addCompanion(effects.recruitCompanion));
     if (effects.dismissCompanion) dispatch(removeCompanion(effects.dismissCompanion));
+    if (effects.openThread) dispatch(openThread(effects.openThread));
+    if (effects.resolveThread) dispatch(resolveThread(effects.resolveThread));
 
     // Trigger combat — switch to combat view automatically
     if (effects.triggerCombat) {
@@ -224,7 +227,8 @@ const App: React.FC = () => {
         setIsTTSFinished(false);
 
         const baseContent = morphText(nextStorylet.content, state);
-        const assembledContent = assembleProse(state, baseContent);
+        const bridge = narrativeBridge(state, nextStorylet);
+        const assembledContent = bridge + assembleProse(state, baseContent);
 
         dispatch(addNarrativeHistory({
           id: nextStorylet.id,

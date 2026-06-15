@@ -89,6 +89,14 @@
       "A sudden chill in the air reminds you that Silas the Wraith is watching over you."
     ]
   },
+  "transitions": {
+    "consequence": [
+      "What you just chose still hangs in the air. ",
+      "There is no unmaking the choice now. ",
+      "Your decision settles into the world around you. ",
+      "The weight of what you just did follows you. "
+    ]
+  },
   "contextFragments": {
     "aggressive": [
       "Those who've seen you fight give you a wider berth than they used to.",

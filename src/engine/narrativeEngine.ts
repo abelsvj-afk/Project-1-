@@ -117,6 +117,34 @@ const _assembleProse = (state: RootState, baseContent: string): string => {
 export const assembleProse = withDiagnostics(_assembleProse, 'assembleProse');
 
 /**
+ * Connective tissue between beats. When the next storylet is a direct
+ * consequence of the player's last action (an explicit follow-up, a thread
+ * advance, or a choice-gated beat), prepend a short transition so the prose
+ * reads as cause→effect rather than a hard cut to an unrelated card.
+ * Returns '' for fresh/standalone beats (which usually open with their own scene).
+ */
+const _narrativeBridge = (state: RootState, storylet: Storylet): string => {
+  const { game } = state;
+  const pre = storylet.prerequisites;
+
+  const isConsequence =
+    game.forcedStoryletId === storylet.id ||
+    (!!pre.lastChoiceId && pre.lastChoiceId === game.lastChoiceId) ||
+    (!!pre.requiresThread && game.openThreads.includes(pre.requiresThread));
+
+  if (!isConsequence) return '';
+
+  const bridges = (fragments as any).transitions?.consequence as string[] | undefined;
+  if (!bridges || bridges.length === 0) return '';
+
+  // Deterministic pick for a given beat so the same state renders the same text.
+  const seed = (game.lastChoiceId?.length ?? 0) + storylet.id.length + game.seenStorylets.length;
+  return bridges[seed % bridges.length];
+};
+
+export const narrativeBridge = withDiagnostics(_narrativeBridge, 'narrativeBridge');
+
+/**
  * Filters storylets based on prerequisites and current game state.
  */
 const _filterStorylets = (
@@ -171,14 +199,21 @@ const _filterStorylets = (
 
     if (pre.lastStoryletId && pre.lastStoryletId !== game.lastStoryletId) return false;
     if (pre.lastChoiceId && pre.lastChoiceId !== game.lastChoiceId) return false;
+    if (pre.requiresThread && !game.openThreads.includes(pre.requiresThread)) return false;
 
     return true;
   });
 
   const scored = filtered.map(s => {
     let score = s.priority || 0;
+    // ── Director coherence: cause→effect beats must beat unrelated cards ──
+    // Direct consequence of the choice / storylet just resolved.
     if (s.prerequisites.lastChoiceId === game.lastChoiceId) score += 1000;
     if (s.prerequisites.lastStoryletId === game.lastStoryletId) score += 500;
+    // Advancing an open arc outranks any ambient/atmosphere card.
+    if (s.prerequisites.requiresThread && game.openThreads.includes(s.prerequisites.requiresThread)) score += 800;
+    // Anti-repeat: never immediately re-deal the beat we just showed.
+    if (s.id === game.lastStoryletId) score -= 600;
     if (!game.seenStorylets.includes(s.id)) score += 50;
     // Spider-web bias: pull in storylets that resonate with — or dramatically
     // oppose — the player's accumulated leanings.
@@ -276,13 +311,21 @@ const _morphText = (text: string, state: RootState): string => {
 
   let morphed = interpolate(text, state);
 
-  // Presence-based NPC reactions
-  if (player.presence && morphed.includes('[NPC_REACT]')) {
+  // Inner monologue marker → render as the character's private thought.
+  // (Previously left raw in the prose.)
+  morphed = morphed.replace(/\[INNER_MONOLOGUE\]\s*/g, '');
+
+  // Presence-based NPC reactions — always resolve, with a sane default when
+  // presence hasn't been computed yet (previously left the raw tag in place).
+  if (morphed.includes('[NPC_REACT]')) {
     let reaction = "gives you a wary but indifferent nod";
-    if (player.presence.intimidating > 60) reaction = "steps back, clearly intimidated by your formidable presence";
-    else if (player.presence.uncanny > 60) reaction = "stares with visible discomfort, unsettled by your unnatural form";
-    else if (player.presence.exotic > 60) reaction = "cannot hide their fascination, eyes lingering on your strange features";
-    else if (player.presence.normalized > 70) reaction = "barely registers you, treating you like just another commoner";
+    const p = player.presence;
+    if (p) {
+      if (p.intimidating > 60) reaction = "steps back, clearly intimidated by your formidable presence";
+      else if (p.uncanny > 60) reaction = "stares with visible discomfort, unsettled by your unnatural form";
+      else if (p.exotic > 60) reaction = "cannot hide their fascination, eyes lingering on your strange features";
+      else if (p.normalized > 70) reaction = "barely registers you, treating you like just another commoner";
+    }
     morphed = morphed.replace(/\[NPC_REACT\]/g, reaction);
   }
 
@@ -306,6 +349,11 @@ const _morphText = (text: string, state: RootState): string => {
   if (player.purity < -500) {
     morphed = '[A sickly green miasma clings to the air around you.] ' + morphed;
   }
+
+  // Safety net: strip any unhandled directive tags (e.g. [SOME_TAG]) so raw
+  // markers never leak into the displayed prose. Lowercase-containing flavor
+  // brackets like the miasma line above are preserved.
+  morphed = morphed.replace(/\[[A-Z][A-Z0-9_]+\]\s*/g, '').replace(/\s{2,}/g, ' ').trim();
 
   return morphed;
 };
