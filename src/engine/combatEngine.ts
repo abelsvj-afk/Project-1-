@@ -127,6 +127,70 @@ const _runEnemyAI = (state: RootState, dispatch: AppDispatch) => {
   }
 };
 
+// ─── Companion Assists ─────────────────────────────────────────────────────
+// Active companions periodically act in combat, driven by their personality
+// archetype, satisfying the GEMINI.md mandate that companions provide real
+// mechanical utility in the Combat view (not just narrative flavor).
+
+const COMPANION_ASSIST_INTERVAL = 40; // ~4s between a given companion's actions
+const ASSIST_AFFLICTIONS = ['blindness', 'shivering', 'stupidity'];
+
+type AssistKind = 'damage' | 'afflict' | 'support';
+interface AssistProfile { kind: AssistKind; power: number; verb: string; }
+
+const ARCHETYPE_ASSIST: { [archetype: string]: AssistProfile } = {
+  pragmatist: { kind: 'damage', power: 8, verb: 'lands a precise shot on' },
+  zealot: { kind: 'afflict', power: 5, verb: 'channels a hostile current at' },
+  scholar: { kind: 'support', power: 6, verb: 'covers you' },
+  greed: { kind: 'damage', power: 6, verb: 'strikes an opportunistic blow at' },
+};
+
+const assistFor = (archetype?: string): AssistProfile =>
+  (archetype && ARCHETYPE_ASSIST[archetype]) || ARCHETYPE_ASSIST.pragmatist;
+
+/** Human-readable label for a companion's combat role, for the UI. */
+export const companionAssistLabel = (archetype?: string): string => {
+  switch (assistFor(archetype).kind) {
+    case 'support': return 'Support — clears your afflictions';
+    case 'afflict': return 'Caster — afflicts the enemy';
+    default: return 'Striker — deals damage';
+  }
+};
+
+const _runCompanionAssists = (state: RootState, dispatch: AppDispatch) => {
+  const combat = state.game.activeCombat;
+  if (!combat || combat.isOver) return;
+  const { player, game } = state;
+
+  player.companions.forEach((id, i) => {
+    // Stagger companions so they don't all fire on the same tick.
+    if (combat.round % COMPANION_ASSIST_INTERVAL !== (i * 7) % COMPANION_ASSIST_INTERVAL) return;
+    const npc = game.npcs[id];
+    if (!npc) return;
+    const prof = assistFor(npc.personality?.archetype);
+    const name = npc.name || id;
+
+    if (prof.kind === 'support') {
+      if (player.afflictions.length > 0) {
+        const aff = player.afflictions[0];
+        dispatch(applyCure([aff]));
+        dispatch(addCombatLog({ msg: `${name} ${prof.verb}, clearing your ${aff.replace(/_/g, ' ')}.`, type: 'player' }));
+      } else {
+        dispatch(damageEnemy(prof.power));
+        dispatch(addCombatLog({ msg: `${name} lays down covering fire on ${combat.enemy.name} (${prof.power}).`, type: 'player' }));
+      }
+    } else if (prof.kind === 'afflict') {
+      dispatch(damageEnemy(prof.power));
+      const aff = ASSIST_AFFLICTIONS[combat.round % ASSIST_AFFLICTIONS.length];
+      dispatch(afflictEnemy(aff));
+      dispatch(addCombatLog({ msg: `${name} ${prof.verb} ${combat.enemy.name}, inflicting ${aff}.`, type: 'player' }));
+    } else {
+      dispatch(damageEnemy(prof.power));
+      dispatch(addCombatLog({ msg: `${name} ${prof.verb} ${combat.enemy.name} (${prof.power}).`, type: 'player' }));
+    }
+  });
+};
+
 // ─── Combat Resolution ─────────────────────────────────────────────────────
 
 const _checkCombatResolution = (state: RootState, dispatch: AppDispatch) => {
@@ -172,6 +236,9 @@ const _processCombatTick = (state: RootState, dispatch: AppDispatch) => {
 
   // Enemy AI
   _runEnemyAI(state, dispatch);
+
+  // Companion assists
+  _runCompanionAssists(state, dispatch);
 
   // Check for win/lose
   _checkCombatResolution(state, dispatch);

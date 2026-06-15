@@ -5,7 +5,7 @@ import type { RootState } from './store';
 import {
   setLocation, changeAlignment, changePurity, addItem, removeItem as removeItemAction,
   changeWealth, gainExperience, setBlessedAbility, revealBlessedSkill, updateStats,
-  useStamina, useFocus, restoreResources,
+  useStamina, useFocus, restoreResources, addCompanion, removeCompanion,
 } from './store/slices/playerSlice';
 import { morphText, assembleProse, dealFromDeck } from './engine/narrativeEngine';
 import { processHistoryConsolidation } from './engine/historyEngine';
@@ -137,6 +137,8 @@ const App: React.FC = () => {
     if (effects.triggerLoot) {
       triggerLootDrop(effects.triggerLoot, dispatch);
     }
+    if (effects.recruitCompanion) dispatch(addCompanion(effects.recruitCompanion));
+    if (effects.dismissCompanion) dispatch(removeCompanion(effects.dismissCompanion));
 
     // Trigger combat — switch to combat view automatically
     if (effects.triggerCombat) {

@@ -813,5 +813,49 @@
     "tags": [
       "mystical"
     ]
+  },
+  {
+    "id": "recruit_kaelen",
+    "title": "An Offer of Company",
+    "content": "{npc:kaelen} catches up to you near the outpost gates, thumbs hooked in a worn bandolier. [NPC_REACT] 'Look,' they say, voice low, 'the wastes chew up loners. You've got that light in your chest pulling every hungry thing for miles — and I know the safe lines through this country better than anyone left breathing. Watch your back, you watch mine. Deal?'",
+    "priority": 60,
+    "prerequisites": {
+      "location": "borderlands_outpost",
+      "globalFlags": {
+        "met_kaelen": true
+      }
+    },
+    "choices": [
+      {
+        "id": "recruit_kaelen_yes",
+        "text": "'Deal. I could use eyes I can trust.'",
+        "effects": {
+          "recruitCompanion": "kaelen",
+          "experienceGain": 15,
+          "setGlobalFlags": {
+            "kaelen_recruited": true
+          }
+        },
+        "tags": [
+          "social",
+          "cautious"
+        ]
+      },
+      {
+        "id": "recruit_kaelen_no",
+        "text": "'I travel alone. Less to lose that way.'",
+        "effects": {
+          "setGlobalFlags": {
+            "kaelen_recruited": false
+          }
+        },
+        "tags": [
+          "pragmatic"
+        ]
+      }
+    ],
+    "tags": [
+      "social"
+    ]
   }
 ]

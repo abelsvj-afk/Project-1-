@@ -134,6 +134,8 @@ export interface StoryletEffects {
   revealBlessedSkill?: boolean;
   triggerLoot?: string;
   triggerCombat?: string; // enemy template ID from combatData.enemies
+  recruitCompanion?: string; // NPC ID to add to player.companions
+  dismissCompanion?: string; // NPC ID to remove from player.companions
 }
 
 export interface Storylet {

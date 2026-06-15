@@ -4,7 +4,7 @@ import type { RootState } from '../store';
 import { useCombat } from '../hooks/useCombat';
 import { restoreResources } from '../store/slices/playerSlice';
 import { clearCombat, addCombatLog, startCombat } from '../store/slices/gameSlice';
-import { castSpell, useCure } from '../engine/combatEngine';
+import { castSpell, useCure, companionAssistLabel } from '../engine/combatEngine';
 import combatData from '../data/combatData.json';
 import type { CombatSpell, EnemyTemplate } from '../types/game';
 
@@ -204,6 +204,25 @@ const CombatConsole: React.FC<CombatConsoleProps> = ({ onExit }) => {
               {a.replace(/_/g, ' ')}
             </span>
           ))}
+        </div>
+      )}
+
+      {/* ── Allies (active companions fighting alongside you) ── */}
+      {combat && !combat.isOver && player.companions.length > 0 && (
+        <div className="bg-slate-900/60 p-2.5 rounded border border-emerald-900/40">
+          <h4 className="text-[9px] uppercase font-black text-emerald-500 tracking-widest mb-1.5">Allies</h4>
+          <div className="flex flex-col gap-1">
+            {player.companions.map(id => {
+              const npc = game.npcs[id];
+              if (!npc) return null;
+              return (
+                <div key={id} className="flex justify-between items-center text-[10px]">
+                  <span className="text-emerald-300 font-bold">{npc.name}</span>
+                  <span className="text-slate-500">{companionAssistLabel(npc.personality?.archetype)}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
